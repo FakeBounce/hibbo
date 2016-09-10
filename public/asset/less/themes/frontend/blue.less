@@ -1,0 +1,210 @@
+/*!
+ * Product:        Social - Premium Responsive Admin Template
+ * Version:        2.1.3
+ * Copyright:      2015 cesarlab.com
+ * License:        http://themeforest.net/licenses
+ * Live Preview:   http://go.cesarlab.com/SocialAdminTemplate2
+ * Purchase:       http://go.cesarlab.com/PurchaseSocial2
+ * Based on Bootstrap v3 (Copyright 2013 Twitter, Inc) by @mdo and @fat.
+ */
+@base-color: #647AAB;
+
+body {
+    color: #777777;
+    background: #f7f7f7;
+}
+
+a{
+  color: darken(@base-color, 20%);
+}
+
+
+.pagination {
+  > li {
+    > a,
+    > span {
+      color: @base-color;
+    }
+  }
+  > li > a,
+  > li > span {
+    &:hover,
+    &:focus {
+      color: #fff;
+      background-color: @base-color;
+      border-color: darken(@base-color, 8%);
+    }
+  }
+
+  > .active > a,
+  > .active > span {
+    &,
+    &:hover,
+    &:focus {
+      color: #fff;
+      background-color: @base-color;
+      border-color: darken(@base-color, 8%);
+    }
+  }
+}
+
+.section-services{
+    .fa{
+        color: @base-color;
+    }
+}
+
+
+/*--------------------
+ *  Featured Section
+ */
+.section-featured{
+
+    background: @base-color;
+
+    .item,
+    .carousel-inner {
+        background: @base-color;
+    }
+
+    .carousel-indicators {
+        li {
+            background: lighten(@base-color, 10%);
+        }
+        .active {
+            background: darken(@base-color, 10%);
+        }
+    }
+
+    .carousel-control.left span,
+    .carousel-control.right span {
+        background-color: @base-color;
+    }
+}
+
+
+/*--------------------
+ *  Testimonials
+ */
+.testimonials {
+    background: @base-color;
+    a{
+        color: darken(@base-color, 20%);
+    }
+}
+
+
+
+/*--------------------
+ *  Section Quotes
+ */
+.section-quotes{
+    .quotes-carousel {
+        .carousel-control {
+            color: @base-color;
+            &:hover{
+                color: darken(@base-color, 10%);
+            }
+        }
+
+        .carousel-indicators {
+            li {
+                background: @base-color;
+            }
+            .active {
+                background: darken(@base-color, 10%);
+            }
+        }
+    }
+
+    .item {
+        blockquote {
+            p:before {
+                color: @base-color;
+            }
+        }
+    }
+}
+
+
+/*--------------------
+ *  About
+ */
+.section-about{
+    .section-heading,
+    .team-detail h4{
+        color: @base-color;
+    }
+}
+
+// /*--------------------
+//  *  Services
+//  */
+// .section-services{
+//     .fa{
+//         color: @base-color;
+//     }
+// }
+
+/*--------------------
+ *  Title Page
+ */
+.title-page{
+    h3{
+        color: @base-color;
+    }
+
+  .breadcrumb{
+      color: @base-color;
+  }
+}
+
+
+/*--------------------
+ *  Navbar
+ */
+.social-navbar.navbar {
+
+    .navbar-brand {
+        color: @base-color;
+    }
+
+    .navbar-nav {
+        > li > a{
+            color: @base-color;
+
+            &:hover{
+                color: #fff;
+                background-color: darken(@base-color, 10%);
+            }
+        }
+
+        .open > a{
+            color: #fff;
+            background-color: darken(@base-color, 10%);
+            &:hover{
+                color: #fff;
+            }
+        }
+
+    }
+}
+
+
+/*--------------------
+ *  Footer
+ */
+
+.footer{
+    .website-info{
+        h4 {
+            color: @base-color;
+        }
+    }
+    .social-timeline,
+    .copyright{
+        a {
+            color: @base-color;
+        }
+    }
+}
