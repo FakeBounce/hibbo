@@ -14,7 +14,8 @@
     <!-- Styles -->
     <link href="{{ asset('asset/css/font-awesome/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('asset/css/jquery-ui/social/jquery.ui.css') }}" rel="stylesheet">
-    <link href="{{ asset('asset/css//bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('asset/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('asset/css/main.css') }}" rel="stylesheet">
 
     @yield('css')
 
@@ -23,7 +24,7 @@
     <header>
         <div class="row">
             <div class="col-xs-12">
-                <h1 class="text-center">Hibbo</h1>
+                <h1 class="text-center title">Hibbo</h1>
             </div>
         </div>
     </header>
