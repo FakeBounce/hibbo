@@ -12,7 +12,7 @@
 */
 
 
-Route::model('map', 'App\map');
+Route::model('map', 'App\Map');
 
 Route::get('/', 'IndexController@index');
 Route::resource('map', 'MapController');
