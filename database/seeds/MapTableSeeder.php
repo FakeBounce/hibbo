@@ -12,8 +12,8 @@ class MapTableSeeder extends Seeder
     public function run()
     {
         DB::table('maps')->insert([
-        'name' => 'Découverte',
-        'tile_set' => '',
+        'name' => 'Initiation',
+        'tile_set' => '1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 1 1 1 1 1 1 1 2 2 2 2 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1',
         'width' => '10',
         'height' => '10',
         'floor' => '0',

@@ -11,4 +11,8 @@
 |
 */
 
+
+Route::model('map', 'App\map');
+
 Route::get('/', 'IndexController@index');
+Route::resource('map', 'MapController');

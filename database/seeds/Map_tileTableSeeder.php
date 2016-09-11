@@ -11,8 +11,9 @@ class Map_tileTableSeeder extends Seeder
      */
     public function run()
     {
+
         DB::table('map_tiles')->insert([
-            'url' => '../../public/asset/img/grass.png',
+            'url' => 'forest.png',
             'break' => '0',
             'action' => 'none',
             'created_at' => Carbon\Carbon::now(),
@@ -20,17 +21,17 @@ class Map_tileTableSeeder extends Seeder
         ]);
 
         DB::table('map_tiles')->insert([
-            'url' => '../../public/asset/img/grass_left_door.png',
+            'url' => 'grass.png',
+            'break' => '0',
+            'action' => 'none',
+            'created_at' => Carbon\Carbon::now(),
+            'updated_at' => Carbon\Carbon::now()
+        ]);
+
+        DB::table('map_tiles')->insert([
+            'url' => 'grass_left_door.png',
             'break' => '1',
             'action' => 'kill_all',
-            'created_at' => Carbon\Carbon::now(),
-            'updated_at' => Carbon\Carbon::now()
-        ]);
-
-        DB::table('map_tiles')->insert([
-            'url' => '../../public/asset/img/forest.png',
-            'break' => '0',
-            'action' => 'none',
             'created_at' => Carbon\Carbon::now(),
             'updated_at' => Carbon\Carbon::now()
         ]);

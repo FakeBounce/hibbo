@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use App\Map_tile;
 
 class Map extends Model
 {
@@ -17,4 +19,11 @@ class Map extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function getMap_tile($val){
+
+        $map_tile = Map_tile::find($val);
+
+        return $map_tile;
+    }
 }
