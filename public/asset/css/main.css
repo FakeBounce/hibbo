@@ -66,3 +66,13 @@ img.pj {
 .tooltip-inner {
     max-width: 500px;
 }
+
+a {
+    text-decoration: none;
+}
+
+img.object {
+    width: 17px;
+    position: absolute;
+    margin-left: -37px;
+}

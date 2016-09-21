@@ -13,6 +13,7 @@ class Monster extends Model
  */
     protected $fillable = [
         'id',
+        'url',
         'name',
         'life',
         'armor',

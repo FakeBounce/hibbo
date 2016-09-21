@@ -29,13 +29,18 @@
                     </div>
                 @endif
 
+                @if($items[$i]>0)
+                    <img class="object" src="{{ asset('asset/img/equipements/'.$map->getItem($items[$i])->url) }}">
+                @endif
+
+
                 @if($monsters[$i] > 0)
-                    <img class="monster stat_tooltip" data-toggle="tooltip" src="{{ asset('asset/img/monsters/'.$map->getMonster($monsters[$i])->name.'.png') }}" style="margin-left:-34px;"
+                    <img class="monster stat_tooltip" data-toggle="tooltip" src="{{ asset('asset/img/monsters/'.$map->getMonster($monsters[$i])->url) }}" style="margin-left:-36px;"
                     title="
                         <table class='table_stat text-center'>
                             <tbody>
                                 <tr>
-                                    <th>Img</th>
+                                    <th> </th>
                                     <th>Hp</th>
                                     <th>Ar</th>
                                     <th>Dmg</th>
@@ -45,7 +50,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <img class='monster_stat' src='{{ asset('asset/img/monsters/'.$map->getMonster($monsters[$i])->name.'.png') }}'>
+                                        <img class='monster_stat' src='{{ asset('asset/img/monsters/'.$map->getMonster($monsters[$i])->url) }}'>
                                     </td>
                                     <td>
                                         {{ $map->getMonster($monsters[$i])->life }}
@@ -71,7 +76,7 @@
                         ">
                 @endif
                 @if($monsters[$i] == -1)
-                    <img class="pj" src="{{ asset('asset/img/classes/gface.png') }}" style="margin-left:-34px;">
+                    <img class="pj" src="{{ asset('asset/img/classes/gface.png') }}" style="margin-left:-36px;">
                 @endif
             @endfor
         </div>

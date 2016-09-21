@@ -12,6 +12,7 @@ class MonsterTableSeeder extends Seeder
     public function run()
     {
         DB::table('monsters')->insert([
+            'url' => 'Man.png',
             'name' => 'Man',
             'life' => '200',
             'armor' => '0',
@@ -28,6 +29,7 @@ class MonsterTableSeeder extends Seeder
         ]);
 
         DB::table('monsters')->insert([
+            'url' => 'Warrior.png',
             'name' => 'Warrior',
             'life' => '300',
             'armor' => '100',
@@ -44,6 +46,7 @@ class MonsterTableSeeder extends Seeder
         ]);
 
         DB::table('monsters')->insert([
+            'url' => 'Ectoplasm.png',
             'name' => 'Ectoplasm',
             'life' => '500',
             'armor' => '0',
@@ -60,7 +63,8 @@ class MonsterTableSeeder extends Seeder
         ]);
 
         DB::table('monsters')->insert([
-            'name' => 'Basic_Boss',
+            'url' => 'Basic_Boss.png',
+            'name' => 'Boss',
             'life' => '10000',
             'armor' => '0',
             'damage' => '1000',
@@ -76,7 +80,8 @@ class MonsterTableSeeder extends Seeder
         ]);
 
         DB::table('monsters')->insert([
-            'name' => 'Healing_Orb',
+            'url' => 'Healing_Orb.png',
+            'name' => 'Totem de soin',
             'life' => '100',
             'armor' => '0',
             'damage' => '0',

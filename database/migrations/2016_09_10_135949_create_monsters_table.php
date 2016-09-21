@@ -14,6 +14,7 @@ class CreateMonstersTable extends Migration
     {
         Schema::create('monsters', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('url');
             $table->string('name');
             $table->bigInteger('life');
             $table->bigInteger('armor');
