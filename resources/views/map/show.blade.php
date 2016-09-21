@@ -30,7 +30,11 @@
                 @endif
 
                 @if($items[$i]>0)
-                    <img class="object" src="{{ asset('asset/img/equipements/'.$map->getItem($items[$i])->url) }}">
+                    @if($items[$i] == 1)
+                        <img class="object" data-toggle="tooltip" src="{{ asset('asset/img/equipements/'.$map->getItem($items[$i])->url) }}" title="Restaure la santé à 100%">
+                    @else
+                        <img class="object" data-toggle="tooltip" src="{{ asset('asset/img/equipements/'.$map->getItem($items[$i])->url) }}" title="Restaure l'énergie à 100%">
+                    @endif
                 @endif
 
 
