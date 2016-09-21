@@ -1,0 +1,200 @@
+//
+// Variables
+// --------------------------------------------------
+
+
+// Global values
+// --------------------------------------------------
+
+@base-color:         #647AAB;
+
+//
+//## Gray and brand colors for use across Bootstrap.
+@gray-darker:            lighten(#000, 13.5%); // #222
+@gray-dark:              lighten(#000, 20%);   // #333
+@gray:                   lighten(#000, 33.5%); // #555
+@gray-light:             lighten(#000, 60%);   // #999
+@gray-lighter:           lighten(#000, 93.5%); // #eee
+
+//== Scaffolding
+//
+// ## Settings for some of the most global styles.
+
+//** Background color for `<body>`.
+@body-admin-bg:               #e5e5e5;
+@body-bg:               #fff;
+//** Global text color on `<body>`.
+@text-color:            @gray-dark;
+
+//** Global textual link color.
+@link-color:            @base-color;
+//** Link hover color set via `darken()` function.
+@link-hover-color:      darken(@link-color, 15%);
+
+
+//** Global color for active items (e.g., navs or dropdowns).
+@component-active-color:    #fff;
+//** Global background color for active items (e.g., navs or dropdowns).
+@component-active-bg:       @base-color;
+
+//** Width of the `border` for generating carets that indicator dropdowns.
+@caret-width-base:          4px;
+//** Carets increase slightly in size for larger components.
+@caret-width-large:         5px;
+
+//== Dropdowns
+//
+//## Dropdown menu container and contents.
+
+//** Background for the dropdown menu.
+@dropdown-bg:                    #fff;
+//** Dropdown menu `border-color`.
+@dropdown-border:                rgba(0,0,0,.15);
+//** Dropdown menu `border-color` **for IE8**.
+@dropdown-fallback-border:       #ccc;
+//** Divider color for between dropdown items.
+@dropdown-divider-bg:            #e5e5e5;
+
+//** Dropdown link text color.
+@dropdown-link-color:            @gray-dark;
+//** Hover color for dropdown links.
+@dropdown-link-hover-color:      darken(@gray-dark, 5%);
+//** Hover background for dropdown links.
+@dropdown-link-hover-bg:         #f5f5f5;
+
+//** Active dropdown menu item text color.
+@dropdown-link-active-color:     @component-active-color;
+//** Active dropdown menu item background color.
+@dropdown-link-active-bg:        @component-active-bg;
+
+//** Disabled dropdown menu item background color.
+@dropdown-link-disabled-color:   @gray-light;
+
+//** Text color for headers within dropdown menus.
+@dropdown-header-color:          @gray-light;
+
+
+//== Media queries breakpoints
+//
+//## Define the breakpoints at which your layout will change, adapting to different screen sizes.
+
+// Extra small screen / phone
+@screen-xs-min:              480px;
+
+// Small screen / tablet
+@screen-sm-min:              768px;
+
+// Medium screen / desktop
+@screen-md-min:              992px;
+
+// Large screen / wide desktop
+@screen-lg-min:              1200px;
+
+// So media queries don't overlap when required, provide a maximum
+@screen-xs-max:              (@screen-sm-min - 1);
+@screen-sm-max:              (@screen-md-min - 1);
+@screen-md-max:              (@screen-lg-min - 1);
+
+//== Navbar
+//
+//##
+@navbar-bg-color:                        @base-color;
+@navbar-theme-border-color:                    darken(@navbar-bg-color, 10%);
+@navbar-theme-color:                     #777777;
+@navbar-theme-color-alt:                 #fff;
+@navbar-theme-bg:                        darken(@navbar-bg-color, 5%); //#f8f8f8;
+@navbar-theme-border:                    darken(@navbar-theme-bg, 6.5%);
+
+// Navbar links
+@navbar-theme-link-color:                @navbar-theme-color-alt;
+@navbar-theme-link-hover-color:          @navbar-theme-color-alt;
+@navbar-theme-link-hover-bg:             transparent;
+@navbar-theme-link-active-color:         @navbar-theme-color-alt;
+@navbar-theme-link-active-bg:            darken(@navbar-theme-bg, 6.5%);
+@navbar-theme-link-disabled-color:       #ccc;
+// @navbar-theme-link-disabled-bg:          transparent;
+
+// Navbar brand label
+@navbar-theme-brand-color:               @navbar-theme-link-color;
+// @navbar-theme-brand-hover-color:         darken(@navbar-theme-brand-color, 10%);
+// @navbar-theme-brand-hover-bg:            transparent;
+
+// Navbar toggle
+@navbar-theme-toggle-hover-bg:           darken(@navbar-bg-color, 10%);
+@navbar-theme-toggle-color:              @navbar-theme-color-alt;
+@navbar-theme-toggle-icon-bar-bg:        @navbar-theme-color-alt;
+@navbar-theme-toggle-border-color:       darken(@navbar-bg-color, 10%);
+
+// Navbar indicators badges
+@navbar-theme-nav-indicators-badge-color:   @navbar-theme-color-alt;
+@navbar-theme-nav-indicators-badge-bg:      #ee5f5b;
+@navbar-theme-nav-indicators-badge-shadow:  0 1px 0 rgba(8, 13, 48, 0.7);
+
+//== Sidebar
+//
+//##
+@sidebar-bg:                            #31353e;
+@sidebar-font-color:                    spin(lighten(@sidebar-bg, 57%),24); //#c4ccda;
+
+@sidebar-user-settings-border-radius:   1px;
+@sidebar-user-settings-color:           #000000;
+@sidebar-user-settings-bg:              #ffffff;
+@sidebar-user-settings-border:          #cccccc;
+@sidebar-user-settings-border2:         rgba(0, 0, 0, 0.2);
+@sidebar-user-settings-title-bg:        #f7f7f7;
+@sidebar-user-settings-title-border:    #C2C2C2;
+@sidebar-user-settings-content-color:   #777777;
+@sidebar-user-settings-content-color-hover:   #fff;
+@sidebar-user-settings-content-border:  #e6e6e6;
+@sidebar-user-settings-footer-bg:       @sidebar-user-settings-title-bg;
+@sidebar-user-settings-footer-border:   @sidebar-user-settings-title-border;
+
+@sidebar-logo-border:                   #2a2d36;
+@sidebar-logo-shadow:                   #393d46;
+@sidebar-logo-bg:                       #252831;
+@sidebar-logo-color:                    #fff;
+
+@sidebar-user-boder:                    @sidebar-logo-border;
+@sidebar-user-shadow:                   @sidebar-logo-shadow;
+
+@sidebar-search-bg:                     lighten(saturate(@sidebar-bg, 5%), 6%);
+@sidebar-search-border:                 darken(@sidebar-bg, 4%);
+
+@sidebar-menu-1st-level-color:          spin(lighten(@sidebar-bg, 57%),24);//#696d76;
+@sidebar-menu-1st-level-open-bg:        darken(@sidebar-bg, 4%);//#252831;
+@sidebar-menu-2nd-level-bg:             lighten(saturate(@sidebar-bg, 5%), 6%);//#32394b;
+@sidebar-menu-2nd-level-color:          #ffffff;
+@sidebar-menu-nth-level-color:          #ffffff;
+@sidebar-menu-nth-level-hover-bg:       lighten(@base-color, 3%);
+
+
+@sidevar-nav-indicators-color:           #000000;
+@sidevar-nav-indicators-bg:              #ffffff;
+@sidevar-nav-indicators-border:          #cccccc;
+@sidevar-nav-indicators-border2:         rgba(0, 0, 0, 0.2);
+@sidevar-nav-indicators-title-bg:        lighten(@body-admin-bg, 6%);
+@sidevar-nav-indicators-title-border:    lighten(@body-admin-bg, 2%);
+@sidevar-nav-indicators-content-color:   @sidebar-font-color;
+@sidevar-nav-indicators-content-border:  darken(@body-admin-bg, 5%);
+@sidevar-nav-indicators-footer-bg:       @sidevar-nav-indicators-title-bg;
+@sidevar-nav-indicators-footer-border:   @sidevar-nav-indicators-title-border;
+
+
+//== Pagination
+//
+//##
+@pagination-color:                     @link-color;
+@pagination-bg:                        #fff;
+@pagination-border:                    #ddd;
+
+@pagination-hover-color:               @link-hover-color;
+@pagination-hover-bg:                  @gray-lighter;
+@pagination-hover-border:              #ddd;
+
+@pagination-active-color:              #fff;
+@pagination-active-bg:                 @base-color;
+@pagination-active-border:             @base-color;
+
+@pagination-disabled-color:            @gray-light;
+@pagination-disabled-bg:               #fff;
+@pagination-disabled-border:           #ddd;
