@@ -18,6 +18,7 @@ class CreateMapsTable extends Migration
             $table->longText('tile_set');
             $table->longText('monster_set');
             $table->longText('item_set');
+            $table->longText('monster_range');
             $table->bigInteger('width');
             $table->bigInteger('height');
             $table->bigInteger('floor');

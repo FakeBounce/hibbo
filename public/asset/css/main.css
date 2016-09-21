@@ -41,14 +41,24 @@ body {
 img.monster {
     position: absolute;
     z-index: 5;
-    height: 34px;
-    width: 34px;
+    height: 32px;
+    width: 32px;
     margin-left: -2px;
 }
+img.monster_stat {
+    height: 32px;
+    width: 32px;
+}
+
 img.pj {
     position: absolute;
     z-index: 5;
-    height: 34px;
-    width: 34px;
+    height: 32px;
+    width: 32px;
     margin-left: -2px;
+}
+
+.table_stat th{
+    text-align: center;
+    padding:7px;
 }

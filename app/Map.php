@@ -15,6 +15,7 @@ class Map extends Model
         'tile_set',
         'monster_set',
         'item_set',
+        'monster_range',
         'width',
         'height',
         'floor',
@@ -23,14 +24,13 @@ class Map extends Model
         'updated_at'
     ];
 
-    public function getMap_tile($val){
-
-        $map_tile = Map_tile::find($val);
+    public function getMap_tile($id){
+        $map_tile = Map_tile::where('id', $id)->first();
 
         return $map_tile;
     }
     public function getMonster($id){
-        $monster = Monster::find($id);
+        $monster = Monster::where('id', $id)->first();
         return $monster;
     }
 }
