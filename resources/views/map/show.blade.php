@@ -17,7 +17,6 @@
             Stats
         </div>
         <div class="col-xs-8 text-center">
-
             @foreach($monsters as $monster)
                 @if($monster > 0)
                     <img class="monster" src="{{ asset('asset/img/monsters/'.$map->getMonster($monster)['name'].'.png') }}" style="margin-top:{{$margtop}}px;margin-left:{{$margleft}}px;">
@@ -42,7 +41,6 @@
                 <?php
                 $i=0;
                 ?>
-
             @foreach($map_tiles as $map_tile)
                 @if($i%$map->width == 0)
                     <div class="row"><div class="col-xs-12 nomarg">

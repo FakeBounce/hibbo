@@ -44,6 +44,10 @@
             </footer>
         </div>
     </div>
+        </div>
+    </div>
+    <footer></footer>
+>>>>>>> 2808bb4
 
 <script src="{{ asset('asset/js/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('asset/js/bootstrap.min.js') }}"></script>

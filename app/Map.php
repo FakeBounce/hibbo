@@ -29,7 +29,6 @@ class Map extends Model
 
         return $map_tile;
     }
-
     public function getMonster($id){
         $monster = Monster::find($id);
         return $monster;
