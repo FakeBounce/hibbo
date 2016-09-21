@@ -8,8 +8,10 @@
     </div>
     <div class ="row">
         <div class="col-xs-3 text-center">
-            <img class="img-responsive" src="{{ asset('asset/img/Warrior.png') }}">
-            <h2>Guerrier</h2>
+            <a href="{{ route('map.show', ['map' => 1]) }}">
+                <img class="img-responsive" src="{{ asset('asset/img/Warrior.png') }}">
+                <h2>Guerrier</h2>
+            </a>
         </div>
     </div>
 @endsection

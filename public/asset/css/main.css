@@ -62,3 +62,7 @@ img.pj {
     text-align: center;
     padding:7px;
 }
+
+.tooltip-inner {
+    max-width: 500px;
+}
