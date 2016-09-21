@@ -36,7 +36,7 @@
                     <div class="col-xs-12 text-center">
                         <h3>
                             <a href="mailto:benjamin.romanelli@neuf.fr">
-                                Dites moi ce que vous en pensez !
+                                <!-- Dites moi ce que vous en pensez ! -->
                             </a>
                         </h3>
                     </div>
