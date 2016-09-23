@@ -15,6 +15,7 @@ class CreateMapTilesTable extends Migration
         Schema::create('map_tiles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('url');
+            $table->string('type');
             $table->boolean('break');
             $table->string('action');
             $table->timestamps();

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Map_tile;
 use App\Monster;
 use App\Item;
+use App\Classe;
 
 class Map extends Model
 {
@@ -38,5 +39,10 @@ class Map extends Model
     public function getItem($id){
         $item = Item::where('id', $id)->first();
         return $item;
+    }
+
+    public function getClasse($id){
+        $classe = Classe::where('id', $id)->first();
+        return $classe;
     }
 }

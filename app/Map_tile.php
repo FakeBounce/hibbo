@@ -8,9 +8,10 @@ class Map_tile extends Model
 {
     protected $fillable = [
         'id',
-        'name',
-        'tile_set',
-        'description',
+        'url',
+        'type',
+        'break',
+        'action',
         'created_at',
         'updated_at'
     ];
