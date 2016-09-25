@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b663c92-7b27-40a7-b810-8ee76ec67493" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/seeds/MapTableSeeder.php" afterPath="$PROJECT_DIR$/database/seeds/MapTableSeeder.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/asset/css/main.css" afterPath="$PROJECT_DIR$/public/asset/css/main.css" />
     </list>
     <ignored path="hibbo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -57,7 +57,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MapTableSeeder.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MapTableSeeder.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/database/seeds/MapTableSeeder.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="272">
@@ -104,11 +104,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/asset/css/main.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+            <state relative-caret-position="527">
+              <caret line="52" column="1" selection-start-line="52" selection-start-column="1" selection-end-line="52" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -205,11 +205,11 @@
         <option value="$PROJECT_DIR$/database/seeds/ClasseTableSeeder.php" />
         <option value="$PROJECT_DIR$/app/Map.php" />
         <option value="$PROJECT_DIR$/composer.json" />
-        <option value="$PROJECT_DIR$/public/asset/css/main.css" />
         <option value="$PROJECT_DIR$/app/Http/routes.php" />
         <option value="$PROJECT_DIR$/resources/views/map/show.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/MapController.php" />
         <option value="$PROJECT_DIR$/database/seeds/MapTableSeeder.php" />
+        <option value="$PROJECT_DIR$/public/asset/css/main.css" />
       </list>
     </option>
   </component>
@@ -616,12 +616,12 @@
       <workItem from="1474479056640" duration="3498000" />
       <workItem from="1474488531390" duration="5298000" />
       <workItem from="1474618771573" duration="623000" />
-      <workItem from="1474669784511" duration="45952000" />
+      <workItem from="1474669784511" duration="46172000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="92295000" />
+    <option name="totallyTimeSpent" value="92515000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -975,14 +975,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/asset/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -1060,6 +1052,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="16" column="249" selection-start-line="16" selection-start-column="249" selection-end-line="16" selection-end-column="249" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/asset/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="52" column="1" selection-start-line="52" selection-start-column="1" selection-end-line="52" selection-end-column="1" />
           <folding />
         </state>
       </provider>
