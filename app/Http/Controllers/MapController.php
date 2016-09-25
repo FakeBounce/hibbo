@@ -72,7 +72,7 @@ class MapController extends Controller
         $monster_stats = session()->get('monster_stats');
         $pj_stats = session()->get('pj_stats');
         $monster_mv = array();
-$test =0;
+
         foreach($monster_stats as $id=>$m_stats)
         {
             if($m_stats != null)
@@ -148,6 +148,11 @@ $test =0;
             }
         }
 
+        if($pj_stats[0]->life <=0)
+        {
+            session()->flush();
+            return redirect()->route('map.show', ['map' => $map->id]);
+        }
         $pj_actions = $map->getClasse(1);
         $pj_stats[0]->mv = $pj_actions->mv;
         $pj_stats[0]->action = $pj_actions->action;
@@ -161,7 +166,6 @@ $test =0;
             'monster_tab' => $monster_tab,
             'monster_stats' => $monster_stats,
             'monster_mv' => $monster_mv,
-            'test' => $test,
         ));
     }
 
