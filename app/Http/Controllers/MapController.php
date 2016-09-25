@@ -63,6 +63,108 @@ class MapController extends Controller
         ]);
     }
 
+    public function turn(Request $request,Map $map)
+    {
+
+        $map_tab = session()->get('map_tab');
+        $monster_tab = session()->get('monster_tab');
+        //$item_tab = session()->get('item_tab');
+        $monster_stats = session()->get('monster_stats');
+        $pj_stats = session()->get('pj_stats');
+        $monster_mv = array();
+$test =0;
+        foreach($monster_stats as $id=>$m_stats)
+        {
+            if($m_stats != null)
+            {
+                $row = $m_stats['row'];
+                $col = $m_stats['col'];
+
+                $rg_row = $row - $pj_stats[0]['row'];
+                $rg_col = $col - $pj_stats[0]['col'];
+                $rg= abs($rg_row)+abs($rg_col);
+
+                if($rg<=($m_stats->mv + $m_stats->range))
+                {
+                    if ($rg <= $m_stats->range)
+                    {
+                        $monster_mv[$id] = 'hit';
+                        $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
+                    }
+                    else
+                    {
+                        if ($rg_row == 0)
+                        {
+                            if ($rg_col > 0)
+                            {
+                                if ($map_tab[$m_stats['row']][$m_stats['col'] - 1]->type == 'ground' && is_null($monster_tab[$m_stats['row']][$m_stats['col'] - 1]))
+                                {
+                                    $monster_tab[$m_stats['row']][$m_stats['col'] - 1] = $id;
+                                    $monster_tab[$m_stats['row']][$m_stats['col']] = null;
+                                    $m_stats['col'] = $m_stats['col'] - 1;
+                                    $monster_mv[$id] = "l,hit";
+                                    $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
+                                }
+                            }
+                            else if ($rg_col < 0)
+                            {
+                                if ($map_tab[$m_stats['row']][$m_stats['col'] + 1]->type == 'ground' && is_null($monster_tab[$m_stats['row']][$m_stats['col'] + 1]))
+                                {
+                                    $monster_tab[$m_stats['row']][$m_stats['col'] + 1] = $id;
+                                    $monster_tab[$m_stats['row']][$m_stats['col']] = null;
+                                    $m_stats['col'] = $m_stats['col'] + 1;
+                                    $monster_mv[$id] = "r,hit";
+                                    $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
+                                }
+                            }
+                        }
+                        else if ($rg_col == 0)
+                        {
+                            if ($rg_col > 0)
+                            {
+                                if ($map_tab[$m_stats['row'] - 1][$m_stats['col']]->type == 'ground' && is_null($monster_tab[$m_stats['row'] - 1][$m_stats['col']]))
+                                {
+                                    $monster_tab[$m_stats['row'] - 1][$m_stats['col']] = $id;
+                                    $monster_tab[$m_stats['row']][$m_stats['col']] = null;
+                                    $m_stats['row'] = $m_stats['row'] - 1;
+                                    $monster_mv[$id] = "u,hit";
+                                    $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
+                                }
+                            }
+                            else if ($rg_col < 0)
+                            {
+                                if ($map_tab[$m_stats['row'] + 1][$m_stats['col']]->type == 'ground' && is_null($monster_tab[$m_stats['row'] + 1][$m_stats['col']]))
+                                {
+                                    $monster_tab[$m_stats['row'] + 1][$m_stats['col']] = $id;
+                                    $monster_tab[$m_stats['row']][$m_stats['col']] = null;
+                                    $m_stats['row'] = $m_stats['row'] + 1;
+                                    $monster_mv[$id] = "d,hit";
+                                    $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $pj_actions = $map->getClasse(1);
+        $pj_stats[0]->mv = $pj_actions->mv;
+        $pj_stats[0]->action = $pj_actions->action;
+        session()->put('pj_stats', $pj_stats);
+        session()->put('monster_tab', $monster_tab);
+        session()->put('monster_stats', $monster_stats);
+
+        return \Response::json(array(
+            'success' => true,
+            'pj_stats' => $pj_stats,
+            'monster_tab' => $monster_tab,
+            'monster_stats' => $monster_stats,
+            'monster_mv' => $monster_mv,
+            'test' => $test,
+        ));
+    }
+
     public function action(Request $request, Map $map)
     {
         $data = $request->all();
@@ -89,8 +191,8 @@ class MapController extends Controller
                 {
                     if($monster_tab[$row][$col] == null)
                     {
-                        $mv_row = $row - $pj_stats['row'];
-                        $mv_col = $col - $pj_stats['col'];
+                        $mv_row = $row - $pj_stats[0]['row'];
+                        $mv_col = $col - $pj_stats[0]['col'];
                         $mv = abs($mv_row)+abs($mv_col);
                         if($mv>=0 && ($mv<=(($pj_stats[0]->mv))))
                         {
@@ -205,9 +307,9 @@ class MapController extends Controller
             }
             if($movable == "ok")
             {
-                $monster_tab[$pj_stats['row']][$pj_stats['col']]=null;
-                $pj_stats['row'] = $row;
-                $pj_stats['col'] = $col;
+                $monster_tab[$pj_stats[0]['row']][$pj_stats[0]['col']]=null;
+                $pj_stats[0]['row'] = $row;
+                $pj_stats[0]['col'] = $col;
                 $pj_stats[0]->mv = $pj_stats[0]->mv - $mv;
                 session()->put('pj_stats', $pj_stats);
             }
@@ -219,8 +321,8 @@ class MapController extends Controller
             $row = intval($monster_stats[$id]['row']);
             $col = intval($monster_stats[$id]['col']);
 
-            $rg_row = $row - $pj_stats['row'];
-            $rg_col = $col - $pj_stats['col'];
+            $rg_row = $row - $pj_stats[0]['row'];
+            $rg_col = $col - $pj_stats[0]['col'];
             $rg= abs($rg_row)+abs($rg_col);
             if($rg<=$pj_stats[0]->range)
             {

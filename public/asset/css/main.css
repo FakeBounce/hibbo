@@ -44,6 +44,15 @@ img.monster {
     height: 32px;
     width: 32px;
 }
+
+.monster:hover {
+    cursor:pointer;
+}
+.ground:hover {
+    cursor:pointer;
+}
+
+
 img.monster_stat {
     height: 32px;
     width: 32px;

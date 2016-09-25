@@ -27,8 +27,8 @@
                         if($monsters[$i] == -1)
                         {
                             $pj_stats[0] = $map->getClasse(1);
-                            $pj_stats['row'] = floor($i/$map->width);
-                            $pj_stats['col'] = $i%$map->width;
+                            $pj_stats[0]['row'] = floor($i/$map->width);
+                            $pj_stats[0]['col'] = $i%$map->width;
                         }
                     }
                     if(!(session()->has('monster_tab')) || !(session()->has('monster_stats')))
@@ -53,7 +53,7 @@
                         <div class="col-xs-12 nomarg">
                 @endif
 
-                <img class="map_tile" id="{{ $i }}" src="{{ asset('asset/img/'. $map_tab[$row][$i%$map->width]->url) }}">
+                <img class="map_tile {{$map_tab[$row][$i%$map->width]->type}}" id="{{ $i }}" src="{{ asset('asset/img/'. $map_tab[$row][$i%$map->width]->url) }}">
 
                 @if($i%$map->width == $map->width-1)
                         </div>
@@ -201,7 +201,7 @@
                          </table>
                          ">
                     @endif
-                    @if(($row == $pj_stats['row']) && ($i%$map->width == $pj_stats['col']))
+                    @if(($row == $pj_stats[0]['row']) && ($i%$map->width == $pj_stats[0]['col']))
                         <img class="pj" id="pj" data-toggle="tooltip" src="{{ asset('asset/img/classes/gface.png') }}" style="margin-left:-36px;"
                              title="
                         <table class='table_stat text-center'>
@@ -268,7 +268,8 @@
                 if(!(session()->has('pj_stats')))
                     session()->put('pj_stats', $pj_stats);
             @endphp
-            <div class="pull-right"><a class="btn btn-primary" href="{{ route('map.reset', ['map' => 1]) }}">Reset</a></div>
+            <div class="pull-right"><a class="btn btn-primary" href="{{ route('map.reset', ['map' => $map]) }}">Reset</a></div>
+            <div class="text-center"><a class="btn btn-primary end_turn">Fin de tour</a></div>
         </div>
     </div>
 @endsection
@@ -320,6 +321,7 @@
                             }
                             if(value == "dead")
                             {
+                                $('#m_'+key).tooltip('hide');
                                 $('#m_'+key).fadeOut('slow', function(){ $('#m_'+key).remove(); });
 
                             }
@@ -504,18 +506,20 @@
                 cont++;
                 if(sprite == 0)
                     sprite = 1;
-                else
+                else if(sprite == 1)
                     sprite = 0;
 
                 if(cont == parseInt(mv)*17){
-                    if(direction == "r")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
-                    if(direction == "l")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
-                    if(direction == "u")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
-                    if(direction == "d")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
+                    if(id == 'pj'){
+                        if(direction == "r")
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
+                        if(direction == "l")
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
+                        if(direction == "u")
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
+                        if(direction == "d")
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
+                    }
                     clearInterval(animation);
                 }
             }
@@ -524,7 +528,11 @@
         function attack(id,id2,type,direction)
         {
             var cont = 0;
-            var sprite = 0;
+
+            if(type == 'pj')
+                var sprite = 0;
+            else
+                var sprite = 2;
             if(direction == "r" || direction == "l")
             {
                 var marg = $('#'+id).css("margin-left").replace("px", "");
@@ -546,7 +554,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite2.png') }}");
                     }
@@ -559,7 +567,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche2.png') }}");
                     }
@@ -572,7 +580,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdos1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdos2.png') }}");
                     }
@@ -585,7 +593,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gface1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gface2.png') }}");
                     }
@@ -593,18 +601,20 @@
                 cont++;
                 if(sprite == 0)
                     sprite = 1;
-                else
+                else if(sprite == 1)
                     sprite = 0;
 
                 if(cont == 5){
-                    if(direction == "r")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
-                    if(direction == "l")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
-                    if(direction == "u")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
-                    if(direction == "d")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
+                    if(id == 'pj'){
+                        if(direction == "r")
+                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
+                        if(direction == "l")
+                        $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
+                        if(direction == "u")
+                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
+                        if(direction == "d")
+                        $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
+                    }
                     cont = 0;
                     clearInterval(animation);
                     animation = setInterval( moveSprite_Attack2,100);
@@ -617,7 +627,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdroitea1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdroitea2.png') }}");
                     }
@@ -628,7 +638,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/ggauchea1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/ggauchea2.png') }}");
                     }
@@ -639,7 +649,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdosa1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdosa2.png') }}");
                     }
@@ -650,7 +660,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gfacea1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gfacea2.png') }}");
                     }
@@ -658,18 +668,21 @@
                 cont++;
                 if(sprite == 0)
                     sprite = 1;
-                else
+                else if(sprite == 1)
                     sprite = 0;
 
                 if(cont == 2){
-                    if(direction == "r")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
-                    if(direction == "l")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
-                    if(direction == "u")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
-                    if(direction == "d")
-                    $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
+                    if(id == 'pj')
+                    {
+                        if(direction == "r")
+                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
+                        if(direction == "l")
+                        $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
+                        if(direction == "u")
+                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
+                        if(direction == "d")
+                        $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
+                    }
                     cont = 0;
                     clearInterval(animation);
                     animation = setInterval( moveSprite_Attack3,100);
@@ -699,10 +712,6 @@
                     $('#'+id2).css({ "margin-top": parseInt(marg2)+"px" });
                 }
                 cont++;
-                if(sprite == 0)
-                    sprite = 1;
-                else
-                    sprite = 0;
 
                 if(cont == 3){
                     cont = 0;
@@ -733,11 +742,6 @@
                     $('#'+id2).css({ "margin-top": parseInt(marg2)+"px" });
                 }
                 cont++;
-                if(sprite == 0)
-                    sprite = 1;
-                else
-                    sprite = 0;
-
                 if(cont == 3){
                     cont = 0;
                     clearInterval(animation);
@@ -752,7 +756,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdroitea1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
                     }
@@ -763,7 +767,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/ggauchea1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
                     }
@@ -774,7 +778,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdosa1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
                     }
@@ -785,7 +789,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gfacea1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
                     }
@@ -793,18 +797,20 @@
                 cont++;
                 if(sprite == 0)
                     sprite = 1;
-                else
+                else if(sprite == 1)
                     sprite = 0;
 
                 if(cont == 2){
-                    if(direction == "r")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
-                    if(direction == "l")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
-                    if(direction == "u")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
-                    if(direction == "d")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
+                    if(id == 'pj') {
+                        if (direction == "r")
+                            $('#' + id).attr("src", "{{ asset('asset/img/classes/gdroite.png') }}");
+                        if (direction == "l")
+                            $('#' + id).attr("src", "{{ asset('asset/img/classes/ggauche.png') }}");
+                        if (direction == "u")
+                            $('#' + id).attr("src", "{{ asset('asset/img/classes/gdos.png') }}");
+                        if (direction == "d")
+                            $('#' + id).attr("src", "{{ asset('asset/img/classes/gface.png') }}");
+                    }
                     cont = 0;
                     clearInterval(animation);
                     animation = setInterval( moveSprite_Attack6,50);
@@ -821,7 +827,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite2.png') }}");
                     }
@@ -834,7 +840,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche2.png') }}");
                     }
@@ -847,7 +853,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdos1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gdos2.png') }}");
                     }
@@ -860,7 +866,7 @@
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gface1.png') }}");
                     }
-                    else
+                    else if(sprite == 1)
                     {
                         $('#'+id).attr("src","{{ asset('asset/img/classes/gface2.png') }}");
                     }
@@ -868,23 +874,112 @@
                 cont++;
                 if(sprite == 0)
                     sprite = 1;
-                else
+                else if(sprite == 1)
                     sprite = 0;
 
                 if(cont == 5){
-                    if(direction == "r")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
-                    if(direction == "l")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
-                    if(direction == "u")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
-                    if(direction == "d")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
+                    if(id == 'pj')
+                    {
+                        if(direction == "r")
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
+                        if(direction == "l")
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
+                        if(direction == "u")
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
+                        if(direction == "d")
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
+                    }
                     cont = 0;
                     clearInterval(animation);
                 }
             }
         }
+
+        function ia(id,monster_mv,direction){
+            var animate;
+            var tab_mv = monster_mv.split(",");
+            $.each( tab_mv, function( key2, value2 ) {
+                if(value2 == "hit")
+                {
+                    animate = setInterval( attack(id,'pj','monster',direction),200);
+                }
+                else if(value2 =="l" || value2 =="r"|| value2 =="u"|| value2 =="d")
+                {
+                    var marg = $('#'+id).css("margin-left").replace("px", "");
+                    var marg2 = $('#'+id).css("margin-top").replace("px", "");
+                    if(value2 =="l")
+                    {
+                        $('#'+id).css({ "margin-left": (parseInt(marg)-34)+"px" });
+                    }
+                    if(value2 =="r")
+                    {
+                        $('#'+id).css({ "margin-left": (parseInt(marg)+34)+"px" });
+                    }
+                    if(value2 =="u")
+                    {
+                        $('#'+id).css({ "margin-top": (parseInt(marg2)-34)+"px" });
+                    }
+                    if(value2 =="d")
+                    {
+                        $('#'+id).css({ "margin-top": (parseInt(marg2)+34)+"px" });
+                    }
+                }
+            });
+            clearInterval(animate);
+        }
+
+        $('.end_turn').click(function(){
+            var fdata = {turn:"end"};
+            $.ajax({
+                url:"{{ route('map.turn',['map'=>$map]) }}",
+                type: "post",
+                dataType: 'json',
+                data: fdata,
+                success: function(data) {
+                    console.log(data);
+                    update_tooltip("pj",data['pj_stats'][0],"pj");
+                    $.each( data['monster_mv'], function( key1, value1 ) {
+
+                        var direction = "";
+                        if(data['monster_stats'][key1]['row']<data['pj_stats'][0]['row'])
+                        {
+                            direction = "d";
+                        }
+                        else if(data['monster_stats'][key1]['row']>data['pj_stats'][0]['row'])
+                        {
+                            direction = "u";
+                        }
+                        else if(data['monster_stats'][key1]['col']<data['pj_stats'][0]['col'])
+                        {
+                            direction = "r";
+                        }
+                        else if(data['monster_stats'][key1]['col']>data['pj_stats'][0]['col'])
+                        {
+                            direction = "l";
+                        }
+                        var id = 'm_'+key1;
+                        $('#'+id).tooltip('hide');
+                        $('#pj').tooltip('hide');
+                        //var tab_mv = value1.split(",");
+                        ia(id,value1,direction);
+                        /*$.each( tab_mv, function( key2, value2 ) {
+                            if(value2 == "hit")
+                            {
+                                ia(id,'pj',0,'monster',direction);
+                            }
+                            else if(value2 =="l" || value2 =="r"|| value2 =="u"|| value2 =="d")
+                            {
+                                ia(id,0,1,'monster',direction);
+                            }
+                        });*/
+                    });
+                },
+                error:function(jqXHR) {
+                    console.log('Erreur');
+                    console.log(jqXHR.responseText);
+                }
+            });
+        });
 
         function getFirstKey( data ) {
             for (elem in data )
