@@ -504,10 +504,13 @@
                     }
                 }
                 cont++;
-                if(sprite == 0)
-                    sprite = 1;
-                else if(sprite == 1)
-                    sprite = 0;
+                if(cont ==8)
+                {
+                    if(sprite == 0)
+                        sprite = 1;
+                    else if(sprite == 1)
+                        sprite = 0;
+                }
 
                 if(cont == parseInt(mv)*17){
                     if(id == 'pj'){
@@ -599,10 +602,13 @@
                     }
                 }
                 cont++;
-                if(sprite == 0)
-                    sprite = 1;
-                else if(sprite == 1)
-                    sprite = 0;
+                if(cont ==8)
+                {
+                    if(sprite == 0)
+                        sprite = 1;
+                    else if(sprite == 1)
+                        sprite = 0;
+                }
 
                 if(cont == 5){
                     if(id == 'pj'){
@@ -666,11 +672,13 @@
                     }
                 }
                 cont++;
-                if(sprite == 0)
-                    sprite = 1;
-                else if(sprite == 1)
-                    sprite = 0;
-
+                if(cont ==8)
+                {
+                    if(sprite == 0)
+                        sprite = 1;
+                    else if(sprite == 1)
+                        sprite = 0;
+                }
                 if(cont == 2){
                     if(id == 'pj')
                     {
@@ -795,10 +803,13 @@
                     }
                 }
                 cont++;
-                if(sprite == 0)
-                    sprite = 1;
-                else if(sprite == 1)
-                    sprite = 0;
+                if(cont ==8)
+                {
+                    if(sprite == 0)
+                        sprite = 1;
+                    else if(sprite == 1)
+                        sprite = 0;
+                }
 
                 if(cont == 2){
                     if(id == 'pj') {
@@ -872,10 +883,13 @@
                     }
                 }
                 cont++;
-                if(sprite == 0)
-                    sprite = 1;
-                else if(sprite == 1)
-                    sprite = 0;
+                if(cont ==8)
+                {
+                    if(sprite == 0)
+                        sprite = 1;
+                    else if(sprite == 1)
+                        sprite = 0;
+                }
 
                 if(cont == 5){
                     if(id == 'pj')
