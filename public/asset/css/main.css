@@ -43,7 +43,6 @@ img.monster {
     z-index: 5;
     height: 32px;
     width: 32px;
-    margin-left: -2px;
 }
 img.monster_stat {
     height: 32px;
@@ -55,7 +54,6 @@ img.pj {
     z-index: 5;
     height: 32px;
     width: 32px;
-    margin-left: -2px;
 }
 
 .table_stat th{
