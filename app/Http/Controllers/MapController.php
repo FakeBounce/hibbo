@@ -182,9 +182,9 @@ class MapController extends Controller
                                 if($mv_col<0)
                                     $direction = "l";
                                 if($mv_row>0)
-                                    $direction = "u";
-                                if($mv_row<0)
                                     $direction = "d";
+                                if($mv_row<0)
+                                    $direction = "u";
                                 $movable = 'ok';
                             }
                         }
@@ -226,6 +226,15 @@ class MapController extends Controller
             {
                 if($pj_stats[0]->action>=10)
                 {
+
+                    if($rg_col>0)
+                        $direction = "r";
+                    if($rg_col<0)
+                        $direction = "l";
+                    if($rg_row>0)
+                        $direction = "d";
+                    if($rg_row<0)
+                        $direction = "u";
                     $movable="attack";
                     $pj_stats[0]->action = $pj_stats[0]->action - 10;
                     $monster_stats[$monster_tab[$row][$col]]->life = $monster_stats[$monster_tab[$row][$col]]->life - $pj_stats[0]->damage;
