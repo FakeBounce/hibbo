@@ -504,7 +504,7 @@
                     }
                 }
                 cont++;
-                if(cont ==8)
+                if(cont%8 == 0)
                 {
                     if(sprite == 0)
                         sprite = 1;
@@ -602,7 +602,7 @@
                     }
                 }
                 cont++;
-                if(cont ==8)
+                if(cont%8 == 0)
                 {
                     if(sprite == 0)
                         sprite = 1;
@@ -672,7 +672,7 @@
                     }
                 }
                 cont++;
-                if(cont ==8)
+                if(cont%8 == 0)
                 {
                     if(sprite == 0)
                         sprite = 1;
@@ -803,7 +803,7 @@
                     }
                 }
                 cont++;
-                if(cont ==8)
+                if(cont%8 == 0)
                 {
                     if(sprite == 0)
                         sprite = 1;
@@ -883,7 +883,7 @@
                     }
                 }
                 cont++;
-                if(cont ==8)
+                if(cont%8 == 0)
                 {
                     if(sprite == 0)
                         sprite = 1;

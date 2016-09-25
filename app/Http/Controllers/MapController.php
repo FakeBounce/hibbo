@@ -120,7 +120,7 @@ class MapController extends Controller
                         }
                         else if ($rg_col == 0)
                         {
-                            if ($rg_col > 0)
+                            if ($rg_row > 0)
                             {
                                 if ($map_tab[$m_stats['row'] - 1][$m_stats['col']]->type == 'ground' && is_null($monster_tab[$m_stats['row'] - 1][$m_stats['col']]))
                                 {
@@ -131,7 +131,7 @@ class MapController extends Controller
                                     $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
                                 }
                             }
-                            else if ($rg_col < 0)
+                            else if ($rg_row < 0)
                             {
                                 if ($map_tab[$m_stats['row'] + 1][$m_stats['col']]->type == 'ground' && is_null($monster_tab[$m_stats['row'] + 1][$m_stats['col']]))
                                 {
