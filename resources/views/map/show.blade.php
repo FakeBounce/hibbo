@@ -5,13 +5,74 @@
     @php
         $row = 0;
         $monster_id = 1;
+        $pj_stats[0] = $map->getClasse(1);
     @endphp
     <div class ="row">
         <div class="col-xs-12 text-center margup">
         </div>
     </div>
     <div class ="row">
-        <div class="col-xs-12 text-center">
+        <div class="left_pannel col-xs-4 text-center">
+            <h3>Statistiques et objets</h3>
+            <br>
+            <h4>Votre personnage :</h4>
+            <div class="char_stats">
+                <table class='table_stat text-center'>
+                    <tbody>
+                    <tr>
+                        <th> </th>
+                        <th>Hp</th>
+                        <th>Mana</th>
+                        <th>Ar</th>
+                        <th>Dmg</th>
+                        <th>Range</th>
+                        <th>Mv</th>
+                        <th>DD</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img class='monster_stat' src='{{ asset('asset/img/classes/gface.png') }}'>
+                        </td>
+                        <td>
+                            {{ $pj_stats[0]->life }}
+                        </td>
+                        <td>
+                            {{ $pj_stats[0]->mana }}
+                        </td>
+                        <td>
+                            {{ $pj_stats[0]->armor }}
+                        </td>
+                        <td>
+                            {{ $pj_stats[0]->damage }}
+                        </td>
+                        <td>
+                            {{ $pj_stats[0]->range }}
+                        </td>
+                        <td>
+                            {{ $pj_stats[0]->mv }}
+                        </td>
+                        <td>
+                            {{ $pj_stats[0]->flat_dd }}
+                        </td>
+                        <td>
+                            {{ $pj_stats[0]->action }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>Vos objets :</h4>
+            <div class="char_items">
+
+                <img class="left_pannel_object nred_potion" id="item_1" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nredpotion.png') }}" title="Restaure la santé à 100%">
+                <img class="left_pannel_object nred_potion" id="item_2" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nredpotion.png') }}" title="Restaure la santé à 100%">
+                <img class="left_pannel_object nblue_potion" id="item_3" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nbluepotion.png') }}" title="Restaure le mana à 100%">
+                <img class="left_pannel_object nblue_potion" id="item_4" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nbluepotion.png') }}" title="Restaure le mana à 100%">
+            </div>
+        </div>
+        <div class="col-xs-8 text-center">
             <h2>{{ $map->name }}</h2>
             @for($i=0;$i<count($map_tiles);$i++)
 
@@ -26,7 +87,6 @@
                     {
                         if($monsters[$i] == -1)
                         {
-                            $pj_stats[0] = $map->getClasse(1);
                             $pj_stats[0]['row'] = floor($i/$map->width);
                             $pj_stats[0]['col'] = $i%$map->width;
                         }
@@ -51,27 +111,27 @@
                 @if($i%$map->width == 0)
                     <div class="row">
                         <div class="col-xs-12 nomarg">
-                @endif
+                            @endif
 
-                <img class="map_tile {{$map_tab[$row][$i%$map->width]->type}}" id="{{ $i }}" src="{{ asset('asset/img/'. $map_tab[$row][$i%$map->width]->url) }}">
+                            <img class="map_tile {{$map_tab[$row][$i%$map->width]->type}}" id="{{ $i }}" src="{{ asset('asset/img/'. $map_tab[$row][$i%$map->width]->url) }}">
 
-                @if($i%$map->width == $map->width-1)
+                            @if($i%$map->width == $map->width-1)
                         </div>
                     </div>
                 @endif
 
                 @if($items[$i]>0)
                     @if($items[$i] == 1)
-                        <img class="object" data-toggle="tooltip" src="{{ asset('asset/img/equipements/'.$item_tab[$row][$i%$map->width]->url) }}" title="Restaure la santé à 100%">
+                        <img class="object o_{{$row}}_{{$i%$map->width}}" data-toggle="tooltip" src="{{ asset('asset/img/equipements/'.$item_tab[$row][$i%$map->width]->url) }}" title="Restaure la santé à 100%">
                     @else
-                        <img class="object" data-toggle="tooltip" src="{{ asset('asset/img/equipements/'.$item_tab[$row][$i%$map->width]->url) }}" title="Restaure l'énergie à 100%">
+                        <img class="object o_{{$row}}_{{$i%$map->width}}" data-toggle="tooltip" src="{{ asset('asset/img/equipements/'.$item_tab[$row][$i%$map->width]->url) }}" title="Restaure l'énergie à 100%">
                     @endif
                 @endif
 
                 @if(!(session()->has('monster_tab')) || !(session()->has('monster_stats')))
                     @if($monsters[$i] > 0)
                         <img class="monster stat_tooltip" id="m_{{$monster_tab[$row][$i%$map->width]}}" data-toggle="tooltip" src="{{ asset('asset/img/monsters/'.$monster_stats[$monster_tab[$row][$i%$map->width]]->url) }}" style="margin-left:-36px;"
-                        title="
+                             title="
                             <table class='table_stat text-center'>
                                 <tbody>
                                     <tr>
@@ -89,26 +149,26 @@
                                         </td>
                                         <td>
                                             {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->life }}
-                                        </td>
-                                        <td>
-                                            {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->armor }}
-                                        </td>
-                                        <td>
-                                            {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->damage }}
-                                        </td>
-                                        <td>
-                                            {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->range }}
-                                        </td>
-                                        <td>
-                                            {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->mv }}
-                                        </td>
-                                        <td>
-                                            {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->dr }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            ">
+                                     </td>
+                                     <td>
+                                         {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->armor }}
+                                     </td>
+                                     <td>
+                                         {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->damage }}
+                                     </td>
+                                     <td>
+                                         {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->range }}
+                                     </td>
+                                     <td>
+                                         {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->mv }}
+                                     </td>
+                                     <td>
+                                         {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->dr }}
+                                     </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                         ">
                     @endif
                     @if($monsters[$i] == -1)
                         <img class="pj" id="pj" data-toggle="tooltip" src="{{ asset('asset/img/classes/gface.png') }}" style="margin-left:-36px;"
@@ -132,32 +192,32 @@
                                         </td>
                                         <td>
                                             {{ $pj_stats[0]->life }}
-                                </td>
-                                <td>
-                                    {{ $pj_stats[0]->mana }}
-                                </td>
-                                <td>
-                                    {{ $pj_stats[0]->armor }}
-                                </td>
-                                <td>
-                                    {{ $pj_stats[0]->damage }}
-                                </td>
-                                <td>
-                                    {{ $pj_stats[0]->range }}
-                                </td>
-                                <td>
-                                    {{ $pj_stats[0]->mv }}
-                                </td>
-                                <td>
-                                    {{ $pj_stats[0]->flat_dd }}
-                                </td>
-                                <td>
-                                    {{ $pj_stats[0]->action }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    ">
+                                     </td>
+                                     <td>
+                                         {{ $pj_stats[0]->mana }}
+                                     </td>
+                                     <td>
+                                         {{ $pj_stats[0]->armor }}
+                                     </td>
+                                     <td>
+                                         {{ $pj_stats[0]->damage }}
+                                     </td>
+                                     <td>
+                                         {{ $pj_stats[0]->range }}
+                                     </td>
+                                     <td>
+                                         {{ $pj_stats[0]->mv }}
+                                     </td>
+                                     <td>
+                                         {{ $pj_stats[0]->flat_dd }}
+                                     </td>
+                                     <td>
+                                         {{ $pj_stats[0]->action }}
+                                     </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                         ">
                     @endif
                 @else
                     @if($monster_tab[$row][$i%$map->width] != null)
@@ -202,53 +262,7 @@
                          ">
                     @endif
                     @if(($row == $pj_stats[0]['row']) && ($i%$map->width == $pj_stats[0]['col']))
-                        <img class="pj" id="pj" data-toggle="tooltip" src="{{ asset('asset/img/classes/gface.png') }}" style="margin-left:-36px;"
-                             title="
-                        <table class='table_stat text-center'>
-                            <tbody>
-                                <tr>
-                                    <th> </th>
-                                    <th>Hp</th>
-                                    <th>Mana</th>
-                                    <th>Ar</th>
-                                    <th>Dmg</th>
-                                    <th>Range</th>
-                                    <th>Mv</th>
-                                    <th>DD</th>
-                                    <th>Actions</th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img class='monster_stat' src='{{ asset('asset/img/classes/gface.png') }}'>
-                                    </td>
-                                    <td>
-                                        {{ $pj_stats[0]->life }}
-                                     </td>
-                                     <td>
-                                         {{ $pj_stats[0]->mana }}
-                                     </td>
-                                     <td>
-                                         {{ $pj_stats[0]->armor }}
-                                     </td>
-                                     <td>
-                                         {{ $pj_stats[0]->damage }}
-                                     </td>
-                                     <td>
-                                         {{ $pj_stats[0]->range }}
-                                     </td>
-                                     <td>
-                                         {{ $pj_stats[0]->mv }}
-                                     </td>
-                                     <td>
-                                         {{ $pj_stats[0]->flat_dd }}
-                                     </td>
-                                     <td>
-                                         {{ $pj_stats[0]->action }}
-                                     </td>
-                                 </tr>
-                             </tbody>
-                         </table>
-                         ">
+                        <img class="pj" id="pj" src="{{ asset('asset/img/classes/gface.png') }}" style="margin-left:-36px;">
                     @endif
                 @endif
                 @php
@@ -296,6 +310,10 @@
             {
                 var fdata = {id:$(this).attr("id")};
             }
+            else if($(this).hasClass("left_pannel_object"))
+            {
+                var fdata = {item:$(this).attr("id")};
+            }
             else
             {
                 var fdata = {mid:$(this).attr("id")};
@@ -309,7 +327,7 @@
                     if(data['movable'] == "ok")
                     {
                         movement('pj',data['mv'],data['direction']);
-                        update_tooltip("pj",data['pj_stats'][0],"pj");
+                        update_left_pannel(data['pj_stats'][0]);
                     }
                     else if(data['movable'] == "attack")
                     {
@@ -326,7 +344,12 @@
 
                             }
                         });
-                        update_tooltip("pj",data['pj_stats'][0],"pj");
+                        update_left_pannel(data['pj_stats'][0]);
+                    }
+                    if(data['item_to_delete'])
+                    {
+                        $(".o_"+data['item_to_delete']).remove();
+                        update_potion_pannel(data['item_possesed']);
                     }
 
                     console.log(data);
@@ -338,101 +361,164 @@
             });
         });
 
+        function update_potion_pannel(potions) {
+            $.each( potions, function( key, value ) {
+                if(value == 1)
+                {
+                    $('.nred_potion:first').attr('src','{{ asset('asset/img/equipements/redpotion.png') }}').addClass('red_potion').removeClass('nred_potion');
+                }
+                if(value == 2)
+                {
+                    $('.nblue_potion:first').attr('src','{{ asset('asset/img/equipements/bluepotion.png') }}').addClass('blue_potion').removeClass('nblue_potion');
+                }
+            });
+        }
+
+        function update_left_pannel(stats){
+            var left_pannel_val = "<table class='table_stat text-center'>"+
+                "<tbody>"+
+                "<tr>"+
+                "<th> </th>"+
+                "<th>Hp</th>"+
+                "<th>Mana</th>"+
+                "<th>Ar</th>"+
+                "<th>Dmg</th>"+
+                "<th>Range</th>"+
+                "<th>Mv</th>"+
+                "<th>DD</th>"+
+                "<th>Actions</th>"+
+                "</tr>"+
+                "<tr>"+
+                " <td>"+
+                "<img class='monster_stat' src='{{ asset('asset/img/classes/gface.png') }}'>"+
+                "</td>"+
+                "<td>"+
+                stats['life']+
+                "</td>"+
+                "<td>"+
+                stats['mana']+
+                "</td>"+
+                "<td>"+
+                stats['armor']+
+                "</td>"+
+                "<td>"+
+                stats['damage']+
+                "</td>"+
+                "<td>"+
+                stats['range']+
+                "</td>"+
+                "<td>"+
+                stats['mv']+
+                "</td>"+
+                "<td>"+
+                stats['flat_dd']+
+                "</td>"+
+                "<td>"+
+                stats['action']+
+                "</td>"+
+                "</tr>"+
+                "</tbody>"+
+                "</table>";
+
+            $('.char_stats').html(left_pannel_val);
+
+        }
+
         function update_tooltip(id, stats, type){
 
             if(type == "pj")
             {
                 var tooltip_val = "<table class='table_stat text-center'>"+
-                        "<tbody>"+
-                        "<tr>"+
-                        "<th> </th>"+
-                        "<th>Hp</th>"+
-                        "<th>Mana</th>"+
-                        "<th>Ar</th>"+
-                        "<th>Dmg</th>"+
-                        "<th>Range</th>"+
-                        "<th>Mv</th>"+
-                        "<th>DD</th>"+
-                        "<th>Action</th>"+
-                        "</tr>"+
-                        "<tr>"+
-                        " <td>"+
-                        "<img class='monster_stat' src='{{ asset('asset/img/classes/gface.png') }}'>"+
-                        "</td>"+
-                        "<td>"+
-                        stats['life']+
-                        "</td>"+
-                        "<td>"+
-                        stats['mana']+
-                        "</td>"+
-                        "<td>"+
-                        stats['armor']+
-                        "</td>"+
-                        "<td>"+
-                        stats['damage']+
-                        "</td>"+
-                        "<td>"+
-                        stats['range']+
-                        "</td>"+
-                        "<td>"+
-                        stats['mv']+
-                        "</td>"+
-                        "<td>"+
-                        stats['flat_dd']+
-                        "</td>"+
-                        "<td>"+
-                        stats['action']+
-                        "</td>"+
-                        "</tr>"+
-                        "</tbody>"+
-                        "</table>";
+                    "<tbody>"+
+                    "<tr>"+
+                    "<th> </th>"+
+                    "<th>Hp</th>"+
+                    "<th>Mana</th>"+
+                    "<th>Ar</th>"+
+                    "<th>Dmg</th>"+
+                    "<th>Range</th>"+
+                    "<th>Mv</th>"+
+                    "<th>DD</th>"+
+                    "<th>Actions</th>"+
+                    "</tr>"+
+                    "<tr>"+
+                    " <td>"+
+                    "<img class='monster_stat' src='{{ asset('asset/img/classes/gface.png') }}'>"+
+                    "</td>"+
+                    "<td>"+
+                    stats['life']+
+                    "</td>"+
+                    "<td>"+
+                    stats['mana']+
+                    "</td>"+
+                    "<td>"+
+                    stats['armor']+
+                    "</td>"+
+                    "<td>"+
+                    stats['damage']+
+                    "</td>"+
+                    "<td>"+
+                    stats['range']+
+                    "</td>"+
+                    "<td>"+
+                    stats['mv']+
+                    "</td>"+
+                    "<td>"+
+                    stats['flat_dd']+
+                    "</td>"+
+                    "<td>"+
+                    stats['action']+
+                    "</td>"+
+                    "</tr>"+
+                    "</tbody>"+
+                    "</table>";
 
             }
             else if(type == "monster")
             {
                 var tooltip_val = "<table class='table_stat text-center'>"+
-                        "<tbody>"+
-                        "<tr>"+
-                        "<th> </th>"+
-                        "<th>Hp</th>"+
-                        "<th>Ar</th>"+
-                        "<th>Dmg</th>"+
-                        "<th>Range</th>"+
-                        "<th>Mv</th>"+
-                        "<th>Dr</th>"+
-                        "</tr>"+
-                        "<tr>"+
-                        " <td>"+
-                        "<img class='monster_stat' src='{{ asset('asset/img/monsters') }}/"+stats['url']+"'>"+
-                        "</td>"+
-                        "<td>"+
-                        stats['life']+
-                        "</td>"+
-                        "<td>"+
-                        stats['armor']+
-                        "</td>"+
-                        "<td>"+
-                        stats['damage']+
-                        "</td>"+
-                        "<td>"+
-                        stats['range']+
-                        "</td>"+
-                        "<td>"+
-                        stats['mv']+
-                        "</td>"+
-                        "<td>"+
-                        stats['dr']+
-                        "</td>"+
-                        "</tr>"+
-                        "</tbody>"+
-                        "</table>";
+                    "<tbody>"+
+                    "<tr>"+
+                    "<th> </th>"+
+                    "<th>Hp</th>"+
+                    "<th>Ar</th>"+
+                    "<th>Dmg</th>"+
+                    "<th>Range</th>"+
+                    "<th>Mv</th>"+
+                    "<th>Dr</th>"+
+                    "</tr>"+
+                    "<tr>"+
+                    " <td>"+
+                    "<img class='monster_stat' src='{{ asset('asset/img/monsters') }}/"+stats['url']+"'>"+
+                    "</td>"+
+                    "<td>"+
+                    stats['life']+
+                    "</td>"+
+                    "<td>"+
+                    stats['armor']+
+                    "</td>"+
+                    "<td>"+
+                    stats['damage']+
+                    "</td>"+
+                    "<td>"+
+                    stats['range']+
+                    "</td>"+
+                    "<td>"+
+                    stats['mv']+
+                    "</td>"+
+                    "<td>"+
+                    stats['dr']+
+                    "</td>"+
+                    "</tr>"+
+                    "</tbody>"+
+                    "</table>";
 
             }
 
             $('#'+id).tooltip('hide')
-                    .attr('data-original-title', tooltip_val)
-                    .tooltip('fixTitle')
-                    .tooltip('show');
+                .attr('data-original-title', tooltip_val)
+                .tooltip('fixTitle')
+                .tooltip('show');
         }
 
         function movement(id,mv,direction)
@@ -444,11 +530,11 @@
                 var sprite = 2;
 
             if(direction == "r" || direction == "l")
-            var marg = $('#'+id).css("margin-left").replace("px", "");
+                var marg = $('#'+id).css("margin-left").replace("px", "");
             if(direction == "u" || direction == "d")
-            var marg = $('#'+id).css("margin-top").replace("px", "");
+                var marg = $('#'+id).css("margin-top").replace("px", "");
 
-            var animation = setInterval( moveSprite,50);
+            var animation = setInterval( moveSprite,25);
 
             function moveSprite(){
                 if(direction == "r")
@@ -546,7 +632,7 @@
                 var marg = $('#'+id).css("margin-top").replace("px", "");
                 var marg2 = $('#'+id2).css("margin-top").replace("px", "");
             }
-            var animation = setInterval( moveSprite_Attack,50);
+            var animation = setInterval( moveSprite_Attack,25);
 
             function moveSprite_Attack(){
                 if(direction == "r")
@@ -613,17 +699,17 @@
                 if(cont == 5){
                     if(id == 'pj'){
                         if(direction == "r")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
                         if(direction == "l")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
                         if(direction == "u")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
                         if(direction == "d")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
                     }
                     cont = 0;
                     clearInterval(animation);
-                    animation = setInterval( moveSprite_Attack2,100);
+                    animation = setInterval( moveSprite_Attack2,50);
                 }
             }
             function moveSprite_Attack2(){
@@ -683,17 +769,17 @@
                     if(id == 'pj')
                     {
                         if(direction == "r")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gdroite.png') }}");
                         if(direction == "l")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/ggauche.png') }}");
                         if(direction == "u")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gdos.png') }}");
                         if(direction == "d")
-                        $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
+                            $('#'+id).attr("src","{{ asset('asset/img/classes/gface.png') }}");
                     }
                     cont = 0;
                     clearInterval(animation);
-                    animation = setInterval( moveSprite_Attack3,100);
+                    animation = setInterval( moveSprite_Attack3,50);
                 }
             }
 
@@ -724,7 +810,7 @@
                 if(cont == 3){
                     cont = 0;
                     clearInterval(animation);
-                    animation = setInterval( moveSprite_Attack4,10);
+                    animation = setInterval( moveSprite_Attack4,5);
                 }
             }
 
@@ -753,7 +839,7 @@
                 if(cont == 3){
                     cont = 0;
                     clearInterval(animation);
-                    animation = setInterval( moveSprite_Attack5,10);
+                    animation = setInterval( moveSprite_Attack5,5);
                 }
             }
 
@@ -824,7 +910,7 @@
                     }
                     cont = 0;
                     clearInterval(animation);
-                    animation = setInterval( moveSprite_Attack6,50);
+                    animation = setInterval( moveSprite_Attack6,25);
                 }
             }
 
@@ -915,7 +1001,7 @@
             $.each( tab_mv, function( key2, value2 ) {
                 if(value2 == "hit")
                 {
-                    animate = setInterval( attack(id,'pj','monster',direction),200);
+                    animate = setInterval( attack(id,'pj','monster',direction),100);
                 }
                 else if(value2 =="l" || value2 =="r"|| value2 =="u"|| value2 =="d")
                 {
@@ -951,7 +1037,7 @@
                 data: fdata,
                 success: function(data) {
                     console.log(data);
-                    update_tooltip("pj",data['pj_stats'][0],"pj");
+                    update_left_pannel(data['pj_stats'][0]);
                     $.each( data['monster_mv'], function( key1, value1 ) {
 
                         var direction = "";
@@ -977,15 +1063,15 @@
                         //var tab_mv = value1.split(",");
                         ia(id,value1,direction);
                         /*$.each( tab_mv, function( key2, value2 ) {
-                            if(value2 == "hit")
-                            {
-                                ia(id,'pj',0,'monster',direction);
-                            }
-                            else if(value2 =="l" || value2 =="r"|| value2 =="u"|| value2 =="d")
-                            {
-                                ia(id,0,1,'monster',direction);
-                            }
-                        });*/
+                         if(value2 == "hit")
+                         {
+                         ia(id,'pj',0,'monster',direction);
+                         }
+                         else if(value2 =="l" || value2 =="r"|| value2 =="u"|| value2 =="d")
+                         {
+                         ia(id,0,1,'monster',direction);
+                         }
+                         });*/
                     });
                 },
                 error:function(jqXHR) {

@@ -49,6 +49,12 @@ class MapController extends Controller
         else
             $pj_stats = [];
 
+
+        if(session()->has('item_possesed'))
+            $item_possesed = session()->get('item_possesed');
+        else
+            $item_possesed = [];
+
         return view('map/show', [
             "map" => $map,
             "map_tiles"=>$map_tiles,
@@ -59,6 +65,7 @@ class MapController extends Controller
             "monster_tab"=>$monster_tab,
             "item_tab"=>$item_tab,
             "monster_stats"=>$monster_stats,
+            "item_possesed"=>$item_possesed,
             "pj_stats"=>$pj_stats
         ]);
     }
@@ -83,8 +90,7 @@ class MapController extends Controller
                 $rg_row = $row - $pj_stats[0]['row'];
                 $rg_col = $col - $pj_stats[0]['col'];
                 $rg= abs($rg_row)+abs($rg_col);
-
-                if($rg<=($m_stats->mv + $m_stats->range))
+                if(($rg<=($m_stats->mv + $m_stats->range)) && $map_tab[$m_stats['row']][$m_stats['col']]->type == 'ground')
                 {
                     if ($rg <= $m_stats->range)
                     {
@@ -143,6 +149,58 @@ class MapController extends Controller
                                 }
                             }
                         }
+                        else
+                        {
+                            $done = false;
+                            if($rg_row < 0)
+                            {
+                                if ($map_tab[$m_stats['row'] + 1][$m_stats['col']]->type == 'ground' && is_null($monster_tab[$m_stats['row'] + 1][$m_stats['col']]))
+                                {
+                                    $monster_tab[$m_stats['row'] + 1][$m_stats['col']] = $id;
+                                    $monster_tab[$m_stats['row']][$m_stats['col']] = null;
+                                    $m_stats['row'] = $m_stats['row'] + 1;
+                                    $monster_mv[$id] = "d,hit";
+                                    $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
+                                    $done = true;
+                                }
+                            }
+                            if ($rg_row > 0 && $done == false)
+                            {
+                                if ($map_tab[$m_stats['row'] - 1][$m_stats['col']]->type == 'ground' && is_null($monster_tab[$m_stats['row'] - 1][$m_stats['col']]))
+                                {
+                                    $monster_tab[$m_stats['row'] - 1][$m_stats['col']] = $id;
+                                    $monster_tab[$m_stats['row']][$m_stats['col']] = null;
+                                    $m_stats['row'] = $m_stats['row'] - 1;
+                                    $monster_mv[$id] = "u,hit";
+                                    $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
+                                    $done = true;
+                                }
+                            }
+                            if ($rg_col > 0 && $done ==false)
+                            {
+                                if ($map_tab[$m_stats['row']][$m_stats['col'] - 1]->type == 'ground' && is_null($monster_tab[$m_stats['row']][$m_stats['col'] - 1]))
+                                {
+                                    $monster_tab[$m_stats['row']][$m_stats['col'] - 1] = $id;
+                                    $monster_tab[$m_stats['row']][$m_stats['col']] = null;
+                                    $m_stats['col'] = $m_stats['col'] - 1;
+                                    $monster_mv[$id] = "l,hit";
+                                    $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
+                                    $done = true;
+                                }
+                            }
+                            if ($rg_col < 0 && $done == false)
+                            {
+                                if ($map_tab[$m_stats['row']][$m_stats['col'] + 1]->type == 'ground' && is_null($monster_tab[$m_stats['row']][$m_stats['col'] + 1]))
+                                {
+                                    $monster_tab[$m_stats['row']][$m_stats['col'] + 1] = $id;
+                                    $monster_tab[$m_stats['row']][$m_stats['col']] = null;
+                                    $m_stats['col'] = $m_stats['col'] + 1;
+                                    $monster_mv[$id] = "r,hit";
+                                    $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
+                                    $done = true;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -174,16 +232,17 @@ class MapController extends Controller
         $data = $request->all();
         $map_tab = session()->get('map_tab');
         $monster_tab = session()->get('monster_tab');
-        //$item_tab = session()->get('item_tab');
+        $item_tab = session()->get('item_tab');
         $monster_stats = session()->get('monster_stats');
         $pj_stats = session()->get('pj_stats');
+        $item_possesed = session()->get('item_possesed');
+        $item_to_delete = false;
         $movable = 0;
         $mv = 0;
         $row = 0;
         $col = 0;
         $direction = "";
         $monster_hit = array();
-
         if(isset($data["id"]))
         {
             if($data["id"]>0)
@@ -216,6 +275,7 @@ class MapController extends Controller
                                             }
                                             else
                                             {
+                                                $movable = 'no';
                                                 break;
                                             }
                                             $ite--;
@@ -233,6 +293,7 @@ class MapController extends Controller
                                             }
                                             else
                                             {
+                                                $movable = 'no';
                                                 break;
                                             }
                                             $ite--;
@@ -243,7 +304,7 @@ class MapController extends Controller
                                 {
                                     if($mv_row>0)
                                     {
-                                        $direction = "u";
+                                        $direction = "d";
                                         $ite = $mv_row;
                                         while($ite>0)
                                         {
@@ -253,6 +314,7 @@ class MapController extends Controller
                                             }
                                             else
                                             {
+                                                $movable = 'no';
                                                 break;
                                             }
                                             $ite--;
@@ -260,7 +322,7 @@ class MapController extends Controller
                                     }
                                     else if($mv_row<0)
                                     {
-                                        $direction = "d";
+                                        $direction = "u";
                                         $ite = abs($mv_row);
                                         while($ite>0)
                                         {
@@ -270,6 +332,7 @@ class MapController extends Controller
                                             }
                                             else
                                             {
+                                                $movable = 'no';
                                                 break;
                                             }
                                             $ite--;
@@ -311,11 +374,39 @@ class MapController extends Controller
             }
             if($movable == "ok")
             {
+                //Add item to inventory if needed
+                if($item_tab[$row][$col] != null)
+                {
+                    if(intval($item_tab[$row][$col][0]) == 1)
+                    {
+                        if(isset($item_possesed[0]))
+                        {
+                            $item_possesed[count($item_possesed)] = 1;
+                        }
+                        else
+                        {
+                            $item_possesed[0] = 1;
+                        }
+                    }
+                    else
+                    {
+                        if(isset($item_possesed[0]))
+                        {
+                            $item_possesed[count($item_possesed)] = 2;
+                        }
+                        else
+                        {
+                            $item_possesed[0] = 2;
+                        }
+                    }
+                    $item_to_delete = $row."_".$col;
+                }
                 $monster_tab[$pj_stats[0]['row']][$pj_stats[0]['col']]=null;
                 $pj_stats[0]['row'] = $row;
                 $pj_stats[0]['col'] = $col;
                 $pj_stats[0]->mv = $pj_stats[0]->mv - $mv;
                 session()->put('pj_stats', $pj_stats);
+                session()->put('item_possesed', $item_possesed);
             }
         }
 
@@ -328,11 +419,10 @@ class MapController extends Controller
             $rg_row = $row - $pj_stats[0]['row'];
             $rg_col = $col - $pj_stats[0]['col'];
             $rg= abs($rg_row)+abs($rg_col);
-            if($rg<=$pj_stats[0]->range)
+            if($rg<=$pj_stats[0]->range && $map_tab[$monster_stats[$id]['row']][$monster_stats[$id]['col']]->type == 'ground')
             {
                 if($pj_stats[0]->action>=10)
                 {
-
                     if($rg_col>0)
                         $direction = "r";
                     if($rg_col<0)
@@ -361,6 +451,11 @@ class MapController extends Controller
                 }
             }
         }
+
+        if(isset($data["item"]))
+        {
+            $id = str_replace("item_", "", $data['item']);
+        }
         return \Response::json(array(
             'success' => true,
             'movable' => $movable,
@@ -369,6 +464,8 @@ class MapController extends Controller
             'pj_stats' => $pj_stats,
             'monster_hit' => $monster_hit,
             'monster_stats' => $monster_stats,
+            'item_possesed' => $item_possesed,
+            'item_to_delete' => $item_to_delete,
         ));
     }
 }
