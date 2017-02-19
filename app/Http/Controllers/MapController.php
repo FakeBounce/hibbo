@@ -400,6 +400,7 @@ class MapController extends Controller
                         }
                     }
                     $item_to_delete = $row."_".$col;
+                    $item_tab[$row][$col] = null;
                 }
                 $monster_tab[$pj_stats[0]['row']][$pj_stats[0]['col']]=null;
                 $pj_stats[0]['row'] = $row;
@@ -407,6 +408,7 @@ class MapController extends Controller
                 $pj_stats[0]->mv = $pj_stats[0]->mv - $mv;
                 session()->put('pj_stats', $pj_stats);
                 session()->put('item_possesed', $item_possesed);
+                session()->put('item_tab', $item_tab);
             }
         }
 

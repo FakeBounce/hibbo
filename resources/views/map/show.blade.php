@@ -5,14 +5,21 @@
     @php
         $row = 0;
         $monster_id = 1;
-        $pj_stats[0] = $map->getClasse(1);
+        if(!(session()->has('pj_stats')))
+        {
+            $pj_stats[0] = $map->getClasse(1);
+        }
+        if(!empty($item_possesed))
+        $total_items = count($item_possesed);
+        $blue_pot = 2;
+        $red_pot = 2;
     @endphp
     <div class ="row">
         <div class="col-xs-12 text-center margup">
         </div>
     </div>
     <div class ="row">
-        <div class="left_pannel col-xs-4 text-center">
+        <div class="left_pannel col-xs-5 text-center">
             <h3>Statistiques et objets</h3>
             <br>
             <h4>Votre personnage :</h4>
@@ -65,14 +72,40 @@
 
             <h4>Vos objets :</h4>
             <div class="char_items">
-
-                <img class="left_pannel_object nred_potion" id="item_1" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nredpotion.png') }}" title="Restaure la santé à 100%">
-                <img class="left_pannel_object nred_potion" id="item_2" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nredpotion.png') }}" title="Restaure la santé à 100%">
-                <img class="left_pannel_object nblue_potion" id="item_3" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nbluepotion.png') }}" title="Restaure le mana à 100%">
-                <img class="left_pannel_object nblue_potion" id="item_4" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nbluepotion.png') }}" title="Restaure le mana à 100%">
+                @if(!empty($item_possesed))
+                    @foreach($item_possesed as $key=>$item)
+                        @if($item == 1)
+                            @php
+                                $red_pot --;
+                            @endphp
+                            <img class="left_pannel_object red_potion" id="item_{{$key}}" data-toggle="tooltip" src="{{ asset('asset/img/equipements/redpotion.png') }}" title="Restaure la santé à 100%">
+                        @elseif($item == 2)
+                            @php
+                                $blue_pot --;
+                            @endphp
+                            <img class="left_pannel_object blue_potion" id="item_{{$key}}" data-toggle="tooltip" src="{{ asset('asset/img/equipements/bluepotion.png') }}" title="Restaure l'énergie à 100%">
+                        @elseif($item == -1)
+                            @php
+                                $red_pot --;
+                            @endphp
+                            <img class="left_pannel_object used_potion" data-toggle="tooltip" src="{{ asset('asset/img/equipements/usedpotion.png') }}" title="Potion vide">
+                        @elseif($item == -2)
+                            @php
+                                $blue_pot --;
+                            @endphp
+                            <img class="left_pannel_object used_potion" data-toggle="tooltip" src="{{ asset('asset/img/equipements/usedpotion.png') }}" title="Potion vide">
+                        @endif
+                    @endforeach
+                @endif
+                @for($i=0;$i<$red_pot;$i++)
+                        <img class="left_pannel_object nred_potion" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nredpotion.png') }}" title="Restaure la santé à 100%">
+                @endfor
+                @for($i=0;$i<$blue_pot;$i++)
+                        <img class="left_pannel_object nblue_potion" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nbluepotion.png') }}" title="Restaure l'énergie à 100%">
+                @endfor
             </div>
         </div>
-        <div class="col-xs-8 text-center">
+        <div class="col-xs-7 text-center">
             <h2>{{ $map->name }}</h2>
             @for($i=0;$i<count($map_tiles);$i++)
 
@@ -120,14 +153,13 @@
                     </div>
                 @endif
 
-                @if($items[$i]>0)
+                @if($items[$i]>0 && $item_tab[$row][$i%$map->width] != null)
                     @if($items[$i] == 1)
                         <img class="object o_{{$row}}_{{$i%$map->width}}" data-toggle="tooltip" src="{{ asset('asset/img/equipements/'.$item_tab[$row][$i%$map->width]->url) }}" title="Restaure la santé à 100%">
                     @else
                         <img class="object o_{{$row}}_{{$i%$map->width}}" data-toggle="tooltip" src="{{ asset('asset/img/equipements/'.$item_tab[$row][$i%$map->width]->url) }}" title="Restaure l'énergie à 100%">
                     @endif
                 @endif
-
                 @if(!(session()->has('monster_tab')) || !(session()->has('monster_stats')))
                     @if($monsters[$i] > 0)
                         <img class="monster stat_tooltip" id="m_{{$monster_tab[$row][$i%$map->width]}}" data-toggle="tooltip" src="{{ asset('asset/img/monsters/'.$monster_stats[$monster_tab[$row][$i%$map->width]]->url) }}" style="margin-left:-36px;"
@@ -270,6 +302,7 @@
                     $row++;
                 @endphp
             @endfor
+
             @php
                 if(!(session()->has('map_tab')))
                     session()->put('map_tab', $map_tab);
