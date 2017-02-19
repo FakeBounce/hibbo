@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Skill extends Model
 {    protected $fillable = [
     'id',
+    'name',
     'damage',
     'time_damage',
     'buff_damage',
@@ -43,6 +44,8 @@ class Skill extends Model
     'action',
     'down_aoe',
     'reset_cast',
+    'break',
+    'bonus_description',
     'description',
     'created_at',
     'updated_at'

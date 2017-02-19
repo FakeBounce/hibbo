@@ -14,6 +14,7 @@ class CreateSkillsTable extends Migration
     {
         Schema::create('skills', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
             $table->bigInteger('damage');
             $table->bigInteger('time_damage');
             $table->bigInteger('buff_damage');
@@ -48,6 +49,8 @@ class CreateSkillsTable extends Migration
             $table->bigInteger('cast');
             $table->bigInteger('action');
             $table->bigInteger('reset_cast');
+            $table->bigInteger('break');
+            $table->string('bonus_description');
             $table->string('description');
             $table->timestamps();
         });

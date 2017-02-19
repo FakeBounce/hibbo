@@ -90,9 +90,20 @@ img.object {
     padding: 10px;
     color: white;
     padding-top: 0px;
+    margin-top:70px;
+    margin-left:5px;
+}
+.right_pannel {
+    margin-left: -5px;
 }
 
 img.left_pannel_object {
     height: 32px;
     width: 32px;
+}
+
+.skill {
+    height: 50px;
+    width: 50px;
+    margin: 8px;
 }

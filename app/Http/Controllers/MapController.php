@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Map;
+use App\Skill;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -49,6 +50,14 @@ class MapController extends Controller
         else
             $pj_stats = [];
 
+        if(session()->has('pj_skills'))
+            $skills = session()->get('pj_skills');
+        else
+        {
+        $skills = Skill::all();
+        session()->put('skills', $skills);
+        }
+
 
         if(session()->has('item_possessed'))
             $item_possessed = session()->get('item_possessed');
@@ -66,7 +75,8 @@ class MapController extends Controller
             "item_tab"=>$item_tab,
             "monster_stats"=>$monster_stats,
             "item_possessed"=>$item_possessed,
-            "pj_stats"=>$pj_stats
+            "pj_stats"=>$pj_stats,
+            "skills"=>$skills
         ]);
     }
 

@@ -104,8 +104,58 @@
                         <img class="left_pannel_object nblue_potion" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nbluepotion.png') }}" title="Restaure l'énergie à 100%">
                 @endfor
             </div>
+
+            <h4>Vos compétences :</h4>
+            <div class="char_skills">
+                <table class='table_stat text-center'>
+                    <tbody>
+                    <tr>
+                        <th> </th>
+                    </tr>
+                    <tr>
+                    @foreach($skills as $key=>$skill)
+                        @if($key<7)
+                            <td>
+                                <img class='skill' data-toggle="tooltip" src='{{ asset('asset/img/skills/'.$skill->img) }}'
+                                title="
+                                <table class='table_stat text-center'>
+                                    <tbody>
+                                    <tr>
+                                        <th>Nom </th>
+                                        <th>Description </th>
+                                        <th>Effet bonus </th>
+                                        <th>Coût en mana </th>
+                                        <th>Coût en action </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                             {{ $skill->name }}
+                                        </td>
+                                        <td>
+                                             {{ $skill->description }}
+                                        </td>
+                                        <td>
+                                             {{ $skill->bonus_description }}
+                                        </td>
+                                        <td>
+                                             {{ $skill->cost_mana }}
+                                        </td>
+                                        <td>
+                                             {{ $skill->action }}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                ">
+                            </td>
+                        @endif
+                    @endforeach
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="col-xs-7 text-center">
+        <div class="right_pannel col-xs-7 text-center">
             <h2>{{ $map->name }}</h2>
             @for($i=0;$i<count($map_tiles);$i++)
 
