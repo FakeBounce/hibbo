@@ -50,10 +50,10 @@ class MapController extends Controller
             $pj_stats = [];
 
 
-        if(session()->has('item_possesed'))
-            $item_possesed = session()->get('item_possesed');
+        if(session()->has('item_possessed'))
+            $item_possessed = session()->get('item_possessed');
         else
-            $item_possesed = [];
+            $item_possessed = [];
 
         return view('map/show', [
             "map" => $map,
@@ -65,7 +65,7 @@ class MapController extends Controller
             "monster_tab"=>$monster_tab,
             "item_tab"=>$item_tab,
             "monster_stats"=>$monster_stats,
-            "item_possesed"=>$item_possesed,
+            "item_possessed"=>$item_possessed,
             "pj_stats"=>$pj_stats
         ]);
     }
@@ -235,8 +235,9 @@ class MapController extends Controller
         $item_tab = session()->get('item_tab');
         $monster_stats = session()->get('monster_stats');
         $pj_stats = session()->get('pj_stats');
-        $item_possesed = session()->get('item_possesed');
+        $item_possessed = session()->get('item_possessed');
         $item_to_delete = false;
+        $update_left_pannel = false;
         $movable = 0;
         $mv = 0;
         $row = 0;
@@ -377,26 +378,26 @@ class MapController extends Controller
                 //Add item to inventory if needed
                 if($item_tab[$row][$col] != null)
                 {
-                    if(intval($item_tab[$row][$col][0]) == 1)
+                    if(intval($item_tab[$row][$col]->id) == 1)
                     {
-                        if(isset($item_possesed[0]))
+                        if(isset($item_possessed[0]))
                         {
-                            $item_possesed[count($item_possesed)] = 1;
+                            $item_possessed[count($item_possessed)] = 1;
                         }
                         else
                         {
-                            $item_possesed[0] = 1;
+                            $item_possessed[0] = 1;
                         }
                     }
                     else
                     {
-                        if(isset($item_possesed[0]))
+                        if(isset($item_possessed[0]))
                         {
-                            $item_possesed[count($item_possesed)] = 2;
+                            $item_possessed[count($item_possessed)] = 2;
                         }
                         else
                         {
-                            $item_possesed[0] = 2;
+                            $item_possessed[0] = 2;
                         }
                     }
                     $item_to_delete = $row."_".$col;
@@ -407,7 +408,7 @@ class MapController extends Controller
                 $pj_stats[0]['col'] = $col;
                 $pj_stats[0]->mv = $pj_stats[0]->mv - $mv;
                 session()->put('pj_stats', $pj_stats);
-                session()->put('item_possesed', $item_possesed);
+                session()->put('item_possessed', $item_possessed);
                 session()->put('item_tab', $item_tab);
             }
         }
@@ -457,6 +458,21 @@ class MapController extends Controller
         if(isset($data["item"]))
         {
             $id = str_replace("item_", "", $data['item']);
+            if($item_possessed[$id] == 1)
+            {
+                $pj_stats[0]->life = 15000;
+                $item_possessed[$id] = -1;
+                session()->put('item_possessed', $item_possessed);
+                $update_left_pannel = true;
+            }
+            if($item_possessed[$id] == 2)
+            {
+                $pj_stats[0]->mana = 1000;
+                $item_possessed[$id] = -2;
+                session()->put('item_possessed', $item_possessed);
+                $update_left_pannel = true;
+            }
+
         }
         return \Response::json(array(
             'success' => true,
@@ -466,8 +482,9 @@ class MapController extends Controller
             'pj_stats' => $pj_stats,
             'monster_hit' => $monster_hit,
             'monster_stats' => $monster_stats,
-            'item_possesed' => $item_possesed,
+            'item_possessed' => $item_possessed,
             'item_to_delete' => $item_to_delete,
+            'update_left_pannel' => $update_left_pannel,
         ));
     }
 }

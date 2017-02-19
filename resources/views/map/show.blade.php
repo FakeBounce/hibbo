@@ -9,8 +9,8 @@
         {
             $pj_stats[0] = $map->getClasse(1);
         }
-        if(!empty($item_possesed))
-        $total_items = count($item_possesed);
+        if(!empty($item_possessed))
+        $total_items = count($item_possessed);
         $blue_pot = 2;
         $red_pot = 2;
     @endphp
@@ -72,8 +72,8 @@
 
             <h4>Vos objets :</h4>
             <div class="char_items">
-                @if(!empty($item_possesed))
-                    @foreach($item_possesed as $key=>$item)
+                @if(!empty($item_possessed))
+                    @foreach($item_possessed as $key=>$item)
                         @if($item == 1)
                             @php
                                 $red_pot --;
@@ -338,7 +338,7 @@
             html: true
         });
 
-        $('.map_tile,.monster').click(function(){
+        $(document).on("click", '.map_tile,.monster,.red_potion,.blue_potion', function() {
             if($(this).hasClass("map_tile"))
             {
                 var fdata = {id:$(this).attr("id")};
@@ -382,7 +382,13 @@
                     if(data['item_to_delete'])
                     {
                         $(".o_"+data['item_to_delete']).remove();
-                        update_potion_pannel(data['item_possesed']);
+                        update_left_pannel(data['pj_stats'][0]);
+                        update_potion_pannel(data['item_possessed'][data['item_possessed'].length-1],data['item_possessed'].length-1);
+                    }
+                    if(data['update_left_pannel'])
+                    {
+                        update_left_pannel(data['pj_stats'][0]);
+                        update_potion_pannel(data['item_possessed'][data['item_possessed'].length-1],data['item_possessed'].length-1);
                     }
 
                     console.log(data);
@@ -394,17 +400,23 @@
             });
         });
 
-        function update_potion_pannel(potions) {
-            $.each( potions, function( key, value ) {
-                if(value == 1)
-                {
-                    $('.nred_potion:first').attr('src','{{ asset('asset/img/equipements/redpotion.png') }}').addClass('red_potion').removeClass('nred_potion');
-                }
-                if(value == 2)
-                {
-                    $('.nblue_potion:first').attr('src','{{ asset('asset/img/equipements/bluepotion.png') }}').addClass('blue_potion').removeClass('nblue_potion');
-                }
-            });
+        function update_potion_pannel(potion,length) {
+            if(potion == 1)
+            {
+                $('.nred_potion:first').attr('src','{{ asset('asset/img/equipements/redpotion.png') }}').attr("id","item_"+length).addClass('red_potion').removeClass('nred_potion');
+            }
+            if(potion == 2)
+            {
+                $('.nblue_potion:first').attr('src','{{ asset('asset/img/equipements/bluepotion.png') }}').attr("id","item_"+length).addClass('blue_potion').removeClass('nblue_potion');
+            }
+            if(potion == -1)
+            {
+                $('.red_potion:first').attr('src','{{ asset('asset/img/equipements/usedpotion.png') }}').attr("id","").addClass('used_potion').removeClass('red_potion');
+            }
+            if(potion == -2)
+            {
+                $('.blue_potion:first').attr('src','{{ asset('asset/img/equipements/usedpotion.png') }}').attr("id","").addClass('used_potion').removeClass('blue_potion');
+            }
         }
 
         function update_left_pannel(stats){
