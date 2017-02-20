@@ -16,6 +16,5 @@ class DatabaseSeeder extends Seeder
         $this->call(MonsterTableSeeder::class);
         $this->call(ItemTableSeeder::class);
         $this->call(ClasseTableSeeder::class);
-        $this->call(SkillTableSeeder::class);
     }
 }
