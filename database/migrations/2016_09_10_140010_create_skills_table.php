@@ -52,6 +52,7 @@ class CreateSkillsTable extends Migration
             $table->bigInteger('break');
             $table->string('bonus_description');
             $table->string('description');
+            $table->string('img');
             $table->timestamps();
         });
     }
