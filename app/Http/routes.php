@@ -19,3 +19,4 @@ Route::resource('map', 'MapController');
 Route::post('/map/{map}/action',['as' => 'map.action', 'uses' => 'MapController@action']);
 Route::get('/map/{map}/reset',['as' => 'map.reset', 'uses' => 'MapController@reset']);
 Route::post('/map/{map}/turn',['as' => 'map.turn', 'uses' => 'MapController@turn']);
+Route::get('/map/{map}/over',['as' => 'map.over', 'uses' => 'MapController@over']);

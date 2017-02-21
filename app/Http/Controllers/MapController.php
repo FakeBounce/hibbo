@@ -99,6 +99,13 @@ class MapController extends Controller
         ]);
     }
 
+    public function over(Map $map)
+    {
+        return view('map/over', [
+            "map" => $map,
+        ]);
+    }
+
     public function turn(Request $request,Map $map)
     {
 
@@ -302,7 +309,7 @@ class MapController extends Controller
         if($pj_stats[0]->life <=0)
         {
             session()->flush();
-            return redirect()->route('map.show', ['map' => $map->id]);
+            return redirect()->route('map.over', ['map' => $map->id]);
         }
         $pj_actions = $map->getClasse(1);
         $pj_stats[0]->mv = $pj_actions->mv;
@@ -1454,7 +1461,14 @@ class MapController extends Controller
         }
 
 
-
+        if(isset($monster_stats[23]))
+        {
+            if($monster_stats[23] == null || $monster_stats[23]->life<=0)
+            {
+                session()->flush();
+                return redirect()->route('map.over', ['map' => $map->id]);
+            }
+        }
         session()->put('pj_stats', $pj_stats);
         session()->put('monster_tab', $monster_tab);
         session()->put('monster_stats', $monster_stats);

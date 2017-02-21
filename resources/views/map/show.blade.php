@@ -89,7 +89,7 @@
                                         <th>Nom </th>
                                         <th>Description </th>
                                         <th>Effet bonus </th>
-                                        <th>Coût en mana </th>
+                                        <th>Coût en énergie </th>
                                         <th>Coût en action </th>
                                     </tr>
                                     <tr>
@@ -260,7 +260,7 @@
                                     <tr>
                                         <th> </th>
                                         <th>Hp</th>
-                                        <th>Mana</th>
+                                        <th>Énergie</th>
                                         <th>Ar</th>
                                         <th>Dmg</th>
                                         <th>Range</th>
@@ -475,7 +475,10 @@
                     {
                         if(data['skill_id'] == 0)
                         {
-                            movement('pj',data['mv'],data['direction']);
+                            if(data['mv']>0)
+                            {
+                                movement('pj',data['mv'],data['direction']);
+                            }
                             update_left_pannel(data['pj_stats'][0]);
                         }
                         if(data['skill_id'] == 1)
