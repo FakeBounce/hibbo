@@ -728,6 +728,10 @@
 
         function attack(id,id2,type,direction,dmg)
         {
+            var marg_left = $('#'+id).css("margin-left");
+            var marg_top = $('#'+id).css("margin-top");
+            var marg_left2 = $('#'+id2).css("margin-left");
+            var marg_top2 = $('#'+id2).css("margin-top");
             if(id != "pj")
                 dmg = dmg-50;
             var cont = 0;
@@ -1137,6 +1141,11 @@
                     }
                     cont = 0;
                     clearInterval(animation);
+
+                    $('#'+id).css("margin-left",marg_left);
+                    $('#'+id).css("margin-top",marg_top);
+                    $('#'+id2).css("margin-left",marg_left2);
+                    $('#'+id2).css("margin-top",marg_top2);
                     $(".dmg_print").remove();
                 }
             }
@@ -1176,6 +1185,8 @@
         }
 
         $('.end_turn').click(function(){
+            $(this).disable(true);
+            var end_turn = null;
             var fdata = {turn:"end"};
             $.ajax({
                 url:"{{ route('map.turn',['map'=>$map]) }}",
@@ -1246,18 +1257,34 @@
                     {
                         update_tooltip("m_23",data['monster_stats'][23],"monster");
                     }
+                    setTimeout( enable_endturn,600);
+
                 },
                 error:function(jqXHR) {
                     console.log('Erreur');
                     console.log(jqXHR.responseText);
+                    $('.end_turn').disable(false);
                 }
             });
+
+            function enable_endturn() {
+                $('.end_turn').disable(false);
+            }
         });
 
         function getFirstKey( data ) {
             for (elem in data )
                 return elem;
         }
+
+        jQuery.fn.extend({
+            disable: function(state) {
+                return this.each(function() {
+                    var $this = $(this);
+                    $this.toggleClass('disabled', state);
+                });
+            }
+        });
 
     </script>
 @endsection
