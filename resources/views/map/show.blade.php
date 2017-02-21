@@ -424,6 +424,12 @@
                     }
                     else if(data['movable'] == "attack")
                     {
+                        if(data['pj_kills'] >= 25)
+                        {
+                            $.each($(".door"), function(key, value) {
+                                $(this).removeClass("door").addClass("ground").attr("src",'{{ asset('asset/img/grass.png') }}');
+                            });
+                        }
                         attack('pj',"m_"+parseInt(getFirstKey(data['monster_hit'])),'pj',data['direction'],data['pj_stats'][0]['damage']);
                         $.each( data['monster_hit'], function( key, value ) {
                             if(value == "hit")
@@ -438,12 +444,6 @@
                             }
                         });
                         update_left_pannel(data['pj_stats'][0]);
-                        if(data['pj_kills'] == 25)
-                        {
-                            $.each($(".door"), function(key, value) {
-                                $(this).removeClass("door").addClass("ground").attr("src",'{{ asset('asset/img/grass.png') }}');
-                            });
-                        }
                     }
                     if(data['item_to_delete'])
                     {
@@ -465,8 +465,26 @@
                             $('.m_'+value).before('<div class="skill_tiles_aoe"></div>');
                         });
                     }
+                    if(data['wall_destroyed'])
+                    {
+                        $.each($(".door"), function(key, value) {
+                            $(this).removeClass("door").addClass("ground").attr("src",'{{ asset('asset/img/grass.png') }}');
+                        });
+                    }
                     if(data['used_skill'])
                     {
+                        if(data['skill_id'] == 0)
+                        {
+                            movement('pj',data['mv'],data['direction']);
+                            update_left_pannel(data['pj_stats'][0]);
+                        }
+
+                        if(data['pj_kills'] >= 25)
+                        {
+                            $.each($(".door"), function(key, value) {
+                                $(this).removeClass("door").addClass("ground").attr("src",'{{ asset('asset/img/grass.png') }}');
+                            });
+                        }
                         $.each( data['monster_hit'], function( key, value ) {
                             if(value == "hit")
                             {
@@ -479,15 +497,7 @@
 
                             }
                         });
-
                         update_left_pannel(data['pj_stats'][0]);
-
-                        if(data['pj_kills'] == 25)
-                        {
-                            $.each($(".door"), function(key, value) {
-                                $(this).removeClass("door").addClass("ground").attr("src",'{{ asset('asset/img/grass.png') }}');
-                            });
-                        }
                     }
 
                     console.log(data);
@@ -576,55 +586,7 @@
 
         function update_tooltip(id, stats, type){
 
-            if(type == "pj")
-            {
-                var tooltip_val = "<table class='table_stat text-center'>"+
-                    "<tbody>"+
-                    "<tr>"+
-                    "<th> </th>"+
-                    "<th>Hp</th>"+
-                    "<th>Mana</th>"+
-                    "<th>Ar</th>"+
-                    "<th>Dmg</th>"+
-                    "<th>Range</th>"+
-                    "<th>Mv</th>"+
-                    "<th>DD</th>"+
-                    "<th>Actions</th>"+
-                    "</tr>"+
-                    "<tr>"+
-                    " <td>"+
-                    "<img class='monster_stat' src='{{ asset('asset/img/classes/gface.png') }}'>"+
-                    "</td>"+
-                    "<td>"+
-                    stats['life']+
-                    "</td>"+
-                    "<td>"+
-                    stats['mana']+
-                    "</td>"+
-                    "<td>"+
-                    stats['armor']+
-                    "</td>"+
-                    "<td>"+
-                    stats['damage']+
-                    "</td>"+
-                    "<td>"+
-                    stats['range']+
-                    "</td>"+
-                    "<td>"+
-                    stats['mv']+
-                    "</td>"+
-                    "<td>"+
-                    stats['flat_dd']+
-                    "</td>"+
-                    "<td>"+
-                    stats['action']+
-                    "</td>"+
-                    "</tr>"+
-                    "</tbody>"+
-                    "</table>";
-
-            }
-            else if(type == "monster")
+            if(type == "monster")
             {
                 var tooltip_val = "<table class='table_stat text-center'>"+
                     "<tbody>"+
@@ -1224,6 +1186,13 @@
                     console.log(data);
                     update_left_pannel(data['pj_stats'][0]);
 
+                    if(data['pj_kills'] >= 25)
+                    {
+                        $.each($(".door"), function(key, value) {
+                            $(this).removeClass("door").addClass("ground").attr("src",'{{ asset('asset/img/grass.png') }}');
+                        });
+                    }
+
                     $.each( data['monster_hit'], function( key, value ) {
                         if(value == "hit")
                         {
@@ -1236,12 +1205,6 @@
 
                         }
                     });
-                    if(data['pj_kills'] == 25)
-                    {
-                        $.each($(".door"), function(key, value) {
-                            $(this).removeClass("door").addClass("ground").attr("src",'{{ asset('asset/img/grass.png') }}');
-                        });
-                    }
 
                     $.each( data['monster_mv'], function( key1, value1 ) {
 
@@ -1278,6 +1241,11 @@
                          }
                          });*/
                     });
+
+                    if(data['boss_heal'])
+                    {
+                        update_tooltip("m_23",data['monster_stats'][23],"monster");
+                    }
                 },
                 error:function(jqXHR) {
                     console.log('Erreur');
