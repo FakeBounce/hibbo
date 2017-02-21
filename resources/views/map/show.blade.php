@@ -28,14 +28,14 @@
                     <tbody>
                     <tr>
                         <th> </th>
-                        <th>Hp</th>
-                        <th>Mana</th>
-                        <th>Ar</th>
-                        <th>Dmg</th>
-                        <th>Range</th>
-                        <th>Mv</th>
-                        <th>DD</th>
-                        <th>Actions</th>
+                        <th data-toggle="tooltip" data-container="body" title="Votre santé. Vous mourrez si elle tombe à zéro.">Hp</th>
+                        <th data-toggle="tooltip" data-container="body" title="Votre jauge d'énergie. Elle sert à utiliser des compétences.">Énergie</th>
+                        <th data-toggle="tooltip" data-container="body" title="Votre armure. Vous perdez d'abord de l'armure avant de perdre votre santé.">Ar</th>
+                        <th data-toggle="tooltip" data-container="body" title="Vos dégâts. Une attaque normale coute 10 actions et inflige {{ $pj_stats[0]->damage }} points de dégâts">Dmg</th>
+                        <th data-toggle="tooltip" data-container="body" title="Votre portée d'attaque. 1 = une case">Range</th>
+                        <th data-toggle="tooltip" data-container="body" title="Vos points de déplacement. Vous pouvez vous déplacer de {{ $pj_stats[0]->mv }} cases.">Mv</th>
+                        <th data-toggle="tooltip" data-container="body" title="Votre réduction de dégâts. Vous réduisez les dégâts subis de {{ $pj_stats[0]->flat_dd }} points.">DD</th>
+                        <th data-toggle="tooltip" data-container="body" title="Vos points d'actions. Une fois épuisés vous ne pouvez plus attaquer.">Actions</th>
                     </tr>
                     <tr>
                         <td>
@@ -196,7 +196,7 @@
                         <div class="col-xs-12 nomarg">
                             @endif
 
-                            <img class="map_tile {{$map_tab[$row][$i%$map->width]->type}}" id="{{ $i }}" src="{{ asset('asset/img/'. $map_tab[$row][$i%$map->width]->url) }}">
+                            <img class="map_tile {{$map_tab[$row][$i%$map->width]->type}} m_{{$row}}_{{$i%$map->width}}" id="{{ $i }}" src="{{ asset('asset/img/'. $map_tab[$row][$i%$map->width]->url) }}">
 
                             @if($i%$map->width == $map->width-1)
                         </div>
@@ -414,7 +414,7 @@
                     }
                     else if(data['movable'] == "attack")
                     {
-                        attack('pj',"m_"+parseInt(getFirstKey(data['monster_hit'])),'pj',data['direction']);
+                        attack('pj',"m_"+parseInt(getFirstKey(data['monster_hit'])),'pj',data['direction'],data['pj_stats'][0]['damage']);
                         $.each( data['monster_hit'], function( key, value ) {
                             if(value == "hit")
                             {
@@ -428,6 +428,12 @@
                             }
                         });
                         update_left_pannel(data['pj_stats'][0]);
+                        if(data['pj_kills'] == 25)
+                        {
+                            $.each($(".door"), function(key, value) {
+                                $(this).removeClass("door").addClass("ground").attr("src",'{{ asset('asset/img/grass.png') }}');
+                            });
+                        }
                     }
                     if(data['item_to_delete'])
                     {
@@ -472,17 +478,17 @@
         function update_left_pannel(stats){
             var left_pannel_val = "<table class='table_stat text-center'>"+
                 "<tbody>"+
-                "<tr>"+
-                "<th> </th>"+
-                "<th>Hp</th>"+
-                "<th>Mana</th>"+
-                "<th>Ar</th>"+
-                "<th>Dmg</th>"+
-                "<th>Range</th>"+
-                "<th>Mv</th>"+
-                "<th>DD</th>"+
-                "<th>Actions</th>"+
-                "</tr>"+
+                '<tr>'+
+                '<th> </th>'+
+                '<th data-toggle="tooltip" data-container="body" title="Votre santé. Vous mourrez si elle tombe à zéro.">Hp</th>'+
+                '<th data-toggle="tooltip" data-container="body" title="Votre jauge d\'énergie. Elle sert à utiliser des compétences.">Énergie</th>'+
+                '<th data-toggle="tooltip" data-container="body" title="Votre armure. Vous perdez d\'abord de l\'armure avant de perdre votre santé.">Ar</th>'+
+                '<th data-toggle="tooltip" data-container="body" title="Vos dégâts. Une attaque normale coute 10 actions et inflige '+stats['damage']+' points de dégâts">Dmg</th>'+
+                '<th data-toggle="tooltip" data-container="body" title="Votre portée d\'attaque. 1 = une case">Range</th>'+
+                '<th data-toggle="tooltip" data-container="body" title="Vos points de déplacement. Vous pouvez vous déplacer de '+stats['mv']+' cases.">Mv</th>'+
+                '<th data-toggle="tooltip" data-container="body" title="Votre réduction de dégâts. Vous réduisez les dégâts subis de '+stats['flat_dd']+' points.">DD</th>'+
+                '<th data-toggle="tooltip" data-container="body" title="Vos points d\'actions. Une fois épuisés vous ne pouvez plus attaquer.">Actions</th>'+
+                '</tr>'+
                 "<tr>"+
                 " <td>"+
                 "<img class='monster_stat' src='{{ asset('asset/img/classes/gface.png') }}'>"+
@@ -517,6 +523,12 @@
 
             $('.char_stats').html(left_pannel_val);
 
+            $('[data-toggle="tooltip"]').tooltip({
+                animated: 'fade',
+                trigger: 'hover focus',
+                placement: 'top',
+                html: true
+            });
         }
 
         function update_tooltip(id, stats, type){
@@ -709,8 +721,10 @@
             }
         }
 
-        function attack(id,id2,type,direction)
+        function attack(id,id2,type,direction,dmg)
         {
+            if(id != "pj")
+                dmg = dmg-50;
             var cont = 0;
 
             if(type == 'pj')
@@ -727,6 +741,20 @@
                 var marg = $('#'+id).css("margin-top").replace("px", "");
                 var marg2 = $('#'+id2).css("margin-top").replace("px", "");
             }
+            //////// Add print_dmg
+            //if( !($( ".dmg_print" ).length))
+            /*if(id != "pj")
+            {
+                var margin_top = parseInt($('#'+id2).css("margin-top"))-5;
+                margin_top = margin_top + "px";
+                var margin_left = parseInt($('#'+id2).css("margin-left"))-30;
+                margin_left = margin_left + "px";
+                $('#'+id2).before('<div class="dmg_print" style="margin-left:'+margin_left+';margin-top:'+margin_top+';"></div>');
+            }
+            else
+            {
+                $('#'+id2).before('<div class="dmg_print"></div>');
+            }*/
             var animation = setInterval( moveSprite_Attack,25);
 
             function moveSprite_Attack(){
@@ -804,9 +832,17 @@
                     }
                     cont = 0;
                     clearInterval(animation);
-                    animation = setInterval( moveSprite_Attack2,50);
+                    animation = setInterval( print_dmg,75);
                 }
             }
+
+            function print_dmg()
+            {
+                //$('.dmg_print').append(dmg+'<br>');
+                clearInterval(animation);
+                animation = setInterval( moveSprite_Attack2,75);
+            }
+
             function moveSprite_Attack2(){
                 if(direction == "r")
                 {
@@ -874,10 +910,20 @@
                     }
                     cont = 0;
                     clearInterval(animation);
+                    /*if(id == "pj")
+                    {
+                        var margin_left = $('#'+id2).css("margin-left");
+                        var margin_top = parseInt($('#'+id2).css("margin-top"))+25;
+                        margin_top = margin_top + "px";
+                        var health_bar = '<div class="progress" style="margin-left:'+margin_left+';margin-top:'+margin_top+';">' +
+                            '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">'
+                        '</div></div>';
+                        $('#'+id2).before(health_bar);
+                    }*/$
                     animation = setInterval( moveSprite_Attack3,50);
+
                 }
             }
-
 
             function moveSprite_Attack3(){
                 if(direction == "r")
@@ -1086,17 +1132,18 @@
                     }
                     cont = 0;
                     clearInterval(animation);
+                    $(".dmg_print").remove();
                 }
             }
         }
 
-        function ia(id,monster_mv,direction){
+        function ia(id,monster_mv,direction,dmg){
             var animate;
             var tab_mv = monster_mv.split(",");
             $.each( tab_mv, function( key2, value2 ) {
                 if(value2 == "hit")
                 {
-                    animate = setInterval( attack(id,'pj','monster',direction),100);
+                    animate = setInterval( attack(id,'pj','monster',direction,dmg),100);
                 }
                 else if(value2 =="l" || value2 =="r"|| value2 =="u"|| value2 =="d")
                 {
@@ -1156,7 +1203,7 @@
                         $('#'+id).tooltip('hide');
                         $('#pj').tooltip('hide');
                         //var tab_mv = value1.split(",");
-                        ia(id,value1,direction);
+                        ia(id,value1,direction,data['monster_stats'][key1]['damage']);
                         /*$.each( tab_mv, function( key2, value2 ) {
                          if(value2 == "hit")
                          {

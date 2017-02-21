@@ -58,6 +58,14 @@ class MapController extends Controller
         session()->put('skills', $skills);
         }
 
+        if(session()->has('pj_kills'))
+            $pj_kills = session()->get('pj_kills');
+        else
+        {
+        $pj_kills = 0;
+        session()->put('pj_kills', $pj_kills);
+        }
+
 
         if(session()->has('item_possessed'))
             $item_possessed = session()->get('item_possessed');
@@ -246,6 +254,7 @@ class MapController extends Controller
         $monster_stats = session()->get('monster_stats');
         $pj_stats = session()->get('pj_stats');
         $item_possessed = session()->get('item_possessed');
+        $pj_kills = session()->get('pj_kills');
         $item_to_delete = false;
         $update_left_pannel = false;
         $movable = 0;
@@ -446,13 +455,32 @@ class MapController extends Controller
                         $direction = "u";
                     $movable="attack";
                     $pj_stats[0]->action = $pj_stats[0]->action - 10;
-                    $monster_stats[$monster_tab[$row][$col]]->life = $monster_stats[$monster_tab[$row][$col]]->life - $pj_stats[0]->damage;
+                    if($monster_stats[$monster_tab[$row][$col]]->armor > 0)
+                    {
+                        $monster_stats[$monster_tab[$row][$col]]->armor = $monster_stats[$monster_tab[$row][$col]]->armor - $pj_stats[0]->damage;
+                        if($monster_stats[$monster_tab[$row][$col]]->armor <= 0)
+                        {
+                            $monster_stats[$monster_tab[$row][$col]]->life = $monster_stats[$monster_tab[$row][$col]]->life + $monster_stats[$monster_tab[$row][$col]]->armor;
+                        }
+                    }
+                    else
+                    {
+                        $monster_stats[$monster_tab[$row][$col]]->life = $monster_stats[$monster_tab[$row][$col]]->life - $pj_stats[0]->damage;
+                    }
 
                     if($monster_stats[$monster_tab[$row][$col]]->life <=0)
                     {
                         $monster_hit[$monster_tab[$row][$col]] ="dead";
                         $monster_stats[$monster_tab[$row][$col]] = null;
                         $monster_tab[$row][$col] = null;
+                        $pj_kills++;
+                        if($pj_kills == 25)
+                        {
+                            $map_tab[5][11] = $map->getMap_tile(2);
+                            $map_tab[6][11] = $map->getMap_tile(2);
+                            $map_tab[7][11] = $map->getMap_tile(2);
+                            session()->put('map_tab', $map_tab);
+                        }
                     }
                     else
                     {
@@ -495,6 +523,7 @@ class MapController extends Controller
             'item_possessed' => $item_possessed,
             'item_to_delete' => $item_to_delete,
             'update_left_pannel' => $update_left_pannel,
+            'pj_kills' => $pj_kills,
         ));
     }
 }
