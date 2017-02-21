@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b663c92-7b27-40a7-b810-8ee76ec67493" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/MapController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/MapController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/asset/css/main.css" afterPath="$PROJECT_DIR$/public/asset/css/main.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/map/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/map/show.blade.php" />
     </list>
     <ignored path="hibbo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,7 +46,7 @@
       <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/map/show.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
+            <state relative-caret-position="58">
               <caret line="1227" column="42" lean-forward="true" selection-start-line="1227" selection-start-column="42" selection-end-line="1227" selection-end-column="42" />
               <folding>
                 <marker date="1487692937030" expanded="true" signature="143:210" ph="{...}" />
@@ -65,14 +62,15 @@
       <file leaf-file-name="MapController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MapController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="859" column="86" lean-forward="false" selection-start-line="859" selection-start-column="86" selection-end-line="859" selection-end-column="86" />
+            <state relative-caret-position="780">
+              <caret line="330" column="8" lean-forward="false" selection-start-line="330" selection-start-column="8" selection-end-line="330" selection-end-column="8" />
               <folding>
                 <element signature="e#243#381#0#PHP" expanded="false" />
                 <element signature="e#387#2630#0#PHP" expanded="false" />
-                <element signature="e#16312#23826#0#PHP" expanded="false" />
-                <element signature="e#26773#27412#0#PHP" expanded="false" />
-                <element signature="e#27946#38745#0#PHP" expanded="false" />
+                <element signature="e#3109#12765#0#PHP" expanded="false" />
+                <element signature="e#16372#23886#0#PHP" expanded="false" />
+                <element signature="e#26833#27472#0#PHP" expanded="false" />
+                <element signature="e#28006#38805#0#PHP" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -134,9 +132,10 @@
       <find>$col</find>
       <find>replace</find>
       <find>dead</find>
-      <find>attack</find>
       <find>guillotine</find>
       <find>ground</find>
+      <find>attack</find>
+      <find>turn</find>
     </findStrings>
     <replaceStrings>
       <replace>item_possessed</replace>
@@ -585,12 +584,12 @@
       <workItem from="1487623105236" duration="8034000" />
       <workItem from="1487663407985" duration="7511000" />
       <workItem from="1487681798065" duration="4587000" />
-      <workItem from="1487689914598" duration="3792000" />
+      <workItem from="1487689914598" duration="4129000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="141289000" />
+    <option name="totallyTimeSpent" value="141626000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1064" extended-state="6" />
@@ -972,7 +971,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/map/show.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
+        <state relative-caret-position="58">
           <caret line="1227" column="42" lean-forward="true" selection-start-line="1227" selection-start-column="42" selection-end-line="1227" selection-end-column="42" />
           <folding>
             <marker date="1487692937030" expanded="true" signature="143:210" ph="{...}" />
@@ -986,14 +985,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MapController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="859" column="86" lean-forward="false" selection-start-line="859" selection-start-column="86" selection-end-line="859" selection-end-column="86" />
+        <state relative-caret-position="780">
+          <caret line="330" column="8" lean-forward="false" selection-start-line="330" selection-start-column="8" selection-end-line="330" selection-end-column="8" />
           <folding>
             <element signature="e#243#381#0#PHP" expanded="false" />
             <element signature="e#387#2630#0#PHP" expanded="false" />
-            <element signature="e#16312#23826#0#PHP" expanded="false" />
-            <element signature="e#26773#27412#0#PHP" expanded="false" />
-            <element signature="e#27946#38745#0#PHP" expanded="false" />
+            <element signature="e#3109#12765#0#PHP" expanded="false" />
+            <element signature="e#16372#23886#0#PHP" expanded="false" />
+            <element signature="e#26833#27472#0#PHP" expanded="false" />
+            <element signature="e#28006#38805#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -110,51 +110,6 @@ class MapController extends Controller
         $buffs = session()->get('buffs');
         $pj_kills = session()->get('pj_kills');
         $monster_mv = array();
-        if(!empty($buffs))
-        {
-            if(isset($buffs['pj']['sprint']))
-            {
-                if($buffs['pj']['sprint']>0)
-                {
-                    $buffs['pj']['sprint'] = $buffs['pj']['sprint'] -1;
-                    $pj_stats[0]->mv = 4;
-                }
-                else
-                {
-                    $pj_stats[0]->mv = 2;
-                    $buffs['pj']['sprint'] = null;
-                }
-
-            }
-            if(isset($buffs['pj']['defy_pain']))
-            {
-                if($buffs['pj']['defy_pain']>0)
-                {
-                    $buffs['pj']['defy_pain'] = $buffs['pj']['defy_pain'] -1;
-                    $pj_stats[0]->flat_dd = 350;
-                }
-                else
-                {
-                    $pj_stats[0]->flat_dd = 50;
-                    $buffs['pj']['defy_pain'] = null;
-                }
-
-            }
-            if(isset($buffs['pj']['guillotine']))
-            {
-                if($buffs['pj']['guillotine']>0)
-                {
-                    $buffs['pj']['guillotine'] = $buffs['pj']['guillotine'] - 1;
-                    $pj_stats[0]->damage = 1500;
-                }
-                else
-                {
-                    $pj_stats[0]->damage = 100;
-                    $buffs['pj']['guillotine'] = null;
-                }
-
-            }
-        }
 
         foreach($monster_stats as $id=>$m_stats)
         {
@@ -166,8 +121,9 @@ class MapController extends Controller
                     {
                         $buffs[$id] = $buffs[$id]-1;
                         $m_stats->life = $m_stats->life - 150;
-                        if($m_stats->life<0)
+                        if($m_stats->life<=0)
                         {
+                            $m_stats->armor = 0;
                             $monster_hit[$id] = "dead";
                             $monster_tab[$m_stats['row']][$m_stats['col']] = null;
                             $m_stats = null;
@@ -326,6 +282,53 @@ class MapController extends Controller
         $pj_actions = $map->getClasse(1);
         $pj_stats[0]->mv = $pj_actions->mv;
         $pj_stats[0]->action = $pj_actions->action;
+
+        if(!empty($buffs))
+        {
+            if(isset($buffs['pj']['sprint']))
+            {
+                if($buffs['pj']['sprint']>0)
+                {
+                    $buffs['pj']['sprint'] = $buffs['pj']['sprint'] -1;
+                    $pj_stats[0]->mv = 4;
+                }
+                else
+                {
+                    $pj_stats[0]->mv = 2;
+                    $buffs['pj']['sprint'] = null;
+                }
+
+            }
+            if(isset($buffs['pj']['defy_pain']))
+            {
+                if($buffs['pj']['defy_pain']>0)
+                {
+                    $buffs['pj']['defy_pain'] = $buffs['pj']['defy_pain'] -1;
+                    $pj_stats[0]->flat_dd = 350;
+                }
+                else
+                {
+                    $pj_stats[0]->flat_dd = 50;
+                    $buffs['pj']['defy_pain'] = null;
+                }
+
+            }
+            if(isset($buffs['pj']['guillotine']))
+            {
+                if($buffs['pj']['guillotine']>0)
+                {
+                    $buffs['pj']['guillotine'] = $buffs['pj']['guillotine'] - 1;
+                    $pj_stats[0]->damage = 1500;
+                }
+                else
+                {
+                    $pj_stats[0]->damage = 100;
+                    $buffs['pj']['guillotine'] = null;
+                }
+
+            }
+        }
+        
         session()->put('pj_stats', $pj_stats);
         session()->put('monster_tab', $monster_tab);
         session()->put('monster_stats', $monster_stats);
