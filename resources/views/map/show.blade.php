@@ -70,6 +70,56 @@
                 </table>
             </div>
 
+            <h4>Vos compétences :</h4>
+            <div class="char_skills">
+                <table class='table_stat text-center'>
+                    <tbody>
+                    <tr>
+                        <th> </th>
+                    </tr>
+                    <tr>
+                        @foreach($skills as $key=>$skill)
+                            @if($key<7)
+                                <td>
+                                    <img class='skill' id="sk_{{$key}}" data-toggle="tooltip" src='{{ asset('asset/img/skills/'.$skill->img) }}'
+                                         title="
+                                <table class='table_stat text-center'>
+                                    <tbody>
+                                    <tr>
+                                        <th>Nom </th>
+                                        <th>Description </th>
+                                        <th>Effet bonus </th>
+                                        <th>Coût en mana </th>
+                                        <th>Coût en action </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                             {{ $skill->name }}
+                                                 </td>
+                                                 <td>
+                                                      {{ $skill->description }}
+                                                 </td>
+                                                 <td>
+                                                      {{ $skill->bonus_description }}
+                                                 </td>
+                                                 <td>
+                                                      {{ $skill->cost_mana }}
+                                                 </td>
+                                                 <td>
+                                                      {{ $skill->action }}
+                                                 </td>
+                                             </tr>
+                                             </tbody>
+                                         </table>
+                                         ">
+                                </td>
+                            @endif
+                        @endforeach
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <h4>Vos objets :</h4>
             <div class="char_items">
                 @if(!empty($item_possessed))
@@ -103,56 +153,6 @@
                 @for($i=0;$i<$blue_pot;$i++)
                         <img class="left_pannel_object nblue_potion" data-toggle="tooltip" src="{{ asset('asset/img/equipements/nbluepotion.png') }}" title="Restaure l'énergie à 100%">
                 @endfor
-            </div>
-
-            <h4>Vos compétences :</h4>
-            <div class="char_skills">
-                <table class='table_stat text-center'>
-                    <tbody>
-                    <tr>
-                        <th> </th>
-                    </tr>
-                    <tr>
-                    @foreach($skills as $key=>$skill)
-                        @if($key<7)
-                            <td>
-                                <img class='skill' data-toggle="tooltip" src='{{ asset('asset/img/skills/'.$skill->img) }}'
-                                title="
-                                <table class='table_stat text-center'>
-                                    <tbody>
-                                    <tr>
-                                        <th>Nom </th>
-                                        <th>Description </th>
-                                        <th>Effet bonus </th>
-                                        <th>Coût en mana </th>
-                                        <th>Coût en action </th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                             {{ $skill->name }}
-                                        </td>
-                                        <td>
-                                             {{ $skill->description }}
-                                        </td>
-                                        <td>
-                                             {{ $skill->bonus_description }}
-                                        </td>
-                                        <td>
-                                             {{ $skill->cost_mana }}
-                                        </td>
-                                        <td>
-                                             {{ $skill->action }}
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                ">
-                            </td>
-                        @endif
-                    @endforeach
-                    </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
         <div class="right_pannel col-xs-7 text-center">
@@ -388,7 +388,7 @@
             html: true
         });
 
-        $(document).on("click", '.map_tile,.monster,.red_potion,.blue_potion', function() {
+        $(document).on("click", '.map_tile,.monster,.red_potion,.blue_potion,.skill,.skill_tiles', function() {
             if($(this).hasClass("map_tile"))
             {
                 var fdata = {id:$(this).attr("id")};
@@ -397,10 +397,20 @@
             {
                 var fdata = {item:$(this).attr("id")};
             }
+            else if($(this).hasClass("skill"))
+            {
+                var fdata = {skill:$(this).attr("id")};
+            }
+            else if($(this).hasClass("skill_tiles"))
+            {
+                var fdata = {skill_use:$(this).attr('class').split('skill_tiles st_')};
+            }
             else
             {
                 var fdata = {mid:$(this).attr("id")};
             }
+            $('.skill_tiles').remove();
+            $('.skill_tiles_aoe').remove();
             $.ajax({
                 url:"{{ route('map.action',['map'=>$map]) }}",
                 type: "post",
@@ -445,6 +455,39 @@
                     {
                         update_left_pannel(data['pj_stats'][0]);
                         update_potion_pannel(data['item_possessed'][data['item_possessed'].length-1],data['item_possessed'].length-1);
+                    }
+                    if(data['use_skill'])
+                    {
+                        $.each(data['skill_tiles'], function(key, value) {
+                            $('.m_'+value).before('<div class="skill_tiles st_'+data['skill_used']+'_'+value+'"></div>');
+                        });
+                        $.each(data['skill_tiles_aoe'], function(key, value) {
+                            $('.m_'+value).before('<div class="skill_tiles_aoe"></div>');
+                        });
+                    }
+                    if(data['used_skill'])
+                    {
+                        $.each( data['monster_hit'], function( key, value ) {
+                            if(value == "hit")
+                            {
+                                update_tooltip("m_"+key,data['monster_stats'][key],"monster");
+                            }
+                            if(value == "dead")
+                            {
+                                $('#m_'+key).tooltip('hide');
+                                $('#m_'+key).fadeOut('slow', function(){ $('#m_'+key).remove(); });
+
+                            }
+                        });
+
+                        update_left_pannel(data['pj_stats'][0]);
+
+                        if(data['pj_kills'] == 25)
+                        {
+                            $.each($(".door"), function(key, value) {
+                                $(this).removeClass("door").addClass("ground").attr("src",'{{ asset('asset/img/grass.png') }}');
+                            });
+                        }
                     }
 
                     console.log(data);
@@ -1180,6 +1223,26 @@
                 success: function(data) {
                     console.log(data);
                     update_left_pannel(data['pj_stats'][0]);
+
+                    $.each( data['monster_hit'], function( key, value ) {
+                        if(value == "hit")
+                        {
+                            update_tooltip("m_"+key,data['monster_stats'][key],"monster");
+                        }
+                        if(value == "dead")
+                        {
+                            $('#m_'+key).tooltip('hide');
+                            $('#m_'+key).fadeOut('slow', function(){ $('#m_'+key).remove(); });
+
+                        }
+                    });
+                    if(data['pj_kills'] == 25)
+                    {
+                        $.each($(".door"), function(key, value) {
+                            $(this).removeClass("door").addClass("ground").attr("src",'{{ asset('asset/img/grass.png') }}');
+                        });
+                    }
+
                     $.each( data['monster_mv'], function( key1, value1 ) {
 
                         var direction = "";

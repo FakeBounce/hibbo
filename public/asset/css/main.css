@@ -135,3 +135,26 @@ img.left_pannel_object {
     border-radius: 26px;
     padding-top: 0px;
 }
+
+.skill_tiles {
+    display: inline-block;
+    position: absolute;
+    z-index: 8;
+    height: 34px;
+    width: 34px;
+    margin-left: -4px;
+    background-color: #d61a1a;
+    opacity: 0.4;
+    cursor:pointer;
+}
+
+.skill_tiles_aoe {
+    display: inline-block;
+    position: absolute;
+    z-index: 8;
+    height: 34px;
+    width: 34px;
+    margin-left: -4px;
+    background-color: #1b6d85;
+    opacity: 0.4;
+}

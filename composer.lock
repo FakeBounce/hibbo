@@ -58,7 +58,11 @@
                 "class",
                 "preload"
             ],
+<<<<<<< HEAD
             "time": "2016-09-16T12:50:15+00:00"
+=======
+            "time": "2016-09-16 12:50:15"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -303,7 +307,11 @@
                 "serialize",
                 "tokenizer"
             ],
+<<<<<<< HEAD
             "time": "2016-12-07T09:37:55+00:00"
+=======
+            "time": "2016-12-07 09:37:55"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "laravel/framework",
@@ -516,7 +524,11 @@
                 "sftp",
                 "storage"
             ],
+<<<<<<< HEAD
             "time": "2017-02-09T11:33:58+00:00"
+=======
+            "time": "2017-02-09 11:33:58"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "monolog/monolog",
@@ -594,7 +606,11 @@
                 "logging",
                 "psr-3"
             ],
+<<<<<<< HEAD
             "time": "2016-11-26T00:15:39+00:00"
+=======
+            "time": "2016-11-26 00:15:39"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "mtdowling/cron-expression",
@@ -638,7 +654,11 @@
                 "cron",
                 "schedule"
             ],
+<<<<<<< HEAD
             "time": "2017-01-23T04:29:33+00:00"
+=======
+            "time": "2017-01-23 04:29:33"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "nesbot/carbon",
@@ -691,7 +711,11 @@
                 "datetime",
                 "time"
             ],
+<<<<<<< HEAD
             "time": "2017-01-16T07:55:07+00:00"
+=======
+            "time": "2017-01-16 07:55:07"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "nikic/php-parser",
@@ -837,7 +861,11 @@
                 "psr",
                 "psr-3"
             ],
+<<<<<<< HEAD
             "time": "2016-10-10T12:19:37+00:00"
+=======
+            "time": "2016-10-10 12:19:37"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "psy/psysh",
@@ -963,7 +991,11 @@
                 "mail",
                 "mailer"
             ],
+<<<<<<< HEAD
             "time": "2017-02-13T07:52:53+00:00"
+=======
+            "time": "2017-02-13 07:52:53"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "symfony/console",
@@ -1140,7 +1172,11 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
+<<<<<<< HEAD
             "time": "2017-01-02T20:32:22+00:00"
+=======
+            "time": "2017-01-02 20:32:22"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "symfony/finder",
@@ -1383,7 +1419,11 @@
                 "portable",
                 "shim"
             ],
+<<<<<<< HEAD
             "time": "2016-11-14T01:06:16+00:00"
+=======
+            "time": "2016-11-14 01:06:16"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "symfony/polyfill-php56",
@@ -1439,7 +1479,11 @@
                 "portable",
                 "shim"
             ],
+<<<<<<< HEAD
             "time": "2016-11-14T01:06:16+00:00"
+=======
+            "time": "2016-11-14 01:06:16"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "symfony/polyfill-util",
@@ -1491,7 +1535,11 @@
                 "polyfill",
                 "shim"
             ],
+<<<<<<< HEAD
             "time": "2016-11-14T01:06:16+00:00"
+=======
+            "time": "2016-11-14 01:06:16"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "symfony/process",
@@ -2006,7 +2054,11 @@
                 "test double",
                 "testing"
             ],
+<<<<<<< HEAD
             "time": "2017-02-09T13:29:38+00:00"
+=======
+            "time": "2017-02-09 13:29:38"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -2105,7 +2157,11 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
+<<<<<<< HEAD
             "time": "2016-09-30T07:12:33+00:00"
+=======
+            "time": "2016-09-30 07:12:33"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -2152,7 +2208,11 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
+<<<<<<< HEAD
             "time": "2016-11-25T06:54:22+00:00"
+=======
+            "time": "2016-11-25 06:54:22"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "phpspec/prophecy",
@@ -2215,7 +2275,11 @@
                 "spy",
                 "stub"
             ],
+<<<<<<< HEAD
             "time": "2016-11-21T14:58:47+00:00"
+=======
+            "time": "2016-11-21 14:58:47"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2324,7 +2388,11 @@
                 "filesystem",
                 "iterator"
             ],
+<<<<<<< HEAD
             "time": "2016-10-03T07:40:28+00:00"
+=======
+            "time": "2016-10-03 07:40:28"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "phpunit/php-text-template",
@@ -2458,7 +2526,11 @@
             "keywords": [
                 "tokenizer"
             ],
+<<<<<<< HEAD
             "time": "2016-11-15T14:06:22+00:00"
+=======
+            "time": "2016-11-15 14:06:22"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "phpunit/phpunit",
@@ -2530,7 +2602,11 @@
                 "testing",
                 "xunit"
             ],
+<<<<<<< HEAD
             "time": "2017-02-06T05:18:07+00:00"
+=======
+            "time": "2017-02-06 05:18:07"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2650,7 +2726,11 @@
                 "compare",
                 "equality"
             ],
+<<<<<<< HEAD
             "time": "2017-01-29T09:50:25+00:00"
+=======
+            "time": "2017-01-29 09:50:25"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "sebastian/diff",
@@ -3122,7 +3202,11 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
+<<<<<<< HEAD
             "time": "2017-02-16T22:46:52+00:00"
+=======
+            "time": "2017-02-16 22:46:52"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         },
         {
             "name": "webmozart/assert",
@@ -3172,7 +3256,11 @@
                 "check",
                 "validate"
             ],
+<<<<<<< HEAD
             "time": "2016-11-23T20:04:58+00:00"
+=======
+            "time": "2016-11-23 20:04:58"
+>>>>>>> b7ec6f695026293db79154bb7c8edf9359f530dc
         }
     ],
     "aliases": [],
