@@ -478,6 +478,16 @@
                             movement('pj',data['mv'],data['direction']);
                             update_left_pannel(data['pj_stats'][0]);
                         }
+                        if(data['skill_id'] == 1)
+                        {
+                            $('#pj').attr("src","{{ asset('asset/img/classes/tournoiement.gif') }}");
+                            setTimeout(update_pj_src,500);
+                        }
+                        if(data['skill_id'] == 3 ||data['skill_id'] == 4 ||data['skill_id'] == 5 ||data['skill_id'] == 6)
+                        {
+                            $('#pj').attr("src","{{ asset('asset/img/classes/sante-bas.gif') }}");
+                            setTimeout(update_pj_src,1000);
+                        }
 
                         if(data['pj_kills'] >= 25)
                         {
@@ -507,6 +517,10 @@
                     console.log(jqXHR.responseText);
                 }
             });
+
+            function update_pj_src() {
+                $('#pj').attr("src","{{ asset('asset/img/classes/gface.png') }}");
+            }
         });
 
         function update_potion_pannel(potion,length) {
@@ -1255,6 +1269,8 @@
 
                     if(data['boss_heal'])
                     {
+                        $('#m_23').attr("src","{{ asset('asset/img/monsters/basic_boss_anime.gif') }}");
+                        setTimeout(update_boss_src,1000);
                         update_tooltip("m_23",data['monster_stats'][23],"monster");
                     }
                     setTimeout( enable_endturn,600);
@@ -1269,6 +1285,10 @@
 
             function enable_endturn() {
                 $('.end_turn').disable(false);
+            }
+
+            function update_boss_src() {
+                $('#m_23').attr("src","{{ asset('asset/img/monsters/Basic_Boss.png') }}");
             }
         });
 
