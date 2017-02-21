@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b663c92-7b27-40a7-b810-8ee76ec67493" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/asset/img/classes/anime/tournoiement.gif" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/MapController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/MapController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/asset/css/main.css" afterPath="$PROJECT_DIR$/public/asset/css/main.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/map/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/map/show.blade.php" />
     </list>
     <ignored path="hibbo.iws" />
@@ -33,9 +30,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="2193">
               <caret line="129" column="25" lean-forward="false" selection-start-line="129" selection-start-column="25" selection-end-line="129" selection-end-column="25" />
-              <folding>
-                <marker date="1487708225054" expanded="true" signature="1839:2492" ph="{...}" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -50,45 +45,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/map/show.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="920">
-              <caret line="698" column="21" lean-forward="false" selection-start-line="698" selection-start-column="21" selection-end-line="698" selection-end-column="21" />
+            <state relative-caret-position="-119">
+              <caret line="589" column="13" lean-forward="true" selection-start-line="589" selection-start-column="13" selection-end-line="589" selection-end-column="13" />
               <folding>
-                <marker date="1487708225054" expanded="true" signature="143:210" ph="{...}" />
-                <marker date="1487708225054" expanded="true" signature="54657:56335" ph="{...}" />
-                <marker date="1487708225054" expanded="true" signature="54657:56504" ph="{&quot;url&quot;: &quot;{{ route('map.turn',['map'=&gt;$map]) }}&quot;...}" />
-                <marker date="1487708225054" expanded="true" signature="54657:56516" ph="{...}" />
-                <marker date="1487708225054" expanded="true" signature="54731:56315" ph="{...}" />
-                <marker date="1487708225054" expanded="true" signature="54892:54964" ph="{...}" />
-                <marker date="1487708225054" expanded="true" signature="55084:55156" ph="{...}" />
-                <marker date="1487708225054" expanded="true" signature="55276:55348" ph="{...}" />
-                <marker date="1487708225054" expanded="true" signature="55468:55540" ph="{...}" />
-                <marker date="1487708225054" expanded="true" signature="55855:56293" ph="/*...*/" />
-                <marker date="1487708225054" expanded="true" signature="56375:56490" ph="{...}" />
-                <marker date="1487708225054" expanded="true" signature="56557:56629" ph="{...}" />
+                <marker date="1487715313424" expanded="true" signature="143:210" ph="{...}" />
+                <marker date="1487715313424" expanded="true" signature="8486:8769" ph="{...}" />
+                <marker date="1487715313424" expanded="true" signature="8556:8747" ph="{...}" />
+                <marker date="1487715313424" expanded="true" signature="8864:9483" ph="{...}" />
+                <marker date="1487715313424" expanded="true" signature="8932:9365" ph="{...}" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="workspace.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4250">
-              <caret line="250" column="20" lean-forward="false" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -106,9 +74,25 @@
       <file leaf-file-name="MapController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MapController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9860">
-              <caret line="586" column="173" lean-forward="false" selection-start-line="586" selection-start-column="173" selection-end-line="586" selection-end-column="173" />
-              <folding />
+            <state relative-caret-position="476">
+              <caret line="1222" column="40" lean-forward="false" selection-start-line="1222" selection-start-column="40" selection-end-line="1222" selection-end-column="40" />
+              <folding>
+                <element signature="e#387#2665#0#PHP" expanded="false" />
+                <element signature="e#2671#15999#0#PHP" expanded="false" />
+                <element signature="e#17375#24889#0#PHP" expanded="false" />
+                <element signature="e#24899#27826#0#PHP" expanded="false" />
+                <element signature="e#27836#28475#0#PHP" expanded="false" />
+                <element signature="e#28485#40083#0#PHP" expanded="false" />
+                <element signature="e#40508#47543#0#PHP" expanded="false" />
+                <element signature="e#47710#54835#0#PHP" expanded="false" />
+                <element signature="e#55002#62125#0#PHP" expanded="false" />
+                <element signature="e#69619#72580#0#PHP" expanded="false" />
+                <element signature="e#72597#73144#0#PHP" expanded="false" />
+                <element signature="e#73161#73626#0#PHP" expanded="false" />
+                <element signature="e#73643#74027#0#PHP" expanded="false" />
+                <element signature="e#74044#74536#0#PHP" expanded="false" />
+                <element signature="e#74553#75042#0#PHP" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -145,9 +129,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>update_left_pannel</find>
-      <find>Actions</find>
-      <find>Action</find>
       <find>var_dump</find>
       <find>update_tooltip</find>
       <find>route</find>
@@ -166,10 +147,33 @@
       <find>attack</find>
       <find>dead</find>
       <find>attack(</find>
+      <find>if($pj_kills == 25)</find>
+      <find>if($pj_kills ==</find>
+      <find>$pj_kills ==</find>
+      <find>$pj_kills</find>
+      <find>$boss_heal</find>
+      <find>$col</find>
+      <find>$col+$k</find>
+      <find>$k&lt;5</find>
+      <find>$k = 1</find>
+      <find>if($k == 1)</find>
+      <find>pj_kills</find>
+      <find>$used_skill</find>
     </findStrings>
     <replaceStrings>
       <replace>item_possessed</replace>
       <replace>'</replace>
+      <replace>if($pj_kills == 1)</replace>
+      <replace>$row+$k</replace>
+      <replace>$col</replace>
+      <replace>$col+$k</replace>
+      <replace>$col-$k</replace>
+      <replace>$row-$k</replace>
+      <replace>$row</replace>
+      <replace>$k&lt;4</replace>
+      <replace>$k = 0</replace>
+      <replace>if($pj_kills == 2)</replace>
+      <replace>if($k == 0)</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -217,11 +221,11 @@
         <option value="$PROJECT_DIR$/database/seeds/SkillTableSeeder.php" />
         <option value="$PROJECT_DIR$/database/migrations/2016_09_10_140010_create_skills_table.php" />
         <option value="$PROJECT_DIR$/public/asset/css/main.css" />
-        <option value="$PROJECT_DIR$/resources/views/map/show.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/MapController.php" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/MapController.php" />
+        <option value="$PROJECT_DIR$/resources/views/map/show.blade.php" />
       </list>
     </option>
   </component>
@@ -248,7 +252,7 @@
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
-    <option name="height" value="1066" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -268,8 +272,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -468,6 +470,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -587,14 +591,15 @@
       <workItem from="1487623105236" duration="8034000" />
       <workItem from="1487682671356" duration="857000" />
       <workItem from="1487707795010" duration="609000" />
+      <workItem from="1487709393088" duration="5921000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="126865000" />
+    <option name="totallyTimeSpent" value="132786000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -602,6 +607,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -614,7 +620,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -656,7 +661,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="7" />
+      <option name="time" value="8" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -924,9 +929,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2193">
           <caret line="129" column="25" lean-forward="false" selection-start-line="129" selection-start-column="25" selection-end-line="129" selection-end-column="25" />
-          <folding>
-            <marker date="1487708225054" expanded="true" signature="1839:2492" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -938,39 +941,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/map/show.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="920">
-          <caret line="698" column="21" lean-forward="false" selection-start-line="698" selection-start-column="21" selection-end-line="698" selection-end-column="21" />
-          <folding>
-            <marker date="1487708225054" expanded="true" signature="143:210" ph="{...}" />
-            <marker date="1487708225054" expanded="true" signature="54657:56335" ph="{...}" />
-            <marker date="1487708225054" expanded="true" signature="54657:56504" ph="{&quot;url&quot;: &quot;{{ route('map.turn',['map'=&gt;$map]) }}&quot;...}" />
-            <marker date="1487708225054" expanded="true" signature="54657:56516" ph="{...}" />
-            <marker date="1487708225054" expanded="true" signature="54731:56315" ph="{...}" />
-            <marker date="1487708225054" expanded="true" signature="54892:54964" ph="{...}" />
-            <marker date="1487708225054" expanded="true" signature="55084:55156" ph="{...}" />
-            <marker date="1487708225054" expanded="true" signature="55276:55348" ph="{...}" />
-            <marker date="1487708225054" expanded="true" signature="55468:55540" ph="{...}" />
-            <marker date="1487708225054" expanded="true" signature="55855:56293" ph="/*...*/" />
-            <marker date="1487708225054" expanded="true" signature="56375:56490" ph="{...}" />
-            <marker date="1487708225054" expanded="true" signature="56557:56629" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Classe.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="1" lean-forward="false" selection-start-line="7" selection-start-column="1" selection-end-line="23" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MapController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9860">
-          <caret line="586" column="173" lean-forward="false" selection-start-line="586" selection-start-column="173" selection-end-line="586" selection-end-column="173" />
           <folding />
         </state>
       </provider>
@@ -991,6 +965,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="858">
+          <caret line="250" column="20" lean-forward="false" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -999,11 +981,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MapController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4250">
-          <caret line="250" column="20" lean-forward="false" selection-start-line="250" selection-start-column="20" selection-end-line="250" selection-end-column="20" />
-          <folding />
+        <state relative-caret-position="476">
+          <caret line="1222" column="40" lean-forward="false" selection-start-line="1222" selection-start-column="40" selection-end-line="1222" selection-end-column="40" />
+          <folding>
+            <element signature="e#387#2665#0#PHP" expanded="false" />
+            <element signature="e#2671#15999#0#PHP" expanded="false" />
+            <element signature="e#17375#24889#0#PHP" expanded="false" />
+            <element signature="e#24899#27826#0#PHP" expanded="false" />
+            <element signature="e#27836#28475#0#PHP" expanded="false" />
+            <element signature="e#28485#40083#0#PHP" expanded="false" />
+            <element signature="e#40508#47543#0#PHP" expanded="false" />
+            <element signature="e#47710#54835#0#PHP" expanded="false" />
+            <element signature="e#55002#62125#0#PHP" expanded="false" />
+            <element signature="e#69619#72580#0#PHP" expanded="false" />
+            <element signature="e#72597#73144#0#PHP" expanded="false" />
+            <element signature="e#73161#73626#0#PHP" expanded="false" />
+            <element signature="e#73643#74027#0#PHP" expanded="false" />
+            <element signature="e#74044#74536#0#PHP" expanded="false" />
+            <element signature="e#74553#75042#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/map/show.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-119">
+          <caret line="589" column="13" lean-forward="true" selection-start-line="589" selection-start-column="13" selection-end-line="589" selection-end-column="13" />
+          <folding>
+            <marker date="1487715313424" expanded="true" signature="143:210" ph="{...}" />
+            <marker date="1487715313424" expanded="true" signature="8486:8769" ph="{...}" />
+            <marker date="1487715313424" expanded="true" signature="8556:8747" ph="{...}" />
+            <marker date="1487715313424" expanded="true" signature="8864:9483" ph="{...}" />
+            <marker date="1487715313424" expanded="true" signature="8932:9365" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -93,6 +93,7 @@ class MapController extends Controller
             "monster_stats"=>$monster_stats,
             "item_possessed"=>$item_possessed,
             "pj_stats"=>$pj_stats,
+            "pj_kills"=>$pj_kills,
             "skills"=>$skills,
             "buffs"=>$buffs
         ]);
@@ -110,6 +111,7 @@ class MapController extends Controller
         $buffs = session()->get('buffs');
         $pj_kills = session()->get('pj_kills');
         $monster_mv = array();
+        $boss_heal = false;
 
         foreach($monster_stats as $id=>$m_stats)
         {
@@ -126,9 +128,10 @@ class MapController extends Controller
                             $m_stats->armor = 0;
                             $monster_hit[$id] = "dead";
                             $monster_tab[$m_stats['row']][$m_stats['col']] = null;
-                            $m_stats = null;
+                            $monster_stats[$id] = null;
+                            $buffs[$id] = 0;
                             $pj_kills++;
-                            if($pj_kills == 25)
+                            if($pj_kills >= 25)
                             {
                                 $map_tab[5][11] = $map->getMap_tile(2);
                                 $map_tab[6][11] = $map->getMap_tile(2);
@@ -273,6 +276,28 @@ class MapController extends Controller
                 }
             }
         }
+        if(isset($monster_stats[17]) && $monster_stats[17] != null)
+        {
+            if(isset($monster_stats[23]) && $monster_stats[23] != null)
+            {
+                if($monster_stats[23]->life <= 9900)
+                {
+                    $monster_stats[23]->life = $monster_stats[23]->life +100;
+                    $boss_heal = true;
+                }
+            }
+        }
+        if(isset($monster_stats[27]) && $monster_stats[27] != null)
+        {
+            if(isset($monster_stats[23]) && $monster_stats[23] != null)
+            {
+                if($monster_stats[23]->life <= 9900)
+                {
+                    $monster_stats[23]->life = $monster_stats[23]->life +100;
+                    $boss_heal = true;
+                }
+            }
+        }
 
         if($pj_stats[0]->life <=0)
         {
@@ -344,6 +369,7 @@ class MapController extends Controller
             'monster_hit' => $monster_hit,
             'pj_kills' => $pj_kills,
             'buffs' => $buffs,
+            'boss_heal' => $boss_heal,
         ));
     }
 
@@ -370,6 +396,8 @@ class MapController extends Controller
         $use_skill = false;
         $used_skill = false;
         $skill_used = false;
+        $wall_destroyed = false;
+        $skill_id = -1;
 
         if(session()->has('skill_tiles'))
             $skill_tiles = session()->get('skill_tiles');
@@ -599,7 +627,7 @@ class MapController extends Controller
                         $monster_stats[$monster_tab[$row][$col]] = null;
                         $monster_tab[$row][$col] = null;
                         $pj_kills++;
-                        if($pj_kills == 25)
+                        if($pj_kills >= 25)
                         {
                             $map_tab[5][11] = $map->getMap_tile(2);
                             $map_tab[6][11] = $map->getMap_tile(2);
@@ -843,6 +871,472 @@ class MapController extends Controller
             switch($skill_id)
             {
                 case 0:
+                    if($row> $pj_stats[0]['row'])
+                    {
+                        $direction = "d";
+                        for($k = 0;$k<4;$k++)
+                        {
+                            if($k == 0)
+                            {
+                                if($monster_tab[$row+$k][$col] != null && $map_tab[$row+$k][$col]->type == 'ground')
+                                {
+                                    if ($monster_stats[$monster_tab[$row + $k][$col]]->armor > 0)
+                                    {
+                                        $monster_stats[$monster_tab[$row + $k][$col]]->armor = $monster_stats[$monster_tab[$row + $k][$col]]->armor - 3000;
+                                        if ($monster_stats[$monster_tab[$row + $k][$col]]->armor <= 0)
+                                        {
+                                            $monster_stats[$monster_tab[$row + $k][$col]]->life = $monster_stats[$monster_tab[$row + $k][$col]]->life + $monster_stats[$monster_tab[$row + $k][$col]]->armor;
+                                            $monster_stats[$monster_tab[$row + $k][$col]]->armor = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_stats[$monster_tab[$row + $k][$col]]->life = $monster_stats[$monster_tab[$row + $k][$col]]->life - 3000;
+                                    }
+                                    if ($monster_stats[$monster_tab[$row + $k][$col]]->life <= 0)
+                                    {
+                                        $monster_hit[$monster_tab[$row + $k][$col]] = "dead";
+                                        $monster_stats[$monster_tab[$row + $k][$col]] = null;
+                                        $monster_tab[$row + $k][$col] = null;
+                                        $pj_kills++;
+                                        $mv++;
+                                        $pj_stats[0]['row'] = $row+$k;
+                                        $pj_stats[0]['col'] = $col;
+                                        if ($pj_kills >= 25)
+                                        {
+                                            $map_tab[5][11] = $map->getMap_tile(2);
+                                            $map_tab[6][11] = $map->getMap_tile(2);
+                                            $map_tab[7][11] = $map->getMap_tile(2);
+                                            session()->put('map_tab', $map_tab);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_hit[$monster_tab[$row + $k][$col]] = "hit";
+                                        break;
+                                    }
+                                }
+                                else if($map_tab[$row+$k][$col]->type == 'ground')
+                                {
+                                    $mv++;
+                                    $pj_stats[0]['row'] = $row+$k;
+                                    $pj_stats[0]['col'] = $col;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if($monster_tab[$row+$k][$col] != null && ($map_tab[$row+$k][$col]->type == 'ground' || $map_tab[$row+$k][$col]->break == 1))
+                                {
+                                    if ($monster_stats[$monster_tab[$row + $k][$col]]->armor > 0)
+                                    {
+                                        $monster_stats[$monster_tab[$row + $k][$col]]->armor = $monster_stats[$monster_tab[$row + $k][$col]]->armor - 3000;
+                                        if ($monster_stats[$monster_tab[$row + $k][$col]]->armor <= 0)
+                                        {
+                                            $monster_stats[$monster_tab[$row + $k][$col]]->life = $monster_stats[$monster_tab[$row + $k][$col]]->life + $monster_stats[$monster_tab[$row + $k][$col]]->armor;
+                                            $monster_stats[$monster_tab[$row + $k][$col]]->armor = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_stats[$monster_tab[$row + $k][$col]]->life = $monster_stats[$monster_tab[$row + $k][$col]]->life - 3000;
+                                    }
+                                    if ($monster_stats[$monster_tab[$row + $k][$col]]->life <= 0)
+                                    {
+                                        $monster_hit[$monster_tab[$row + $k][$col]] = "dead";
+                                        $monster_stats[$monster_tab[$row + $k][$col]] = null;
+                                        $monster_tab[$row + $k][$col] = null;
+                                        $pj_kills++;
+                                        $mv++;
+                                        $pj_stats[0]['row'] = $row+$k;
+                                        $pj_stats[0]['col'] = $col;
+                                        if ($pj_kills >= 25)
+                                        {
+                                            $map_tab[5][11] = $map->getMap_tile(2);
+                                            $map_tab[6][11] = $map->getMap_tile(2);
+                                            $map_tab[7][11] = $map->getMap_tile(2);
+                                            session()->put('map_tab', $map_tab);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_hit[$monster_tab[$row + $k][$col]] = "hit";
+                                        break;
+                                    }
+                                }
+                                else if($map_tab[$row+$k][$col]->type == 'ground' || $map_tab[$row+$k][$col]->break == 1)
+                                {
+                                    $mv++;
+                                    $pj_stats[0]['row'] = $row+$k;
+                                    $pj_stats[0]['col'] = $col;
+                                }
+                                if($map_tab[$row+$k][$col]->break == 1)
+                                {
+                                    $map_tab[5][11] = $map->getMap_tile(2);
+                                    $map_tab[6][11] = $map->getMap_tile(2);
+                                    $map_tab[7][11] = $map->getMap_tile(2);
+                                    $wall_destroyed = true;
+                                    session()->put('map_tab', $map_tab);
+                                }
+                            }
+                        }
+                    }
+                    else if($row < $pj_stats[0]['row'])
+                    {
+                        $direction = "u";
+                        for($k = 0;$k<4;$k++)
+                        {
+                            if($k == 0)
+                            {
+                                if($monster_tab[$row-$k][$col] != null && $map_tab[$row-$k][$col]->type == 'ground')
+                                {
+                                    if ($monster_stats[$monster_tab[$row-$k][$col]]->armor > 0)
+                                    {
+                                        $monster_stats[$monster_tab[$row-$k][$col]]->armor = $monster_stats[$monster_tab[$row-$k][$col]]->armor - 3000;
+                                        if ($monster_stats[$monster_tab[$row-$k][$col]]->armor <= 0)
+                                        {
+                                            $monster_stats[$monster_tab[$row-$k][$col]]->life = $monster_stats[$monster_tab[$row-$k][$col]]->life + $monster_stats[$monster_tab[$row-$k][$col]]->armor;
+                                            $monster_stats[$monster_tab[$row-$k][$col]]->armor = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_stats[$monster_tab[$row-$k][$col]]->life = $monster_stats[$monster_tab[$row-$k][$col]]->life - 3000;
+                                    }
+                                    if ($monster_stats[$monster_tab[$row-$k][$col]]->life <= 0)
+                                    {
+                                        $monster_hit[$monster_tab[$row-$k][$col]] = "dead";
+                                        $monster_stats[$monster_tab[$row-$k][$col]] = null;
+                                        $monster_tab[$row-$k][$col] = null;
+                                        $pj_kills++;
+                                        $mv++;
+                                        $pj_stats[0]['row'] = $row-$k;
+                                        $pj_stats[0]['col'] = $col;
+                                        if ($pj_kills >= 25)
+                                        {
+                                            $map_tab[5][11] = $map->getMap_tile(2);
+                                            $map_tab[6][11] = $map->getMap_tile(2);
+                                            $map_tab[7][11] = $map->getMap_tile(2);
+                                            session()->put('map_tab', $map_tab);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_hit[$monster_tab[$row - $k][$col]] = "hit";
+                                        break;
+                                    }
+                                }
+                                else if($map_tab[$row-$k][$col]->type == 'ground')
+                                {
+                                    $mv++;
+                                    $pj_stats[0]['row'] = $row-$k;
+                                    $pj_stats[0]['col'] = $col;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if($monster_tab[$row-$k][$col] != null && ($map_tab[$row-$k][$col]->type == 'ground' || $map_tab[$row-$k][$col]->break == 1))
+                                {
+                                    if ($monster_stats[$monster_tab[$row-$k][$col]]->armor > 0)
+                                    {
+                                        $monster_stats[$monster_tab[$row-$k][$col]]->armor = $monster_stats[$monster_tab[$row-$k][$col]]->armor - 3000;
+                                        if ($monster_stats[$monster_tab[$row-$k][$col]]->armor <= 0)
+                                        {
+                                            $monster_stats[$monster_tab[$row-$k][$col]]->life = $monster_stats[$monster_tab[$row-$k][$col]]->life + $monster_stats[$monster_tab[$row-$k][$col]]->armor;
+                                            $monster_stats[$monster_tab[$row-$k][$col]]->armor = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_stats[$monster_tab[$row-$k][$col]]->life = $monster_stats[$monster_tab[$row-$k][$col]]->life - 3000;
+                                    }
+                                    if ($monster_stats[$monster_tab[$row-$k][$col]]->life <= 0)
+                                    {
+                                        $monster_hit[$monster_tab[$row-$k][$col]] = "dead";
+                                        $monster_stats[$monster_tab[$row-$k][$col]] = null;
+                                        $monster_tab[$row-$k][$col] = null;
+                                        $pj_kills++;
+                                        $mv++;
+                                        $pj_stats[0]['row'] = $row-$k;
+                                        $pj_stats[0]['col'] = $col;
+                                        if ($pj_kills >= 25)
+                                        {
+                                            $map_tab[5][11] = $map->getMap_tile(2);
+                                            $map_tab[6][11] = $map->getMap_tile(2);
+                                            $map_tab[7][11] = $map->getMap_tile(2);
+                                            session()->put('map_tab', $map_tab);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_hit[$monster_tab[$row-$k][$col]] = "hit";
+                                        break;
+                                    }
+                                }
+                                else if($map_tab[$row-$k][$col]->type == 'ground' || $map_tab[$row-$k][$col]->break == 1)
+                                {
+                                    $mv++;
+                                    $pj_stats[0]['row'] = $row-$k;
+                                    $pj_stats[0]['col'] = $col;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                                if($map_tab[$row-$k][$col]->break == 1)
+                                {
+                                    $map_tab[5][11] = $map->getMap_tile(2);
+                                    $map_tab[6][11] = $map->getMap_tile(2);
+                                    $map_tab[7][11] = $map->getMap_tile(2);
+                                    $wall_destroyed = true;
+                                    session()->put('map_tab', $map_tab);
+                                }
+                            }
+                        }
+                    }
+                    else if($col > $pj_stats[0]['col'])
+                    {
+                        $direction = "r";
+                        for($k = 0;$k<4;$k++)
+                        {
+                            if($k == 0)
+                            {
+                                if($monster_tab[$row][$col+$k] != null && $map_tab[$row][$col+$k]->type == 'ground')
+                                {
+                                    if ($monster_stats[$monster_tab[$row][$col+$k]]->armor > 0)
+                                    {
+                                        $monster_stats[$monster_tab[$row][$col+$k]]->armor = $monster_stats[$monster_tab[$row][$col+$k]]->armor - 3000;
+                                        if ($monster_stats[$monster_tab[$row][$col+$k]]->armor <= 0)
+                                        {
+                                            $monster_stats[$monster_tab[$row][$col+$k]]->life = $monster_stats[$monster_tab[$row][$col+$k]]->life + $monster_stats[$monster_tab[$row][$col+$k]]->armor;
+                                            $monster_stats[$monster_tab[$row][$col+$k]]->armor = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_stats[$monster_tab[$row][$col+$k]]->life = $monster_stats[$monster_tab[$row][$col+$k]]->life - 3000;
+                                    }
+                                    if ($monster_stats[$monster_tab[$row][$col+$k]]->life <= 0)
+                                    {
+                                        $monster_hit[$monster_tab[$row][$col+$k]] = "dead";
+                                        $monster_stats[$monster_tab[$row][$col+$k]] = null;
+                                        $monster_tab[$row][$col+$k] = null;
+                                        $pj_kills++;
+                                        $mv++;
+                                        $pj_stats[0]['row'] = $row;
+                                        $pj_stats[0]['col'] = $col+$k;
+                                        if ($pj_kills >= 25)
+                                        {
+                                            $map_tab[5][11] = $map->getMap_tile(2);
+                                            $map_tab[6][11] = $map->getMap_tile(2);
+                                            $map_tab[7][11] = $map->getMap_tile(2);
+                                            session()->put('map_tab', $map_tab);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_hit[$monster_tab[$row][$col+$k]] = "hit";
+                                        break;
+                                    }
+                                }
+                                else if($map_tab[$row][$col+$k]->type == 'ground')
+                                {
+                                    $mv++;
+                                    $pj_stats[0]['row'] = $row;
+                                    $pj_stats[0]['col'] = $col+$k;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if($monster_tab[$row][$col+$k] != null && ($map_tab[$row][$col+$k]->type == 'ground' || $map_tab[$row][$col+$k]->break == 1))
+                                {
+                                    if ($monster_stats[$monster_tab[$row][$col+$k]]->armor > 0)
+                                    {
+                                        $monster_stats[$monster_tab[$row][$col+$k]]->armor = $monster_stats[$monster_tab[$row][$col+$k]]->armor - 3000;
+                                        if ($monster_stats[$monster_tab[$row][$col+$k]]->armor <= 0)
+                                        {
+                                            $monster_stats[$monster_tab[$row][$col+$k]]->life = $monster_stats[$monster_tab[$row][$col+$k]]->life + $monster_stats[$monster_tab[$row][$col+$k]]->armor;
+                                            $monster_stats[$monster_tab[$row][$col+$k]]->armor = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_stats[$monster_tab[$row][$col+$k]]->life = $monster_stats[$monster_tab[$row][$col+$k]]->life - 3000;
+                                    }
+                                    if ($monster_stats[$monster_tab[$row][$col+$k]]->life <= 0)
+                                    {
+                                        $monster_hit[$monster_tab[$row][$col+$k]] = "dead";
+                                        $monster_stats[$monster_tab[$row][$col+$k]] = null;
+                                        $monster_tab[$row][$col+$k] = null;
+                                        $pj_kills++;
+                                        $mv++;
+                                        $pj_stats[0]['row'] = $row;
+                                        $pj_stats[0]['col'] = $col+$k;
+                                        if ($pj_kills >= 25)
+                                        {
+                                            $map_tab[5][11] = $map->getMap_tile(2);
+                                            $map_tab[6][11] = $map->getMap_tile(2);
+                                            $map_tab[7][11] = $map->getMap_tile(2);
+                                            session()->put('map_tab', $map_tab);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_hit[$monster_tab[$row][$col+$k]] = "hit";
+                                        break;
+                                    }
+                                }
+                                else if($map_tab[$row][$col+$k]->type == 'ground' || $map_tab[$row][$col+$k]->break == 1)
+                                {
+                                    $mv++;
+                                    $pj_stats[0]['row'] = $row;
+                                    $pj_stats[0]['col'] = $col+$k;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                                if($map_tab[$row][$col+$k]->break == 1)
+                                {
+                                    $map_tab[5][11] = $map->getMap_tile(2);
+                                    $map_tab[6][11] = $map->getMap_tile(2);
+                                    $map_tab[7][11] = $map->getMap_tile(2);
+                                    $wall_destroyed = true;
+                                    session()->put('map_tab', $map_tab);
+                                }
+                            }
+                        }
+                    }
+                    else if($col < $pj_stats[0]['col'])
+                    {
+                        $direction = "l";
+                        for($k = 0;$k<4;$k++)
+                        {
+                            if($k == 0)
+                            {
+                                if($monster_tab[$row][$col-$k] != null && $map_tab[$row][$col-$k]->type == 'ground')
+                                {
+                                    if ($monster_stats[$monster_tab[$row][$col-$k]]->armor > 0)
+                                    {
+                                        $monster_stats[$monster_tab[$row][$col-$k]]->armor = $monster_stats[$monster_tab[$row][$col-$k]]->armor - 3000;
+                                        if ($monster_stats[$monster_tab[$row][$col-$k]]->armor <= 0)
+                                        {
+                                            $monster_stats[$monster_tab[$row][$col-$k]]->life = $monster_stats[$monster_tab[$row][$col-$k]]->life + $monster_stats[$monster_tab[$row][$col-$k]]->armor;
+                                            $monster_stats[$monster_tab[$row][$col-$k]]->armor = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_stats[$monster_tab[$row][$col-$k]]->life = $monster_stats[$monster_tab[$row][$col-$k]]->life - 3000;
+                                    }
+                                    if ($monster_stats[$monster_tab[$row][$col-$k]]->life <= 0)
+                                    {
+                                        $monster_hit[$monster_tab[$row][$col-$k]] = "dead";
+                                        $monster_stats[$monster_tab[$row][$col-$k]] = null;
+                                        $monster_tab[$row][$col-$k] = null;
+                                        $pj_kills++;
+                                        $mv++;
+                                        $pj_stats[0]['row'] = $row;
+                                        $pj_stats[0]['col'] = $col-$k;
+                                        if ($pj_kills >= 25)
+                                        {
+                                            $map_tab[5][11] = $map->getMap_tile(2);
+                                            $map_tab[6][11] = $map->getMap_tile(2);
+                                            $map_tab[7][11] = $map->getMap_tile(2);
+                                            session()->put('map_tab', $map_tab);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_hit[$monster_tab[$row][$col-$k]] = "hit";
+                                        break;
+                                    }
+                                }
+                                else if($map_tab[$row][$col-$k]->type == 'ground')
+                                {
+                                    $mv++;
+                                    $pj_stats[0]['row'] = $row;
+                                    $pj_stats[0]['col'] = $col-$k;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if($monster_tab[$row][$col-$k] != null && ($map_tab[$row][$col-$k]->type == 'ground' || $map_tab[$row][$col-$k]->break == 1))
+                                {
+                                    if ($monster_stats[$monster_tab[$row][$col-$k]]->armor > 0)
+                                    {
+                                        $monster_stats[$monster_tab[$row][$col-$k]]->armor = $monster_stats[$monster_tab[$row][$col-$k]]->armor - 3000;
+                                        if ($monster_stats[$monster_tab[$row][$col-$k]]->armor <= 0)
+                                        {
+                                            $monster_stats[$monster_tab[$row][$col-$k]]->life = $monster_stats[$monster_tab[$row][$col-$k]]->life + $monster_stats[$monster_tab[$row][$col-$k]]->armor;
+                                            $monster_stats[$monster_tab[$row][$col-$k]]->armor = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_stats[$monster_tab[$row][$col-$k]]->life = $monster_stats[$monster_tab[$row][$col-$k]]->life - 3000;
+                                    }
+                                    if ($monster_stats[$monster_tab[$row][$col-$k]]->life <= 0)
+                                    {
+                                        $monster_hit[$monster_tab[$row][$col-$k]] = "dead";
+                                        $monster_stats[$monster_tab[$row][$col-$k]] = null;
+                                        $monster_tab[$row][$col-$k] = null;
+                                        $pj_kills++;
+                                        $mv++;
+                                        $pj_stats[0]['row'] = $row;
+                                        $pj_stats[0]['col'] = $col-$k;
+                                        if ($pj_kills >= 25)
+                                        {
+                                            $map_tab[5][11] = $map->getMap_tile(2);
+                                            $map_tab[6][11] = $map->getMap_tile(2);
+                                            $map_tab[7][11] = $map->getMap_tile(2);
+                                            session()->put('map_tab', $map_tab);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $monster_hit[$monster_tab[$row][$col-$k]] = "hit";
+                                        break;
+                                    }
+                                }
+                                else if($map_tab[$row][$col-$k]->type == 'ground' || $map_tab[$row][$col-$k]->break == 1)
+                                {
+                                    $mv++;
+                                    $pj_stats[0]['row'] = $row;
+                                    $pj_stats[0]['col'] = $col-$k;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                                if($map_tab[$row][$col-$k]->break == 1)
+                                {
+                                    $map_tab[5][11] = $map->getMap_tile(2);
+                                    $map_tab[6][11] = $map->getMap_tile(2);
+                                    $map_tab[7][11] = $map->getMap_tile(2);
+                                    $wall_destroyed = true;
+                                    session()->put('map_tab', $map_tab);
+                                }
+                            }
+                        }
+                    }
+                    $pj_stats[0]->mana = $pj_stats[0]->mana - 1000;
+                    $pj_stats[0]->action = $pj_stats[0]->action - 10;
                     break;
                 case 1:
                     if(!empty($skill_tiles_aoe))
@@ -873,7 +1367,7 @@ class MapController extends Controller
                                     $monster_stats[$monster_tab[$aoe_row][$aoe_col]] = null;
                                     $monster_tab[$aoe_row][$aoe_col] = null;
                                     $pj_kills++;
-                                    if($pj_kills == 25)
+                                    if($pj_kills >= 25)
                                     {
                                         $map_tab[5][11] = $map->getMap_tile(2);
                                         $map_tab[6][11] = $map->getMap_tile(2);
@@ -954,17 +1448,21 @@ class MapController extends Controller
                     break;
             }
 
-            session()->put('pj_stats', $pj_stats);
-            session()->put('monster_tab', $monster_tab);
-            session()->put('monster_stats', $monster_stats);
-            session()->put('buffs', $buffs);
-
             $skill_tiles_aoe = array();
             $skill_tiles = array();
-            session()->put('skill_tiles_aoe', $skill_tiles_aoe);
-            session()->put('skill_tiles', $skill_tiles);
             $used_skill = true;
         }
+
+
+
+        session()->put('pj_stats', $pj_stats);
+        session()->put('monster_tab', $monster_tab);
+        session()->put('monster_stats', $monster_stats);
+        session()->put('buffs', $buffs);
+        session()->put('pj_kills', $pj_kills);
+        session()->put('skill_tiles_aoe', $skill_tiles_aoe);
+        session()->put('skill_tiles', $skill_tiles);
+
         return \Response::json(array(
             'success' => true,
             'movable' => $movable,
@@ -982,7 +1480,9 @@ class MapController extends Controller
             'skill_tiles_aoe' => $skill_tiles_aoe,
             'skill_used' => $skill_used,
             'used_skill' => $used_skill,
+            'skill_id' => $skill_id,
             'buffs' => $buffs,
+            'wall_destroyed' => $wall_destroyed,
         ));
     }
 }
