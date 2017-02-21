@@ -62,8 +62,17 @@ class MapController extends Controller
             $pj_kills = session()->get('pj_kills');
         else
         {
-        $pj_kills = 0;
-        session()->put('pj_kills', $pj_kills);
+            $pj_kills = 0;
+            session()->put('pj_kills', $pj_kills);
+        }
+
+        if(session()->has('buffs'))
+            $buffs = session()->get('buffs');
+        else
+        {
+            $buffs = array();
+            $buffs['pj'] = array();
+            session()->put('buffs', $buffs);
         }
 
 
@@ -84,7 +93,8 @@ class MapController extends Controller
             "monster_stats"=>$monster_stats,
             "item_possessed"=>$item_possessed,
             "pj_stats"=>$pj_stats,
-            "skills"=>$skills
+            "skills"=>$skills,
+            "buffs"=>$buffs
         ]);
     }
 
@@ -94,14 +104,89 @@ class MapController extends Controller
         $map_tab = session()->get('map_tab');
         $monster_tab = session()->get('monster_tab');
         //$item_tab = session()->get('item_tab');
+        $monster_hit = array();
         $monster_stats = session()->get('monster_stats');
         $pj_stats = session()->get('pj_stats');
+        $buffs = session()->get('buffs');
+        $pj_kills = session()->get('pj_kills');
         $monster_mv = array();
+        if(!empty($buffs))
+        {
+            if(isset($buffs['pj']['sprint']))
+            {
+                if($buffs['pj']['sprint']>0)
+                {
+                    $buffs['pj']['sprint'] = $buffs['pj']['sprint'] -1;
+                    $pj_stats[0]->mv = 4;
+                }
+                else
+                {
+                    $pj_stats[0]->mv = 2;
+                    $buffs['pj']['sprint'] = null;
+                }
+
+            }
+            if(isset($buffs['pj']['defy_pain']))
+            {
+                if($buffs['pj']['defy_pain']>0)
+                {
+                    $buffs['pj']['defy_pain'] = $buffs['pj']['defy_pain'] -1;
+                    $pj_stats[0]->flat_dd = 350;
+                }
+                else
+                {
+                    $pj_stats[0]->flat_dd = 50;
+                    $buffs['pj']['defy_pain'] = null;
+                }
+
+            }
+            if(isset($buffs['pj']['guillotine']))
+            {
+                if($buffs['pj']['guillotine']>0)
+                {
+                    $buffs['pj']['guillotine'] = $buffs['pj']['guillotine'] - 1;
+                    $pj_stats[0]->damage = 1500;
+                }
+                else
+                {
+                    $pj_stats[0]->damage = 100;
+                    $buffs['pj']['guillotine'] = null;
+                }
+
+            }
+        }
 
         foreach($monster_stats as $id=>$m_stats)
         {
             if($m_stats != null)
             {
+                if(!empty($buffs[$id]))
+                {
+                    if($buffs[$id]>0)
+                    {
+                        $buffs[$id] = $buffs[$id]-1;
+                        $m_stats->life = $m_stats->life - 150;
+                        if($m_stats->life<0)
+                        {
+                            $monster_hit[$id] = "dead";
+                            $monster_tab[$m_stats['row']][$m_stats['col']] = null;
+                            $m_stats = null;
+                            $pj_kills++;
+                            if($pj_kills == 25)
+                            {
+                                $map_tab[5][11] = $map->getMap_tile(2);
+                                $map_tab[6][11] = $map->getMap_tile(2);
+                                $map_tab[7][11] = $map->getMap_tile(2);
+                                session()->put('map_tab', $map_tab);
+                            }
+                            continue;
+                        }
+                        else
+                        {
+                            $monster_hit[$id] = "hit";
+                        }
+                    }
+                }
                 $row = $m_stats['row'];
                 $col = $m_stats['col'];
 
@@ -113,6 +198,7 @@ class MapController extends Controller
                     if ($rg <= $m_stats->range)
                     {
                         $monster_mv[$id] = 'hit';
+                        if(($m_stats->damage - $pj_stats[0]->flat_dd)>0)
                         $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
                     }
                     else
@@ -127,6 +213,7 @@ class MapController extends Controller
                                     $monster_tab[$m_stats['row']][$m_stats['col']] = null;
                                     $m_stats['col'] = $m_stats['col'] - 1;
                                     $monster_mv[$id] = "l,hit";
+                                    if(($m_stats->damage - $pj_stats[0]->flat_dd)>0)
                                     $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
                                 }
                             }
@@ -138,6 +225,7 @@ class MapController extends Controller
                                     $monster_tab[$m_stats['row']][$m_stats['col']] = null;
                                     $m_stats['col'] = $m_stats['col'] + 1;
                                     $monster_mv[$id] = "r,hit";
+                                    if(($m_stats->damage - $pj_stats[0]->flat_dd)>0)
                                     $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
                                 }
                             }
@@ -152,6 +240,7 @@ class MapController extends Controller
                                     $monster_tab[$m_stats['row']][$m_stats['col']] = null;
                                     $m_stats['row'] = $m_stats['row'] - 1;
                                     $monster_mv[$id] = "u,hit";
+                                    if(($m_stats->damage - $pj_stats[0]->flat_dd)>0)
                                     $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
                                 }
                             }
@@ -163,6 +252,7 @@ class MapController extends Controller
                                     $monster_tab[$m_stats['row']][$m_stats['col']] = null;
                                     $m_stats['row'] = $m_stats['row'] + 1;
                                     $monster_mv[$id] = "d,hit";
+                                    if(($m_stats->damage - $pj_stats[0]->flat_dd)>0)
                                     $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
                                 }
                             }
@@ -178,6 +268,7 @@ class MapController extends Controller
                                     $monster_tab[$m_stats['row']][$m_stats['col']] = null;
                                     $m_stats['row'] = $m_stats['row'] + 1;
                                     $monster_mv[$id] = "d,hit";
+                                    if(($m_stats->damage - $pj_stats[0]->flat_dd)>0)
                                     $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
                                     $done = true;
                                 }
@@ -190,6 +281,7 @@ class MapController extends Controller
                                     $monster_tab[$m_stats['row']][$m_stats['col']] = null;
                                     $m_stats['row'] = $m_stats['row'] - 1;
                                     $monster_mv[$id] = "u,hit";
+                                    if(($m_stats->damage - $pj_stats[0]->flat_dd)>0)
                                     $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
                                     $done = true;
                                 }
@@ -202,6 +294,7 @@ class MapController extends Controller
                                     $monster_tab[$m_stats['row']][$m_stats['col']] = null;
                                     $m_stats['col'] = $m_stats['col'] - 1;
                                     $monster_mv[$id] = "l,hit";
+                                    if(($m_stats->damage - $pj_stats[0]->flat_dd)>0)
                                     $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
                                     $done = true;
                                 }
@@ -214,6 +307,7 @@ class MapController extends Controller
                                     $monster_tab[$m_stats['row']][$m_stats['col']] = null;
                                     $m_stats['col'] = $m_stats['col'] + 1;
                                     $monster_mv[$id] = "r,hit";
+                                    if(($m_stats->damage - $pj_stats[0]->flat_dd)>0)
                                     $pj_stats[0]->life = $pj_stats[0]->life - ($m_stats->damage - $pj_stats[0]->flat_dd);
                                     $done = true;
                                 }
@@ -235,6 +329,8 @@ class MapController extends Controller
         session()->put('pj_stats', $pj_stats);
         session()->put('monster_tab', $monster_tab);
         session()->put('monster_stats', $monster_stats);
+        session()->put('buffs', $buffs);
+        session()->put('pj_kills', $pj_kills);
 
         return \Response::json(array(
             'success' => true,
@@ -242,6 +338,9 @@ class MapController extends Controller
             'monster_tab' => $monster_tab,
             'monster_stats' => $monster_stats,
             'monster_mv' => $monster_mv,
+            'monster_hit' => $monster_hit,
+            'pj_kills' => $pj_kills,
+            'buffs' => $buffs,
         ));
     }
 
@@ -255,6 +354,8 @@ class MapController extends Controller
         $pj_stats = session()->get('pj_stats');
         $item_possessed = session()->get('item_possessed');
         $pj_kills = session()->get('pj_kills');
+        $skills = session()->get('skills');
+        $buffs = session()->get('buffs');
         $item_to_delete = false;
         $update_left_pannel = false;
         $movable = 0;
@@ -263,6 +364,26 @@ class MapController extends Controller
         $col = 0;
         $direction = "";
         $monster_hit = array();
+        $use_skill = false;
+        $used_skill = false;
+        $skill_used = false;
+
+        if(session()->has('skill_tiles'))
+            $skill_tiles = session()->get('skill_tiles');
+        else
+        {
+            $skill_tiles = array();
+            session()->put('skill_tiles', $skill_tiles);
+        }
+
+        if(session()->has('skill_tiles_aoe'))
+            $skill_tiles_aoe = session()->get('skill_tiles_aoe');
+        else
+        {
+            $skill_tiles_aoe = array();
+            session()->put('skill_tiles_aoe', $skill_tiles_aoe);
+        }
+
         if(isset($data["id"]))
         {
             if($data["id"]>0)
@@ -461,6 +582,7 @@ class MapController extends Controller
                         if($monster_stats[$monster_tab[$row][$col]]->armor <= 0)
                         {
                             $monster_stats[$monster_tab[$row][$col]]->life = $monster_stats[$monster_tab[$row][$col]]->life + $monster_stats[$monster_tab[$row][$col]]->armor;
+                            $monster_stats[$monster_tab[$row][$col]]->armor = 0;
                         }
                     }
                     else
@@ -512,6 +634,334 @@ class MapController extends Controller
             }
 
         }
+
+        if(isset($data['skill']))
+        {
+
+            $skill_tiles_aoe = array();
+            $skill_tiles = array();
+            session()->put('skill_tiles_aoe', $skill_tiles_aoe);
+            session()->put('skill_tiles', $skill_tiles);
+
+            $id = str_replace("sk_", "", $data['skill']);
+            $k = 0;
+            if($pj_stats[0]->mana >= $skills[$id]->cost_mana && $pj_stats[0]->action >= $skills[$id]->action)
+            {
+                $use_skill = true;
+                $skill_used = $id;
+                switch($id)
+                {
+                    case 0:
+                        if($map_tab[$pj_stats[0]['row'] + 1][$pj_stats[0]['col']]->type == 'ground')
+                        {
+                            $skill_tiles[$k] = ($pj_stats[0]['row']+1).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row'] - 1][$pj_stats[0]['col']]->type == 'ground')
+                        {
+                            $skill_tiles[$k] = ($pj_stats[0]['row']-1).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+1]->type == 'ground')
+                        {
+                            $skill_tiles[$k] = $pj_stats[0]['row'].'_'.($pj_stats[0]['col']+1);
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-1]->type == 'ground')
+                        {
+                            $skill_tiles[$k] = $pj_stats[0]['row'].'_'.($pj_stats[0]['col']-1);
+                            $k++;
+                        }
+                        $k = 0;
+
+                        //rows down
+                        if(isset($map_tab[$pj_stats[0]['row'] + 2][$pj_stats[0]['col']]) && ($map_tab[$pj_stats[0]['row'] + 2][$pj_stats[0]['col']]->type == 'ground' || $map_tab[$pj_stats[0]['row'] + 2][$pj_stats[0]['col']]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']+2).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+                        if(isset($map_tab[$pj_stats[0]['row'] + 3][$pj_stats[0]['col']]) && ($map_tab[$pj_stats[0]['row'] + 3][$pj_stats[0]['col']]->type == 'ground' || $map_tab[$pj_stats[0]['row'] + 3][$pj_stats[0]['col']]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']+3).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+                        if(isset($map_tab[$pj_stats[0]['row'] + 4][$pj_stats[0]['col']]) && ($map_tab[$pj_stats[0]['row'] + 4][$pj_stats[0]['col']]->type == 'ground' || $map_tab[$pj_stats[0]['row'] + 4][$pj_stats[0]['col']]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']+4).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+
+                        //rows up
+                        if(isset($map_tab[$pj_stats[0]['row'] - 2][$pj_stats[0]['col']]) && ($map_tab[$pj_stats[0]['row'] - 2][$pj_stats[0]['col']]->type == 'ground' || $map_tab[$pj_stats[0]['row'] - 2][$pj_stats[0]['col']]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']-2).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+                        if(isset($map_tab[$pj_stats[0]['row'] - 3][$pj_stats[0]['col']]) && ($map_tab[$pj_stats[0]['row'] - 3][$pj_stats[0]['col']]->type == 'ground' || $map_tab[$pj_stats[0]['row'] - 3][$pj_stats[0]['col']]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']-3).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+                        if(isset($map_tab[$pj_stats[0]['row'] - 4][$pj_stats[0]['col']]) && ($map_tab[$pj_stats[0]['row'] - 4][$pj_stats[0]['col']]->type == 'ground' || $map_tab[$pj_stats[0]['row'] - 4][$pj_stats[0]['col']]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']-4).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+
+                        //cols right
+                        if(isset($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+2]) && ($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+2]->type == 'ground' || $map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+2]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']).'_'.($pj_stats[0]['col']+2);
+                            $k++;
+                        }
+                        if(isset($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+3]) && ($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+3]->type == 'ground' || $map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+3]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']).'_'.($pj_stats[0]['col']+3);
+                            $k++;
+                        }
+                        if(isset($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+4]) && ($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+4]->type == 'ground' || $map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+4]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']).'_'.($pj_stats[0]['col']+4);
+                            $k++;
+                        }
+
+                        //cols right
+                        if(isset($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-2]) && ($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-2]->type == 'ground' || $map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-2]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']).'_'.($pj_stats[0]['col']-2);
+                            $k++;
+                        }
+                        if(isset($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-3]) && ($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-3]->type == 'ground' || $map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-3]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']).'_'.($pj_stats[0]['col']-3);
+                            $k++;
+                        }
+                        if(isset($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-4]) && ($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-4]->type == 'ground' || $map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-4]->break == 1))
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']).'_'.($pj_stats[0]['col']-4);
+                            $k++;
+                        }
+                        break;
+                    case 1:
+                        $skill_tiles[0] = $pj_stats[0]['row'].'_'.$pj_stats[0]['col'];
+
+                        if($map_tab[$pj_stats[0]['row'] + 1][$pj_stats[0]['col']]->type == 'ground')
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']+1).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row'] + 1][$pj_stats[0]['col']+1]->type == 'ground')
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']+1).'_'.($pj_stats[0]['col']+1);
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row'] + 1][$pj_stats[0]['col']-1]->type == 'ground')
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']+1).'_'.($pj_stats[0]['col']-1);
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row'] - 1][$pj_stats[0]['col']]->type == 'ground')
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']-1).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row'] - 1][$pj_stats[0]['col']+1]->type == 'ground')
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']-1).'_'.($pj_stats[0]['col']+1);
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row'] - 1][$pj_stats[0]['col']-1]->type == 'ground')
+                        {
+                            $skill_tiles_aoe[$k] = ($pj_stats[0]['row']-1).'_'.($pj_stats[0]['col']-1);
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+1]->type == 'ground')
+                        {
+                            $skill_tiles_aoe[$k] = $pj_stats[0]['row'].'_'.($pj_stats[0]['col']+1);
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-1]->type == 'ground')
+                        {
+                            $skill_tiles_aoe[$k] = $pj_stats[0]['row'].'_'.($pj_stats[0]['col']-1);
+                            $k++;
+                        }
+                        $k = 0;
+                        break;
+                    case 2:
+                        if($map_tab[$pj_stats[0]['row'] + 1][$pj_stats[0]['col']]->type == 'ground' && $monster_tab[$pj_stats[0]['row'] + 1][$pj_stats[0]['col']] != null)
+                        {
+                            $skill_tiles[$k] = ($pj_stats[0]['row']+1).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row'] - 1][$pj_stats[0]['col']]->type == 'ground' && $monster_tab[$pj_stats[0]['row'] - 1][$pj_stats[0]['col']] != null)
+                        {
+                            $skill_tiles[$k] = ($pj_stats[0]['row']-1).'_'.$pj_stats[0]['col'];
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+1]->type == 'ground' && $monster_tab[$pj_stats[0]['row']][$pj_stats[0]['col']+1] != null)
+                        {
+                            $skill_tiles[$k] = $pj_stats[0]['row'].'_'.($pj_stats[0]['col']+1);
+                            $k++;
+                        }
+                        if($map_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-1]->type == 'ground' && $monster_tab[$pj_stats[0]['row']][$pj_stats[0]['col']-1] != null)
+                        {
+                            $skill_tiles[$k] = $pj_stats[0]['row'].'_'.($pj_stats[0]['col']-1);
+                            $k++;
+                        }
+                        $k = 0;
+                        break;
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    $skill_tiles[0] = $pj_stats[0]['row'].'_'.$pj_stats[0]['col'];
+                        break;
+                    default :
+                        $use_skill = false;
+                        break;
+                }
+            }
+            else
+            {
+                $skill_tiles_aoe = array();
+                $skill_tiles = array();
+            }
+            session()->put('skill_tiles_aoe', $skill_tiles_aoe);
+            session()->put('skill_tiles', $skill_tiles);
+        }
+
+        if(isset($data['skill_use']))
+        {
+            $values = explode('_',$data['skill_use'][1]);
+            $skill_id = $values[0];
+            $row = $values[1];
+            $col = $values[2];
+            
+            switch($skill_id)
+            {
+                case 0:
+                    break;
+                case 1:
+                    if(!empty($skill_tiles_aoe))
+                    {
+                        foreach($skill_tiles_aoe as $aoe_tile)
+                        {
+                            $values = explode('_',$aoe_tile);
+                            $aoe_row = $values[0];
+                            $aoe_col = $values[1];
+                            if($monster_tab[$aoe_row][$aoe_col] != null && $map_tab[$aoe_row][$aoe_col]->type == 'ground')
+                            {
+                                if($monster_stats[$monster_tab[$aoe_row][$aoe_col]]->armor > 0)
+                                {
+                                    $monster_stats[$monster_tab[$aoe_row][$aoe_col]]->armor = $monster_stats[$monster_tab[$aoe_row][$aoe_col]]->armor - ($pj_stats[0]->damage+400);
+                                    if($monster_stats[$monster_tab[$aoe_row][$aoe_col]]->armor <= 0)
+                                    {
+                                        $monster_stats[$monster_tab[$aoe_row][$aoe_col]]->life = $monster_stats[$monster_tab[$aoe_row][$aoe_col]]->life + $monster_stats[$monster_tab[$aoe_row][$aoe_col]]->armor;
+                                        $monster_stats[$monster_tab[$aoe_row][$aoe_col]]->armor = 0;
+                                    }
+                                }
+                                else
+                                {
+                                    $monster_stats[$monster_tab[$aoe_row][$aoe_col]]->life = $monster_stats[$monster_tab[$aoe_row][$aoe_col]]->life - ($pj_stats[0]->damage+400);
+                                }
+                                if($monster_stats[$monster_tab[$aoe_row][$aoe_col]]->life <=0)
+                                {
+                                    $monster_hit[$monster_tab[$aoe_row][$aoe_col]] ="dead";
+                                    $monster_stats[$monster_tab[$aoe_row][$aoe_col]] = null;
+                                    $monster_tab[$aoe_row][$aoe_col] = null;
+                                    $pj_kills++;
+                                    if($pj_kills == 25)
+                                    {
+                                        $map_tab[5][11] = $map->getMap_tile(2);
+                                        $map_tab[6][11] = $map->getMap_tile(2);
+                                        $map_tab[7][11] = $map->getMap_tile(2);
+                                        session()->put('map_tab', $map_tab);
+                                    }
+                                }
+                                else
+                                {
+                                    $monster_hit[$monster_tab[$aoe_row][$aoe_col]] ="hit";
+                                }
+                            }
+                        }
+                    }
+                    $pj_stats[0]->mana = $pj_stats[0]->mana - 300;
+                    $pj_stats[0]->action = $pj_stats[0]->action - 10;
+                    break;
+                case 2:
+                    $id = $monster_tab[$row][$col];
+                    $monster_hit[$monster_tab[$row][$col]] ="hit";
+                    if(isset($buffs[$id]) && $buffs[$id]>0)
+                    {
+                        $buffs[$id] = 10;
+                    }
+                    else
+                    {
+                        $buffs[$id] = 10;
+                    }
+                    $pj_stats[0]->mana = $pj_stats[0]->mana - 250;
+                    $pj_stats[0]->action = $pj_stats[0]->action - 10;
+                    break;
+                case 3:
+                    if(isset($buffs['pj']['sprint']) && $buffs['pj']['sprint']>0)
+                    {
+                        $buffs['pj']['sprint'] = 1;
+                    }
+                    else
+                    {
+                        $buffs['pj']['sprint'] = 1;
+                        $pj_stats[0]->mv = $pj_stats[0]->mv + 2;
+                    }
+                    $pj_stats[0]->mana = $pj_stats[0]->mana - 100;
+                    break;
+                case 4:
+                    $pj_stats[0]->life = $pj_stats[0]->life + 1500;
+                    if($pj_stats[0]->life>15000)
+                    {
+                        $pj_stats[0]->life = 15000;
+                    }
+                    $pj_stats[0]->mana = $pj_stats[0]->mana - 200;
+                    $pj_stats[0]->action = $pj_stats[0]->action - 10;
+                    break;
+                case 5:
+                    if(isset($buffs['pj']['guillotine']) && $buffs['pj']['guillotine']>0)
+                    {
+                        $buffs['pj']['guillotine'] = 1;
+                    }
+                    else
+                    {
+                        $buffs['pj']['guillotine'] = 1;
+                        $pj_stats[0]->damage = $pj_stats[0]->damage + 1400;
+                    }
+                    $pj_stats[0]->mana = $pj_stats[0]->mana - 700;
+                    break;
+                case 6:
+                    if(isset($buffs['pj']['defy_pain']) && $buffs['pj']['defy_pain']>0)
+                    {
+                        $buffs['pj']['defy_pain'] = 2;
+                    }
+                    else
+                    {
+                        $buffs['pj']['defy_pain'] = 2;
+                        $pj_stats[0]->flat_dd = $pj_stats[0]->flat_dd + 300;
+                    }
+                    $pj_stats[0]->mana = $pj_stats[0]->mana - 400;
+                    break;
+                default :
+                    break;
+            }
+
+            session()->put('pj_stats', $pj_stats);
+            session()->put('monster_tab', $monster_tab);
+            session()->put('monster_stats', $monster_stats);
+            session()->put('buffs', $buffs);
+
+            $skill_tiles_aoe = array();
+            $skill_tiles = array();
+            session()->put('skill_tiles_aoe', $skill_tiles_aoe);
+            session()->put('skill_tiles', $skill_tiles);
+            $used_skill = true;
+        }
         return \Response::json(array(
             'success' => true,
             'movable' => $movable,
@@ -524,6 +974,12 @@ class MapController extends Controller
             'item_to_delete' => $item_to_delete,
             'update_left_pannel' => $update_left_pannel,
             'pj_kills' => $pj_kills,
+            'use_skill' => $use_skill,
+            'skill_tiles' => $skill_tiles,
+            'skill_tiles_aoe' => $skill_tiles_aoe,
+            'skill_used' => $skill_used,
+            'used_skill' => $used_skill,
+            'buffs' => $buffs,
         ));
     }
 }
