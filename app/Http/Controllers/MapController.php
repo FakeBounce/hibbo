@@ -307,11 +307,6 @@ class MapController extends Controller
             }
         }
 
-        if($pj_stats[0]->life <=0)
-        {
-            session()->flush();
-            return redirect()->route('map.over', ['map' => $map->id]);
-        }
         $pj_actions = $map->getClasse(1);
         $pj_stats[0]->mv = $pj_actions->mv;
         $pj_stats[0]->action = $pj_actions->action;
@@ -361,12 +356,19 @@ class MapController extends Controller
 
             }
         }
-        
+
         session()->put('pj_stats', $pj_stats);
         session()->put('monster_tab', $monster_tab);
         session()->put('monster_stats', $monster_stats);
         session()->put('buffs', $buffs);
         session()->put('pj_kills', $pj_kills);
+
+        $dead = false;
+        if($pj_stats[0]->life <=0)
+        {
+            session()->flush();
+            $dead = true;
+        }
 
         return \Response::json(array(
             'success' => true,
@@ -378,6 +380,7 @@ class MapController extends Controller
             'pj_kills' => $pj_kills,
             'buffs' => $buffs,
             'boss_heal' => $boss_heal,
+            'dead' => $dead,
         ));
     }
 

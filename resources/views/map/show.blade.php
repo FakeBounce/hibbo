@@ -1314,7 +1314,10 @@
                 dataType: 'json',
                 data: fdata,
                 success: function(data) {
-                    console.log(data);
+                    if(data['dead'])
+                    {
+                        window.location.href = '{{ route('map.over',['map'=>$map]) }}';
+                    }
                     update_left_pannel(data['pj_stats'][0]);
 
                     if(data['pj_kills'] >= 25)
