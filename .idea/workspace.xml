@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b663c92-7b27-40a7-b810-8ee76ec67493" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/layouts/go.blade.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/map/over.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/MapController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/MapController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/routes.php" afterPath="$PROJECT_DIR$/app/Http/routes.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/map/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/map/show.blade.php" />
     </list>
     <ignored path="hibbo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,7 +36,7 @@
       <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/map/show.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="967">
+            <state relative-caret-position="1222">
               <caret line="414" column="60" lean-forward="true" selection-start-line="414" selection-start-column="21" selection-end-line="414" selection-end-column="60" />
               <folding>
                 <element signature="e#31508#35173#0#HTML" expanded="false" />
@@ -68,21 +63,21 @@
       <file leaf-file-name="MapController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MapController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="458">
-              <caret line="1466" column="13" lean-forward="false" selection-start-line="1466" selection-start-column="13" selection-end-line="1466" selection-end-column="13" />
+            <state relative-caret-position="272">
+              <caret line="103" column="27" lean-forward="false" selection-start-line="103" selection-start-column="27" selection-end-line="103" selection-end-column="27" />
               <folding>
                 <element signature="e#387#2665#0#PHP" expanded="false" />
-                <element signature="e#17496#25010#0#PHP" expanded="false" />
-                <element signature="e#25020#27947#0#PHP" expanded="false" />
-                <element signature="e#27957#28596#0#PHP" expanded="false" />
-                <element signature="e#28606#40204#0#PHP" expanded="false" />
-                <element signature="e#47831#54956#0#PHP" expanded="false" />
-                <element signature="e#69740#72701#0#PHP" expanded="false" />
-                <element signature="e#72718#73265#0#PHP" expanded="false" />
-                <element signature="e#73282#73747#0#PHP" expanded="false" />
-                <element signature="e#73764#74148#0#PHP" expanded="false" />
-                <element signature="e#74165#74657#0#PHP" expanded="false" />
-                <element signature="e#74674#75163#0#PHP" expanded="false" />
+                <element signature="e#17524#25038#0#PHP" expanded="false" />
+                <element signature="e#25048#27975#0#PHP" expanded="false" />
+                <element signature="e#27985#28624#0#PHP" expanded="false" />
+                <element signature="e#28634#40232#0#PHP" expanded="false" />
+                <element signature="e#47859#54984#0#PHP" expanded="false" />
+                <element signature="e#69768#72729#0#PHP" expanded="false" />
+                <element signature="e#72746#73293#0#PHP" expanded="false" />
+                <element signature="e#73310#73775#0#PHP" expanded="false" />
+                <element signature="e#73792#74176#0#PHP" expanded="false" />
+                <element signature="e#74193#74685#0#PHP" expanded="false" />
+                <element signature="e#74702#75191#0#PHP" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -650,12 +645,12 @@
       <workItem from="1487623105236" duration="8034000" />
       <workItem from="1487682671356" duration="857000" />
       <workItem from="1487707795010" duration="609000" />
-      <workItem from="1487709393088" duration="11547000" />
+      <workItem from="1487709393088" duration="11619000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="138412000" />
+    <option name="totallyTimeSpent" value="138484000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1053,7 +1048,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/map/show.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="967">
+        <state relative-caret-position="1222">
           <caret line="414" column="60" lean-forward="true" selection-start-line="414" selection-start-column="21" selection-end-line="414" selection-end-column="60" />
           <folding>
             <element signature="e#31508#35173#0#HTML" expanded="false" />
@@ -1068,21 +1063,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MapController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="1466" column="13" lean-forward="false" selection-start-line="1466" selection-start-column="13" selection-end-line="1466" selection-end-column="13" />
+        <state relative-caret-position="272">
+          <caret line="103" column="27" lean-forward="false" selection-start-line="103" selection-start-column="27" selection-end-line="103" selection-end-column="27" />
           <folding>
             <element signature="e#387#2665#0#PHP" expanded="false" />
-            <element signature="e#17496#25010#0#PHP" expanded="false" />
-            <element signature="e#25020#27947#0#PHP" expanded="false" />
-            <element signature="e#27957#28596#0#PHP" expanded="false" />
-            <element signature="e#28606#40204#0#PHP" expanded="false" />
-            <element signature="e#47831#54956#0#PHP" expanded="false" />
-            <element signature="e#69740#72701#0#PHP" expanded="false" />
-            <element signature="e#72718#73265#0#PHP" expanded="false" />
-            <element signature="e#73282#73747#0#PHP" expanded="false" />
-            <element signature="e#73764#74148#0#PHP" expanded="false" />
-            <element signature="e#74165#74657#0#PHP" expanded="false" />
-            <element signature="e#74674#75163#0#PHP" expanded="false" />
+            <element signature="e#17524#25038#0#PHP" expanded="false" />
+            <element signature="e#25048#27975#0#PHP" expanded="false" />
+            <element signature="e#27985#28624#0#PHP" expanded="false" />
+            <element signature="e#28634#40232#0#PHP" expanded="false" />
+            <element signature="e#47859#54984#0#PHP" expanded="false" />
+            <element signature="e#69768#72729#0#PHP" expanded="false" />
+            <element signature="e#72746#73293#0#PHP" expanded="false" />
+            <element signature="e#73310#73775#0#PHP" expanded="false" />
+            <element signature="e#73792#74176#0#PHP" expanded="false" />
+            <element signature="e#74193#74685#0#PHP" expanded="false" />
+            <element signature="e#74702#75191#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>

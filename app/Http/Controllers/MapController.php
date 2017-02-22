@@ -101,6 +101,7 @@ class MapController extends Controller
 
     public function over(Map $map)
     {
+        session()->flush();
         return view('map/over', [
             "map" => $map,
         ]);
