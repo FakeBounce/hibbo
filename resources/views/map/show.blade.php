@@ -397,6 +397,14 @@
             <div class="pull-right"><a class="btn btn-primary" href="{{ route('map.reset', ['map' => $map]) }}">Reset</a></div>
             <div class="text-center"><a class="btn btn-primary end_turn">Fin de tour</a></div>
         </div>
+
+        <div class="left_pannel_2 col-xs-5 text-center">
+            <h3>Objectifs et indications</h3>
+            <br>
+            <p>But de la mission : Tuer le boss  <img src="{{ asset('asset/img/monsters/Basic_Boss.png') }}" style="width:50px;height:50px;">!</p>
+            <p>Pour passer la barrière <img src="{{ asset('asset/img/grass_left_door.png') }}">, il faut tuer tous les ennemis de la salle précédente. </p>
+            <p>Pour avoir des informations sur des monstres ou des compétences, passez votre souris dessus !</p>
+        </div>
     </div>
 @endsection
 
