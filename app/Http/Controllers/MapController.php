@@ -1404,6 +1404,14 @@ class MapController extends Controller
                     {
                         $buffs[$id] = 10;
                     }
+                    if($row> $pj_stats[0]['row'])
+                        $direction = "d";
+                    if($row< $pj_stats[0]['row'])
+                        $direction = "u";
+                    if($col> $pj_stats[0]['col'])
+                        $direction = "r";
+                    if($col< $pj_stats[0]['col'])
+                        $direction = "l";
                     $pj_stats[0]->mana = $pj_stats[0]->mana - 250;
                     $pj_stats[0]->action = $pj_stats[0]->action - 10;
                     break;

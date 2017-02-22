@@ -70,6 +70,23 @@
                 </table>
             </div>
 
+            <h4>Effets actifs :</h4>
+            <div class="char_active_skills">
+                @foreach($buffs['pj'] as $key=>$buff)
+                    @if($buff >0)
+                        @if($key == 'sprint')
+                            <img class='skill' id="ska_{{$key}}" data-toggle="tooltip" src='{{ asset('asset/img/skills/Sprint.jpg') }}' title="Tour restant : {{$buff}}">
+                        @endif
+                        @if($key == 'guillotine')
+                            <img class='skill' id="ska_{{$key}}" data-toggle="tooltip" src='{{ asset('asset/img/skills/Disrupting_Chop.jpg') }}' title="Tour restant : {{$buff}}">
+                        @endif
+                        @if($key == 'defy_pain')
+                            <img class='skill' id="ska_{{$key}}" data-toggle="tooltip" src='{{ asset('asset/img/skills/defy_pain.jpg') }}' title="Tour restant : {{$buff}}">
+                        @endif
+                    @endif
+                @endforeach
+            </div>
+
             <h4>Vos compétences :</h4>
             <div class="char_skills">
                 <table class='table_stat text-center'>
@@ -224,6 +241,9 @@
                                         <th>Range</th>
                                         <th>Mv</th>
                                         <th>Dr</th>
+                                        @if(!empty($buffs[$monster_tab[$row][$i%$map->width]]))
+                                            <th>{{$buffs[$monster_tab[$row][$i%$map->width]]}} tours</th>
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td>
@@ -247,6 +267,9 @@
                                      <td>
                                          {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->dr }}
                                      </td>
+                                    @if(!empty($buffs[$monster_tab[$row][$i%$map->width]]))
+                                     <td><img src='{{ asset('asset/img/skills/Gash.jpg') }}' style='width:34px;height:34px;'></td>
+                                    @endif
                                  </tr>
                              </tbody>
                          </table>
@@ -307,21 +330,24 @@
                              title="
                         <table class='table_stat text-center'>
                             <tbody>
-                                <tr>
-                                    <th> </th>
-                                    <th>Hp</th>
-                                    <th>Ar</th>
-                                    <th>Dmg</th>
-                                    <th>Range</th>
-                                    <th>Mv</th>
-                                    <th>Dr</th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img class='monster_stat' src='{{ asset('asset/img/monsters/'.$monster_stats[$monster_tab[$row][$i%$map->width]]->url) }}'>
-                                    </td>
-                                    <td>
-                                        {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->life }}
+                                    <tr>
+                                        <th> </th>
+                                        <th>Hp</th>
+                                        <th>Ar</th>
+                                        <th>Dmg</th>
+                                        <th>Range</th>
+                                        <th>Mv</th>
+                                        <th>Dr</th>
+                                        @if(!empty($buffs[$monster_tab[$row][$i%$map->width]]))
+                                     <th>{{$buffs[$monster_tab[$row][$i%$map->width]]}} tours</th>
+                                        @endif
+                                     </tr>
+                                     <tr>
+                                         <td>
+                                             <img class='monster_stat' src='{{ asset('asset/img/monsters/'.$monster_stats[$monster_tab[$row][$i%$map->width]]->url) }}'>
+                                        </td>
+                                        <td>
+                                            {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->life }}
                                      </td>
                                      <td>
                                          {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->armor }}
@@ -338,10 +364,13 @@
                                      <td>
                                          {{ $monster_stats[$monster_tab[$row][$i%$map->width]]->dr }}
                                      </td>
-                                 </tr>
-                             </tbody>
-                         </table>
-                         ">
+                                    @if(!empty($buffs[$monster_tab[$row][$i%$map->width]]))
+                                     <td><img src='{{ asset('asset/img/skills/Gash.jpg') }}' style='width:34px;height:34px;'></td>
+                                    @endif
+                                     </tr>
+                                 </tbody>
+                             </table>
+                             ">
                     @endif
                     @if(($row == $pj_stats[0]['row']) && ($i%$map->width == $pj_stats[0]['col']))
                         <img class="pj" id="pj" src="{{ asset('asset/img/classes/gface.png') }}" style="margin-left:-36px;">
@@ -434,7 +463,7 @@
                         $.each( data['monster_hit'], function( key, value ) {
                             if(value == "hit")
                             {
-                                update_tooltip("m_"+key,data['monster_stats'][key],"monster");
+                                update_tooltip(key,data['monster_stats'][key],"monster",data['buffs']);
                             }
                             if(value == "dead")
                             {
@@ -486,6 +515,12 @@
                             $('#pj').attr("src","{{ asset('asset/img/classes/tournoiement.gif') }}");
                             setTimeout(update_pj_src,500);
                         }
+                        if(data['skill_id'] == 2)
+                        {
+                            attack('pj',"m_"+parseInt(getFirstKey(data['monster_hit'])),'pj',data['direction'],data['pj_stats'][0]['damage']);
+                            $('#pj').attr("src","{{ asset('asset/img/classes/tournoiement.gif') }}");
+                            setTimeout(update_pj_src,500);
+                        }
                         if(data['skill_id'] == 3 ||data['skill_id'] == 4 ||data['skill_id'] == 5 ||data['skill_id'] == 6)
                         {
                             $('#pj').attr("src","{{ asset('asset/img/classes/sante-bas.gif') }}");
@@ -501,7 +536,7 @@
                         $.each( data['monster_hit'], function( key, value ) {
                             if(value == "hit")
                             {
-                                update_tooltip("m_"+key,data['monster_stats'][key],"monster");
+                                update_tooltip(key,data['monster_stats'][key],"monster",data['buffs']);
                             }
                             if(value == "dead")
                             {
@@ -511,6 +546,7 @@
                             }
                         });
                         update_left_pannel(data['pj_stats'][0]);
+                        update_active_buffs(data['buffs']);
                     }
 
                     console.log(data);
@@ -525,6 +561,63 @@
                 $('#pj').attr("src","{{ asset('asset/img/classes/gface.png') }}");
             }
         });
+
+        function update_active_buffs(buffs)
+        {
+            $.each(buffs['pj'], function(key, value) {
+                if(key == 'sprint')
+                {
+                    if(value > 0)
+                    {
+                        if(!($('#ska_sprint').length))
+                        {
+                            $('.char_active_skills').append('<img class="skill" id="ska_sprint" data-toggle="tooltip" src="{{ asset('asset/img/skills/Sprint.jpg') }}" title="Tour restant : '+value+'">');
+                        }
+                    }
+                    else
+                    {
+                        if($('#ska_sprint').length)
+                        {
+                            $('#ska_sprint').remove();
+                        }
+                    }
+                }
+                if(key == 'guillotine')
+                {
+                    if(value > 0)
+                    {
+                        if(!($('#ska_guillotine').length))
+                        {
+                            $('.char_active_skills').append('<img class="skill" id="ska_guillotine" data-toggle="tooltip" src="{{ asset('asset/img/skills/Disrupting_Chop.jpg') }}" title="Tour restant : '+value+'">');
+                        }
+                    }
+                    else
+                    {
+                        if($('#ska_guillotine').length)
+                        {
+                            $('#ska_guillotine').remove();
+                        }
+                    }
+                }
+                if(key == 'defy_pain')
+                {
+                    if(value > 0)
+                    {
+                        if(!($('#ska_defy_pain').length))
+                        {
+                            $('.char_active_skills').append('<img class="skill" id="ska_defy_pain" data-toggle="tooltip" src="{{ asset('asset/img/skills/defy_pain.jpg') }}" title="Tour restant : '+value+'">');
+                        }
+                    }
+                    else
+                    {
+                        if($('#ska_defy_pain').length)
+                        {
+                            $('#ska_defy_pain').remove();
+                        }
+                    }
+                }
+            });
+        }
 
         function update_potion_pannel(potion,length) {
             if(potion == 1)
@@ -601,8 +694,7 @@
             });
         }
 
-        function update_tooltip(id, stats, type){
-
+        function update_tooltip(id, stats, type, buffs){
             if(type == "monster")
             {
                 var tooltip_val = "<table class='table_stat text-center'>"+
@@ -614,7 +706,12 @@
                     "<th>Dmg</th>"+
                     "<th>Range</th>"+
                     "<th>Mv</th>"+
-                    "<th>Dr</th>"+
+                    "<th>Dr</th>";
+                if(buffs[id])
+                {
+                    tooltip_val = tooltip_val +"<th>"+buffs[id]+" tours</th>";
+                }
+                tooltip_val = tooltip_val +
                     "</tr>"+
                     "<tr>"+
                     " <td>"+
@@ -637,14 +734,20 @@
                     "</td>"+
                     "<td>"+
                     stats['dr']+
-                    "</td>"+
+                    "</td>";
+
+                if(buffs[id])
+                {
+                    tooltip_val = tooltip_val +'<td><img src="{{ asset('asset/img/skills/Gash.jpg') }}" style="width:34px;height:34px;"></td>';
+                }
+                tooltip_val = tooltip_val +
                     "</tr>"+
                     "</tbody>"+
                     "</table>";
 
             }
 
-            $('#'+id).tooltip('hide')
+            $('#m_'+id).tooltip('hide')
                 .attr('data-original-title', tooltip_val)
                 .tooltip('fixTitle')
                 .tooltip('show');
@@ -945,7 +1048,7 @@
                             '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">'
                         '</div></div>';
                         $('#'+id2).before(health_bar);
-                    }*/$
+                    }*/
                     animation = setInterval( moveSprite_Attack3,50);
 
                 }
@@ -1224,7 +1327,7 @@
                     $.each( data['monster_hit'], function( key, value ) {
                         if(value == "hit")
                         {
-                            update_tooltip("m_"+key,data['monster_stats'][key],"monster");
+                            update_tooltip(key,data['monster_stats'][key],"monster",data['buffs']);
                         }
                         if(value == "dead")
                         {
@@ -1274,9 +1377,11 @@
                     {
                         $('#m_23').attr("src","{{ asset('asset/img/monsters/basic_boss_anime.gif') }}");
                         setTimeout(update_boss_src,1000);
-                        update_tooltip("m_23",data['monster_stats'][23],"monster");
+                        update_tooltip("" +
+                            "23",data['monster_stats'][23],"monster",data['buffs']);
                     }
                     setTimeout( enable_endturn,600);
+                    update_active_buffs(data['buffs']);
 
                 },
                 error:function(jqXHR) {
